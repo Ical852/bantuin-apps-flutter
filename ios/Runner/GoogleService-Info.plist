@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>234223573909-8ob7orn7f5qdk80rhvm7jetj1895lep8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.234223573909-8ob7orn7f5qdk80rhvm7jetj1895lep8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB_V4FJzx7nUewBgtU4ZL1cp8sx5bVa47k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>234223573909</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.bantuin</string>
+	<key>PROJECT_ID</key>
+	<string>bantuin-apps-2e382</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bantuin-apps-2e382.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:234223573909:ios:f88de4bac03af36fa0749c</string>
+</dict>
+</plist>
