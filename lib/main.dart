@@ -1,3 +1,4 @@
+import 'package:bantuin/pages/maptest.dart';
 import 'package:bantuin/pages/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         "/": (context) => SplashPage(),
+        "/map":(context) => MapTestPage()
       },
     );
   }

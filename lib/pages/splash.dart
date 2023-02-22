@@ -30,6 +30,7 @@ class _SplashPageState extends State<SplashPage> {
             child: GestureDetector(
               onTap: () {
                 apakek();
+                Navigator.pushNamed(context, "/map");
               },
               child: Text("Splash Pages"),
             ),
