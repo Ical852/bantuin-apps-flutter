@@ -15,9 +15,10 @@ class MapTestPage extends StatefulWidget {
 }
 
 class _MapTestPageState extends State<MapTestPage> {
-  var currentLocation = null;
-  var currentImage = "https://media.licdn.com/dms/image/D5603AQG8TnZ0oQ1E_A/profile-displayphoto-shrink_800_800/0/1671005717839?e=2147483647&v=beta&t=jFOOZ9g0fZGBzxaAicpzK8cZDdH7oGOhW0AuTkt7Wlw";
+  var currentImage = "";
+  var currentAddress = "";
 
+  var currentLocation = null;
   void goToGoogleMaps() async {
     LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
@@ -34,7 +35,6 @@ class _MapTestPageState extends State<MapTestPage> {
     String googleUrl = "https://www.google.com/maps/search/?api=1&query=${currentLocation.latitude},${currentLocation.longitude}";
     await canLaunchUrlString(googleUrl) ? await launchUrlString(googleUrl) : throw 'Error';
   }
-
   void getCurrentLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -59,30 +59,26 @@ class _MapTestPageState extends State<MapTestPage> {
     });
   }
 
+  void getCurrentAddress(LatLng location) async {
+    List<Placemark> placemakrs = await placemarkFromCoordinates(location.latitude, location.longitude);
+    Placemark place = placemakrs[0];
+    this.setState(() {
+      currentAddress = '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+    });
+  }
+
   // LEARNING
 
   final Completer<GoogleMapController> _controller = Completer();
 
-  static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
-  static const LatLng destination = LatLng(37.33429383, -122.06600055);
+  static const LatLng sourceLocation = LatLng(-6.184361, 106.687516);
+  static const LatLng destination = LatLng(-6.163399, 106.747720);
   List<LatLng> coordinates = [sourceLocation, destination];
 
   @override
   void initState() {
     super.initState();
     getCurrentLocation();
-    _getLocation();
-  }
-
-  _getLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    debugPrint('location: ${position.latitude}');
-    List<Placemark> addresses =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-
-    var first = addresses.first;
-    print("${first.name} : ${first..administrativeArea}");
   }
 
   @override
@@ -92,6 +88,7 @@ class _MapTestPageState extends State<MapTestPage> {
         child: Stack(
           children: [
             GoogleMap(
+              myLocationEnabled: true,
               initialCameraPosition: CameraPosition(
                 target: sourceLocation,
                 zoom: 14.5,
@@ -114,6 +111,7 @@ class _MapTestPageState extends State<MapTestPage> {
                     onTap: (){
                       this.setState(() {
                         currentImage = "https://media.licdn.com/dms/image/D5603AQG8TnZ0oQ1E_A/profile-displayphoto-shrink_800_800/0/1671005717839?e=2147483647&v=beta&t=jFOOZ9g0fZGBzxaAicpzK8cZDdH7oGOhW0AuTkt7Wlw";
+                        getCurrentAddress(sourceLocation);
                       });
                     }
                 ),
@@ -122,19 +120,40 @@ class _MapTestPageState extends State<MapTestPage> {
                     position: destination,
                     onTap: (){
                       this.setState(() {
-                        currentImage = "https://media.licdn.com/dms/image/D5603AQFxCtdgEqVzwQ/profile-displayphoto-shrink_200_200/0/1669243862530?e=1682553600&v=beta&t=dcmzZoMCOjo9nQ25a9TJXfjfBMICpQMXWONr9Rz_49Q";
+                        currentImage = "https://instagram.fcgk28-1.fna.fbcdn.net/v/t51.2885-19/323873537_2585500534926512_3899827331589008212_n.jpg?stp=dst-jpg_s320x320&_nc_ht=instagram.fcgk28-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=gnTUJNFV6tcAX9Dxf-m&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfDdw3HFU2c2UVbXhCuUks7bplkx2XAqP6XSjwc80ClnoA&oe=63FF1727&_nc_sid=8fd12b";
+                        getCurrentAddress(destination);
                       });
                     }
                 ),
               },
+              
             ),
             Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(currentImage)
-                )
+              color: Colors.white,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(currentImage)
+                      )
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(6),
+                      child: Text(
+                        currentAddress,
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )
           ],
