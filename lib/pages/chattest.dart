@@ -14,7 +14,7 @@ class _ChatTestPageState extends State<ChatTestPage> {
   CollectionReference users = FirebaseFirestore.instance.collection('icalios_icalandro');
   final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance.collection('icalios_icalandro').orderBy('date').snapshots();
   
-  var userId = Platform.isIOS ? 'icalios' : 'icalandro';
+  var userId = 'icalandro';
   TextEditingController textinput = TextEditingController(text: "");
   Widget getChatBubble(dynamic data) {
     return userId == data['userId'] ? Row(
@@ -63,6 +63,45 @@ class _ChatTestPageState extends State<ChatTestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          onTap: (){
+            this.setState(() {
+              userId = 'icalios';
+            });
+          },
+          child: Container(
+            color: Colors.green,
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+              child: Text(
+                "Im IOS"
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 0.0),
+            child: GestureDetector(
+              onTap: () {
+                this.setState(() {
+                  userId = 'icalandro';
+                });
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12
+                ),
+                color: Colors.green,
+                child: Center(
+                  child: Text(
+                    "Im Andro"
+                  ),
+                ),
+              )
+            )),
+        ],
         title: Text('Realtime Chat Test'),
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.blue,
