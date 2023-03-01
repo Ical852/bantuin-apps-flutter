@@ -9,12 +9,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../getFcm.dart';
 
-class SplashPage extends StatefulWidget {
+class TestPage extends StatefulWidget {
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  State<TestPage> createState() => _TestPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _TestPageState extends State<TestPage> {
   void getDeviceId() async {
     print("test");
     String? key = await getFcmToken();

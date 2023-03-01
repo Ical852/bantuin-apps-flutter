@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -17,9 +20,21 @@ class NotificationService {
       android: androidInitializationSettings,
     );
 
+    @pragma('vm:entry-point')
+    void notificationTapBackground(NotificationResponse notificationResponse) {
+      // ignore: avoid_print
+      print('notification(${notificationResponse.id}) action tapped: '
+          '${notificationResponse.actionId} with'
+          ' payload: ${notificationResponse.payload}');
+      if (notificationResponse.input?.isNotEmpty ?? false) {
+        // ignore: avoid_print
+        print(
+            'notification action tapped with input: ${notificationResponse.input}');
+      }
+    }
+
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      // onSelectNotification: doSomething(),
     );
   }
 

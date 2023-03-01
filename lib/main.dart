@@ -1,6 +1,6 @@
 import 'package:bantuin/pages/chattest.dart';
 import 'package:bantuin/pages/maptest.dart';
-import 'package:bantuin/pages/splash.dart';
+import 'package:bantuin/pages/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -36,12 +36,12 @@ void main() async {
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
+    var data = message.data;
+    print('Message data: ${data['type']}');
 
     if (message.notification != null) {
       print(
           'Message also contained a notification: ${message.notification!.body.toString()}');
-      print('Message also contained a notification: ${message}');
       print(
           'Message also contained a notification: ${message.notification!.title.toString()}');
     }
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        "/": (context) => SplashPage(),
+        "/": (context) => TestPage(),
         "/map":(context) => MapTestPage(),
         "/chat":(context) => ChatTestPage()
       },
