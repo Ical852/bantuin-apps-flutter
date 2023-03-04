@@ -35,6 +35,7 @@ class NotificationService {
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
+      onDidReceiveNotificationResponse: notificationTapBackground
     );
   }
 
