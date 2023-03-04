@@ -15,9 +15,20 @@ class NotificationService {
     AndroidInitializationSettings androidInitializationSettings =
     AndroidInitializationSettings('@mipmap/ic_launcher');
 
+    DarwinInitializationSettings iosInitializationSettings = 
+    DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification: ((id, title, body, payload) => {
+        print('test')
+      })
+    );
+
     InitializationSettings initializationSettings =
     InitializationSettings(
       android: androidInitializationSettings,
+      iOS: iosInitializationSettings
     );
 
     @pragma('vm:entry-point')
@@ -55,12 +66,45 @@ class NotificationService {
       playSound: true,
     );
 
+    DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
+
     await _flutterLocalNotificationsPlugin.show(
-        message.data.hashCode,
-        message.notification?.title,
-        message.notification?.body,
-        NotificationDetails(
-          android: androidDetails,
-        ));
+      message.data.hashCode,
+      message.notification?.title,
+      message.notification?.body,
+      NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails
+      )
+    );
+  }
+
+  static Future showIOS({ int id = 0, String? title, String? body, String? payload }) async {
+    AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      "channel_id_5",
+      "channel",
+      enableLights: true,
+      enableVibration: true,
+      priority: Priority.high,
+      importance: Importance.max,
+      styleInformation: MediaStyleInformation(
+        htmlFormatContent: true,
+        htmlFormatTitle: true,
+      ),
+      icon: '@mipmap/ic_launcher',
+      playSound: true,
+    );
+
+    DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
+
+    await _flutterLocalNotificationsPlugin.show(
+      id,
+      title,
+      body,
+      NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails
+      )
+    );
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:bantuin/notificationservice.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/src/widgets/container.dart';
@@ -201,6 +203,9 @@ class _TestPageState extends State<TestPage> {
                   );
                 },
                 child: Container(
+                  margin: EdgeInsets.only(
+                    bottom: 10
+                  ),
                   padding: EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 4
@@ -217,7 +222,37 @@ class _TestPageState extends State<TestPage> {
                     ),
                   ),
                 ),
-              )
+              ),
+              GestureDetector(
+                onTap: (){
+                  NotificationService.showIOS(
+                    id: 1,
+                    title: 'Test on IOS',
+                    payload: 'Isi Payload',
+                    body: 'Body Test on IOS'
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.only(
+                    bottom: 10
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(4)
+                  ),
+                  child: Text(
+                    "Manual Notif",
+                    style: GoogleFonts.poppins().copyWith(
+                      fontSize: 16,
+                      color: Colors.white
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
