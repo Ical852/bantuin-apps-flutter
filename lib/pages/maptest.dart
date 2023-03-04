@@ -120,7 +120,7 @@ class _MapTestPageState extends State<MapTestPage> {
                     position: destination,
                     onTap: (){
                       this.setState(() {
-                        currentImage = "https://instagram.fcgk28-1.fna.fbcdn.net/v/t51.2885-19/323873537_2585500534926512_3899827331589008212_n.jpg?stp=dst-jpg_s320x320&_nc_ht=instagram.fcgk28-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=gnTUJNFV6tcAX9Dxf-m&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfDdw3HFU2c2UVbXhCuUks7bplkx2XAqP6XSjwc80ClnoA&oe=63FF1727&_nc_sid=8fd12b";
+                        currentImage = "https://instagram.fcgk28-1.fna.fbcdn.net/v/t51.2885-19/323873537_2585500534926512_3899827331589008212_n.jpg?stp=dst-jpg_s150x150&_nc_ht=instagram.fcgk28-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=20lbIhzulnQAX-_-mon&edm=ACWDqb8BAAAA&ccb=7-5&oh=00_AfA4734DdEvvRvKVyXWiB56TM0gan0AZsUHDhRAPxUurIg&oe=64070027&_nc_sid=1527a3";
                         getCurrentAddress(destination);
                       });
                     }

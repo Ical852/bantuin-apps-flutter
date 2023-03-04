@@ -21,10 +21,11 @@ class _TestPageState extends State<TestPage> {
     print('FCM TOKEN = $key');
   }
 
-  var currentMenu = "home";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(),
+      endDrawer: Drawer(),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -85,6 +86,9 @@ class _TestPageState extends State<TestPage> {
                   Navigator.pushNamed(context, '/map');
                 },
                 child: Container(
+                  margin: EdgeInsets.only(
+                    bottom: 10
+                  ),
                   padding: EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 4
@@ -102,6 +106,118 @@ class _TestPageState extends State<TestPage> {
                   ),
                 ),
               ),
+              Builder(
+                builder: (context) {
+                  return GestureDetector(
+                    onTap: (){
+                      Scaffold.of(context).openDrawer();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        bottom: 10
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(4)
+                      ),
+                      child: Text(
+                        "Left Drawer Test",
+                        style: GoogleFonts.poppins().copyWith(
+                          fontSize: 16,
+                          color: Colors.white
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              ),
+              Builder(
+                builder: (context) {
+                  return GestureDetector(
+                    onTap: (){
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        bottom: 10
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(4)
+                      ),
+                      child: Text(
+                        "Right Drawer Test",
+                        style: GoogleFonts.poppins().copyWith(
+                          fontSize: 16,
+                          color: Colors.white
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              ),
+              GestureDetector(
+                onTap: (){
+                  showModalBottomSheet<void>(
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)
+                      )
+                    ),
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12)
+                          )
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('Modal BottomSheet'),
+                              ElevatedButton(
+                                child: Text('Close BottomSheet'),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(4)
+                  ),
+                  child: Text(
+                    "Bottom Drawer Test",
+                    style: GoogleFonts.poppins().copyWith(
+                      fontSize: 16,
+                      color: Colors.white
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),

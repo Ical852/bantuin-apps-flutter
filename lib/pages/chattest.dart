@@ -16,6 +16,7 @@ class _ChatTestPageState extends State<ChatTestPage> {
   
   var userId = 'icalandro';
   TextEditingController textinput = TextEditingController(text: "");
+  
   Widget getChatBubble(dynamic data) {
     return userId == data['userId'] ? Row(
       children: [
