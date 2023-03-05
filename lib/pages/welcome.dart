@@ -7,6 +7,7 @@ class WelcomePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
+          width: double.infinity,
           child: Column(
             children: [
               ImageCustom(

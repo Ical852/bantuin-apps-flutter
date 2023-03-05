@@ -23,7 +23,7 @@ class MiniButtonCustom extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
+          shadowColor: Colors.transparent.withOpacity(0.1),
         ),
         onPressed: onPressed,
         child: Text(

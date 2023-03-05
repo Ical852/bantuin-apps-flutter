@@ -12,6 +12,7 @@ class GetStartedPage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         image: AssetImage('assets/images/bg.png'),
+        fit: BoxFit.cover,
         child: Container(
           margin: EdgeInsets.only(
             bottom: 32,
