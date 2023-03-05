@@ -47,6 +47,12 @@ dependencies:
   geocoding: ^2.0.5
   google_fonts: ^4.0.3
   cloud_firestore: ^4.4.3
+  intl: ^0.18.0
+  flutter_bloc: ^8.1.2
+  equatable: ^2.0.5
+  http: ^0.13.5
+  image_picker: ^0.8.6+4
+  webview_flutter: ^4.0.6
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +79,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/images/
+    - assets/illustrations/
+    - assets/icons/
+    - assets/dummies/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

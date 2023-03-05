@@ -1,6 +1,32 @@
-import 'package:bantuin/pages/chattest.dart';
-import 'package:bantuin/pages/maptest.dart';
-import 'package:bantuin/pages/test.dart';
+import 'package:bantuin/pages/test/chattest.dart';
+import 'package:bantuin/pages/test/maptest.dart';
+import 'package:bantuin/pages/test/test.dart';
+
+import 'package:bantuin/pages/splash.dart';
+import 'package:bantuin/pages/getstarted.dart';
+
+import 'package:bantuin/pages/onboardings/tutorguide.dart';
+import 'package:bantuin/pages/onboardings/tutorguide_choose.dart';
+
+import 'package:bantuin/pages/onboardings/customer/ob_customer1.dart';
+import 'package:bantuin/pages/onboardings/customer/ob_customer2.dart';
+import 'package:bantuin/pages/onboardings/customer/ob_customer3.dart';
+import 'package:bantuin/pages/onboardings/customer/ob_customer4.dart';
+import 'package:bantuin/pages/onboardings/customer/ob_customer5.dart';
+
+import 'package:bantuin/pages/onboardings/helper/ob_helper1.dart';
+import 'package:bantuin/pages/onboardings/helper/ob_helper2.dart';
+import 'package:bantuin/pages/onboardings/helper/ob_helper3.dart';
+import 'package:bantuin/pages/onboardings/helper/ob_helper4.dart';
+import 'package:bantuin/pages/onboardings/helper/ob_helper5.dart';
+
+import 'package:bantuin/pages/auths/reset.dart';
+import 'package:bantuin/pages/auths/resetsuccess.dart';
+import 'package:bantuin/pages/auths/signup.dart';
+import 'package:bantuin/pages/auths/signin.dart';
+import 'package:bantuin/pages/auths/signupsuccess.dart';
+import 'package:bantuin/pages/welcome.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -61,9 +87,40 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        "/": (context) => TestPage(),
-        "/map":(context) => MapTestPage(),
-        "/chat":(context) => ChatTestPage()
+        // Test 3rd Party
+        "/test": (context) => TestPage(),
+        "/maptest":(context) => MapTestPage(),
+        "/chattest":(context) => ChatTestPage(),
+        // Test 3rd Party
+
+        // On Boarding
+        "/" :(context) => SplashPage(),
+        "/get-started":(context) => GetStartedPage(),
+        "/tutor-guide":(context) => TutorGuidePage(),
+        "/tutor-guide-choose":(context) => TutorGuideChoosePage(),
+        "/ob-helper1":(context) => OBHelper1Page(),
+        "/ob-helper2":(context) => OBHelper2Page(),
+        "/ob-helper3":(context) => OBHelper3Page(),
+        "/ob-helper4":(context) => OBHelper4Page(),
+        "/ob-helper5":(context) => OBHelper5Page(),
+        "/ob-customer1":(context) => OBCustomer1Page(),
+        "/ob-customer2":(context) => OBCustomer2Page(),
+        "/ob-customer3":(context) => OBCustomer3Page(),
+        "/ob-customer4":(context) => OBCustomer4Page(),
+        "/ob-customer5":(context) => OBCustomer5Page(),
+        // On Boarding
+
+        // Authentication
+        "/sign-in":(context) => SignInPage(),
+        "/sign-up":(context) => SignUpPage(),
+        "/reset":(context) => ResetPage(),
+        "/reset-success":(context) => ResetSuccessPage(),
+        "/signup-success":(context) => SignUpSuccessPage(),
+        // Authentication
+
+        // Stack Nav
+        "/welcome":(context) => WelcomePage(),
+        // Stack Nav
       },
     );
   }
