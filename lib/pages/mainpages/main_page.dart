@@ -8,6 +8,7 @@ import 'package:bantuin/shared/constatns.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/menu_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -26,8 +27,20 @@ class _MainPageState extends State<MainPage> {
     globalKey.currentState?.openDrawer();
   }
 
+  var navHidden = false;
+
   @override
   Widget build(BuildContext context) {
+    bool keyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    if (keyboard) {
+      this.setState(() {
+        navHidden = true;
+      });
+    } else {
+      this.setState(() {
+        navHidden = false;
+      });
+    }
 
     Widget BottomNavigator() {
       return Align(
@@ -152,8 +165,8 @@ class _MainPageState extends State<MainPage> {
     Widget MainContent() {
       return currentMenu == 'home' ? HomePage(openDrawer)
       : currentMenu == 'explore' ? ExplorePage()
-      : currentMenu == 'chat' ? ChatPage()
-      : ProfilePage();
+      : currentMenu == 'chat' ? ChatPage(openDrawer)
+      : ProfilePage(openDrawer);
     }
 
     return Scaffold(
@@ -164,8 +177,8 @@ class _MainPageState extends State<MainPage> {
         child: Stack(
           children: [
             MainContent(),
-            BottomNavigator(),
-            UploadButton()
+            navHidden ? SizedBox() : BottomNavigator(),
+            navHidden ? SizedBox() : UploadButton()
           ],
         ),
       ),

@@ -4,7 +4,7 @@ import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/location_tag.dart';
 import 'package:flutter/material.dart';
 
-class NewItem extends StatelessWidget {
+class WeeklyItem extends StatelessWidget {
   String image;
   String title;
   String desc;
@@ -12,7 +12,7 @@ class NewItem extends StatelessWidget {
   int price;
   Function() onPress;
 
-  NewItem({
+  WeeklyItem({
     required this.image,
     required this.title,
     required this.desc,
@@ -20,41 +20,42 @@ class NewItem extends StatelessWidget {
     required this.price,
     required this.onPress
   });
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(12),
       margin: EdgeInsets.only(
         bottom: 20
       ),
-      height: 150,
+      height: 170,
       decoration: BoxDecoration(
         color: white,
-        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: black.withOpacity(0.2),
             blurRadius: 2,
             offset: Offset(0, 2)
           )
-        ]
+        ],
+        borderRadius: BorderRadius.circular(12)
       ),
       child: Row(
         children: [
           ImageCustom(
-            width: 118,
-            height: 118,
+            height: 146,
+            width: 100,
             image: AssetImage(image),
             fit: BoxFit.cover,
             borderRadius: BorderRadius.circular(12),
           ),
-          SizedBox(width: 16,),
+          SizedBox(width: 12,),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LocationTag(location: location),
-                SizedBox(height: 7,),
+                SizedBox(height: 4,),
                 Text(
                   title,
                   style: poppinsText.copyWith(
@@ -76,43 +77,41 @@ class NewItem extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      formatter(price),
+                SizedBox(height: 4,),
+                Text(
+                  formatter(price),
+                  style: poppinsText.copyWith(
+                    fontSize: 14,
+                    fontWeight: semiBold,
+                    color: green1
+                  ),
+                ),
+                SizedBox(height: 9,),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [green2, green1],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter
+                    ),
+                    borderRadius: BorderRadius.circular(8)
+                  ),
+                  width: double.infinity,
+                  height: 32,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent.withOpacity(0.1),
+                    ),
+                    onPressed: onPress,
+                    child: Text(
+                      'Help',
                       style: poppinsText.copyWith(
-                        fontSize: 14,
-                        fontWeight: semiBold,
-                        color: green1
+                        fontSize: 10,
+                        fontWeight: medium
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: green1
-                      ),
-                      width: 58,
-                      height: 24,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent.withOpacity(0.1),
-                          padding: EdgeInsets.all(0)
-                        ),
-                        onPressed: onPress,
-                        child: Text(
-                          'Help',
-                          style: poppinsText.copyWith(
-                            fontSize: 10,
-                            fontWeight: regular,
-                            color: white
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 )
               ],
             ),

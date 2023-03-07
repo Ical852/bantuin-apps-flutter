@@ -30,10 +30,12 @@ import 'package:bantuin/pages/welcome.dart';
 import 'package:bantuin/pages/mainpages/main_page.dart';
 
 import 'package:bantuin/pages/helpupload/create_help.dart';
+import 'package:bantuin/shared/constatns.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 
 import 'firebase_options.dart';
 import 'notification_service.dart';
@@ -88,6 +90,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: green1));
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
