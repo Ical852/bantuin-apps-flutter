@@ -6,14 +6,15 @@ import 'package:bantuin/widgets/text_press.dart';
 import 'package:bantuin/widgets/title_descs/auth_title_desc.dart';
 import 'package:flutter/material.dart';
 
-class ResetPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   @override
-  State<ResetPage> createState() => _ResetPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _ResetPageState extends State<ResetPage> {
+class _SignInPageState extends State<SignInPage> {
   TextEditingController emailController = TextEditingController(text: "");
-  
+  TextEditingController passwordController = TextEditingController(text: "");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,13 +27,13 @@ class _ResetPageState extends State<ResetPage> {
           ),
           children: [
             AuthTitleDesc(
-              title: 'Reset Password',
-              desc: 'Kirimkan email kamu',
+              title: 'Masuk',
+              desc: 'Masuk dan mulai membantu',
             ),
             ImageCustom(
               height: 250,
               width: 250,
-              image: AssetImage('assets/illustrations/il_reset.png'),
+              image: AssetImage('assets/illustrations/il_signin.png'),
               margin: EdgeInsets.symmetric(
                 vertical: 30
               ),
@@ -42,12 +43,41 @@ class _ResetPageState extends State<ResetPage> {
               title: 'Email Address',
               hint: 'Masukkan Email',
             ),
-            SizedBox(height: 24,),
+            SizedBox(height: 20,),
+            MainInputCustom(
+              controller: passwordController,
+              title: 'Password',
+              hint: 'Masukkan Password',
+              password: true,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, '/reset');
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      vertical: 18
+                    ),
+                    child: Text(
+                      'Lupa Password ?',
+                      style: poppinsText.copyWith(
+                        fontSize: 14,
+                        fontWeight: semiBold,
+                        color: green1
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             MainButtonCustom(
               onPressed: (){
-                Navigator.pushNamed(context, '/reset-success');
+                Navigator.pushNamed(context, '/welcome');
               },
-              title: 'Kirim Email',
+              title: 'Masuk',
             ),
             SizedBox(height: 24,),
             TextPress(
@@ -55,14 +85,6 @@ class _ResetPageState extends State<ResetPage> {
               pressText: 'Daftar!',
               onPress: (){
                 Navigator.pushNamed(context, '/sign-up');
-              },
-            ),
-            SizedBox(height: 8,),
-            TextPress(
-              text: 'Sudah pernah memiliki akun? ',
-              pressText: 'Masuk!',
-              onPress: (){
-                Navigator.pushNamed(context, '/sign-in');
               },
             )
           ],

@@ -5,32 +5,15 @@ import 'package:intl/intl.dart' as intl;
 String baseUrl = "http://192.168.100.16:8000/api";
 const String google_api_key = "AIzaSyDABhwBawiYKTI63cP4xr1fUZmtXaP8iqI";
 
-String formatter(int number) {
-  var formatted = intl.NumberFormat.decimalPattern().format(number);
-
-  return formatted;
-}
-
-void showGLobalAlert(type, text, context) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    duration: Duration(seconds: 1),
-    content: Text(
-      text,
-      style: poppinsText.copyWith(fontSize: 14, color: white, fontWeight: bold),
-      textAlign: TextAlign.center,
-    ),
-    backgroundColor: type == 'danger' ? red1 : Color(0xff27BD48),
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(8))),
-  ));
-}
-
 TextStyle poppinsText = GoogleFonts.poppins();
 
 Color green1 = Color(0xff61B176);
 Color green2 = Color(0xff79BD8A);
 Color green3 = Color(0xffD7ECD9);
+Color green4 = Color(0xff60C67A);
+Color green5 = Color(0xffDCFFE4);
 Color black1 = Color(0xff14491C);
+Color black = Color(0xff000000);
 Color grey1 = Color(0xff96A996);
 Color grey2 = Color(0xffEEEEEE);
 Color yellow1 = Color(0xffEBBC6A);

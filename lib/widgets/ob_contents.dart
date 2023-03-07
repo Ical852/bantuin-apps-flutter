@@ -1,5 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
-import 'package:bantuin/widgets/buttons/mainbutton_custom.dart';
+import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 

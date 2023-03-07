@@ -3,36 +3,40 @@ import 'package:bantuin/pages/test/maptest.dart';
 import 'package:bantuin/pages/test/test.dart';
 
 import 'package:bantuin/pages/splash.dart';
-import 'package:bantuin/pages/getstarted.dart';
+import 'package:bantuin/pages/get_started.dart';
 
-import 'package:bantuin/pages/onboardings/tutorguide.dart';
-import 'package:bantuin/pages/onboardings/tutorguide_choose.dart';
+import 'package:bantuin/pages/on_boardings/tutor_guide.dart';
+import 'package:bantuin/pages/on_boardings/tutor_guide_choose.dart';
 
-import 'package:bantuin/pages/onboardings/customer/ob_customer1.dart';
-import 'package:bantuin/pages/onboardings/customer/ob_customer2.dart';
-import 'package:bantuin/pages/onboardings/customer/ob_customer3.dart';
-import 'package:bantuin/pages/onboardings/customer/ob_customer4.dart';
-import 'package:bantuin/pages/onboardings/customer/ob_customer5.dart';
+import 'package:bantuin/pages/on_boardings/customer/ob_customer1.dart';
+import 'package:bantuin/pages/on_boardings/customer/ob_customer2.dart';
+import 'package:bantuin/pages/on_boardings/customer/ob_customer3.dart';
+import 'package:bantuin/pages/on_boardings/customer/ob_customer4.dart';
+import 'package:bantuin/pages/on_boardings/customer/ob_customer5.dart';
 
-import 'package:bantuin/pages/onboardings/helper/ob_helper1.dart';
-import 'package:bantuin/pages/onboardings/helper/ob_helper2.dart';
-import 'package:bantuin/pages/onboardings/helper/ob_helper3.dart';
-import 'package:bantuin/pages/onboardings/helper/ob_helper4.dart';
-import 'package:bantuin/pages/onboardings/helper/ob_helper5.dart';
+import 'package:bantuin/pages/on_boardings/helper/ob_helper1.dart';
+import 'package:bantuin/pages/on_boardings/helper/ob_helper2.dart';
+import 'package:bantuin/pages/on_boardings/helper/ob_helper3.dart';
+import 'package:bantuin/pages/on_boardings/helper/ob_helper4.dart';
+import 'package:bantuin/pages/on_boardings/helper/ob_helper5.dart';
 
 import 'package:bantuin/pages/auths/reset.dart';
-import 'package:bantuin/pages/auths/resetsuccess.dart';
-import 'package:bantuin/pages/auths/signup.dart';
-import 'package:bantuin/pages/auths/signin.dart';
-import 'package:bantuin/pages/auths/signupsuccess.dart';
+import 'package:bantuin/pages/auths/reset_success.dart';
+import 'package:bantuin/pages/auths/sign_up.dart';
+import 'package:bantuin/pages/auths/sign_in.dart';
+import 'package:bantuin/pages/auths/sign_up_success.dart';
 import 'package:bantuin/pages/welcome.dart';
+
+import 'package:bantuin/pages/mainpages/main_page.dart';
+
+import 'package:bantuin/pages/helpupload/create_help.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'firebase_options.dart';
-import 'notificationservice.dart';
+import 'notification_service.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -121,6 +125,13 @@ class MyApp extends StatelessWidget {
         // Stack Nav
         "/welcome":(context) => WelcomePage(),
         // Stack Nav
+
+        // Main Pages
+        "/main":(context) => MainPage(),
+        // Main Pages
+
+        // Help Create Pages
+        "/create-help":(context) => CreateHelpPage()
       },
     );
   }

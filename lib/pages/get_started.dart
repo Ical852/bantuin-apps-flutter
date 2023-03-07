@@ -3,31 +3,27 @@ import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 
-class WelcomePage extends StatelessWidget {
+class GetStartedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      backgroundColor: white,
+      body: ImageCustom(
+        width: double.infinity,
+        height: double.infinity,
+        image: AssetImage('assets/images/bg.png'),
+        fit: BoxFit.cover,
         child: Container(
           margin: EdgeInsets.only(
+            bottom: 32,
             left: 24,
-            right: 24,
-            bottom: 32
+            right: 24
           ),
-          width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ImageCustom(
-                width: 250,
-                height: 250,
-                image: AssetImage('assets/illustrations/il_welcome.png'),
-                margin: EdgeInsets.only(
-                  bottom: 100
-                ),
-              ),
               Text(
-                'Selamat datang di aplikasi bantuin!',
+                'Temukan orang yang butuh bantuanmu',
                 style: poppinsText.copyWith(
                   fontSize: 24,
                   color: black1,
@@ -36,7 +32,7 @@ class WelcomePage extends StatelessWidget {
               ),
               SizedBox(height: 8,),
               Text(
-                'Selamat datang di aplikasi bantuin, terima kasih telah mendaftarkan akun di aplikasi ini, selamat mencari bantuan dan membantu sesama',
+                'temukan dan pilih orang yang membutuhkan bantuanmu, sesuaikan kebutuhan bayaran yang ingin kamu dapatkan dari peminta bantuan',
                 style: poppinsText.copyWith(
                   fontSize: 16,
                   fontWeight: regular,
@@ -45,15 +41,15 @@ class WelcomePage extends StatelessWidget {
               ),
               SizedBox(height: 32,),
               MainButtonCustom(
-                title: 'Lanjutkan',
+                title: 'Get Started',
                 onPressed: (){
-                  Navigator.pushNamed(context, '/main');
+                  Navigator.pushNamed(context, '/tutor-guide');
                 },
               ),
             ],
           ),
         ),
-      ),      
+      ),
     );
   }
 }
