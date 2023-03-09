@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 
 class AuthTitleDesc extends StatelessWidget {
 
-  String title;
-  String desc;
-
+  String title, desc;
   AuthTitleDesc({
     required this.title,
     required this.desc

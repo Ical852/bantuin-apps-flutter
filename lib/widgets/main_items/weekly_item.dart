@@ -5,10 +5,7 @@ import 'package:bantuin/widgets/location_tag.dart';
 import 'package:flutter/material.dart';
 
 class WeeklyItem extends StatelessWidget {
-  String image;
-  String title;
-  String desc;
-  String location;
+  String image, title, desc, location;
   int price;
   Function() onPress;
 

@@ -6,8 +6,7 @@ class MiniIconButtonCustom extends StatelessWidget {
 
   Function() onPressed;
   String icons;
-  double width;
-  double height;
+  double width, height;
 
   MiniIconButtonCustom({
     required this.onPressed,

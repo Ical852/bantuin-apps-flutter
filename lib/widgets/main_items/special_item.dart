@@ -6,10 +6,7 @@ import 'package:bantuin/widgets/location_tag.dart';
 import 'package:flutter/material.dart';
 
 class SpecialItem extends StatelessWidget {
-  String image;
-  String title;
-  String category;
-  String location;
+  String image, title, category, location;
   int price;
   Function() onPress;
 

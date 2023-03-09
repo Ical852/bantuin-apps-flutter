@@ -2,11 +2,8 @@ import 'package:bantuin/shared/constatns.dart';
 import 'package:flutter/material.dart';
 
 class DoubleBtnToggler extends StatelessWidget {
-  String current;
-  String left;
-  String right;
-  Function() leftPress;
-  Function() rightPress;
+  String current, left, right;
+  Function() leftPress, rightPress;
 
   DoubleBtnToggler({
     required this.current,

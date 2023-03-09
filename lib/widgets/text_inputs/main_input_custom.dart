@@ -2,12 +2,18 @@ import 'package:bantuin/shared/constatns.dart';
 import 'package:flutter/material.dart';
 
 class MainInputCustom extends StatelessWidget {
-  String title;
-  String hint;
+  String title, hint;
   bool password;
   TextEditingController controller;
+  TextInputType inputType;
 
-  MainInputCustom({required this.title, required this.hint, this.password = false, required this.controller});
+  MainInputCustom({
+    required this.title, 
+    required this.hint,
+    this.password = false, 
+    required this.controller,
+    this.inputType = TextInputType.text
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,7 @@ class MainInputCustom extends StatelessWidget {
           ),
           SizedBox(height: 6,),
           TextFormField(
+            keyboardType: inputType,
             controller: controller,
             obscureText: password,
             style: poppinsText.copyWith(

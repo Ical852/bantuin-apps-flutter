@@ -4,10 +4,7 @@ import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 
 class OBContents extends StatelessWidget {
-  String image;
-  String title;
-  String desc;
-  String mainBtnTitle;
+  String mainBtnTitle, image, title, desc;
   String? secBtnTitle;
   Function() onMainPress;
   Function()? onSecPress;

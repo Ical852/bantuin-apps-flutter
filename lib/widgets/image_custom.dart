@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 class ImageCustom extends StatelessWidget {
   ImageProvider image;
-  double width;
-  double height;
+  double width, height;
   BorderRadiusGeometry? borderRadius;
   EdgeInsetsGeometry? padding;
   EdgeInsetsGeometry? margin;

@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 
 class ChatItem extends StatelessWidget {
 
-  String image;
-  String name;
-  String text;
-  String time;
+  String image, name, text, time;
   int notif;
 
   ChatItem({

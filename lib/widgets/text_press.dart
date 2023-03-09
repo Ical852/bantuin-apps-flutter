@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 
 class TextPress extends StatelessWidget {
 
-  String text;
-  String pressText;
+  String text, pressText;
   Function() onPress;
 
   TextPress({

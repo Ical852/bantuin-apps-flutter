@@ -1,10 +1,10 @@
 import 'package:bantuin/shared/constatns.dart';
 import 'package:flutter/material.dart';
 
-class MainTitleDesc extends StatelessWidget {
-  String title, desc;
+class DrawerTitleDesc extends StatelessWidget {
 
-  MainTitleDesc({
+  String title, desc;
+  DrawerTitleDesc({
     required this.title,
     required this.desc
   });
@@ -18,18 +18,18 @@ class MainTitleDesc extends StatelessWidget {
           Text(
             title,
             style: poppinsText.copyWith(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: semiBold,
               color: black1
             ),
           ),
-          SizedBox(height: 2,),
+          SizedBox(height: 4,),
           Text(
             desc,
             style: poppinsText.copyWith(
               fontSize: 12,
-              fontWeight: light,
-              color: grey1
+              fontWeight: regular,
+              color: black1
             ),
           )
         ],

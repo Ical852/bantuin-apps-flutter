@@ -5,10 +5,7 @@ import 'package:flutter/material.dart';
 
 class TextDescButton extends StatelessWidget {
 
-  String image;
-  String title;
-  String desc;
-  String btnTitle;
+  String image, title, desc, btnTitle;
   Function() onPressed;
 
   TextDescButton({
