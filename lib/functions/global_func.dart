@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 String formatter(int number) {
   var formatted = intl.NumberFormat.decimalPattern().format(number);
 
-  return 'IDR. ' + formatted;
+  return 'IDR. ' + formatted.replaceAll(',', '.');
 }
 
 void showGLobalAlert(type, text, context) {
