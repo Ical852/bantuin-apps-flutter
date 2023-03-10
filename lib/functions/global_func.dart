@@ -19,6 +19,8 @@ String rawFormat(int number) {
 Color getColorType(type) {
   if (type == 'danger') {
     return red1;
+  } else if (type == 'info') {
+    return blue1;
   } else {
     return green1;
   }
@@ -26,7 +28,7 @@ Color getColorType(type) {
 
 void showGLobalAlert(type, text, context) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    duration: Duration(seconds: 1),
+    duration: Duration(seconds: 2),
     content: Text(
       text,
       style: poppinsText.copyWith(
@@ -58,6 +60,7 @@ void showDrawer(BuildContext context, double height, Widget content) {
       return Container(
         height: height ,
         decoration: BoxDecoration(
+          color: white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(32),
             topRight: Radius.circular(32)
