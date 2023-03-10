@@ -1,9 +1,11 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/image_custom.dart';
+import 'package:bantuin/widgets/price_items/row_price_item.dart';
 import 'package:bantuin/widgets/text_inputs/input_with_button_custom.dart';
 import 'package:bantuin/widgets/text_inputs/main_input_custom.dart';
 import 'package:bantuin/widgets/title_descs/drawer_title_desc.dart';
@@ -19,8 +21,9 @@ class CreateHelpPage extends StatefulWidget {
 
 class _CreateHelpPageState extends State<CreateHelpPage> {
   TextEditingController titleController = TextEditingController(text: "");
-  TextEditingController hargaController = TextEditingController(text: "");
+  TextEditingController priceController = TextEditingController(text: "");
   TextEditingController descController = TextEditingController(text: "");
+  var currentPrice = 0;
   var category = 'Lainnya';
   var categories = [
     'Game', 'Pembangunan', 'Kebersihan', 'Lainnya'
@@ -29,21 +32,74 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
   var location = null;
   LatLng? latLng = null;
 
+  void setFastPrice(price, setState) {
+    this.priceController.text = price.toString();
+    setState(() {
+      currentPrice = price;
+    });
+    Navigator.pop(context);
+  }
+
+  bool isPriceActive(price) {
+    return currentPrice == price;
+  }
+
   Widget PriceDrawerContent() {
-    return Container(
-      margin: EdgeInsets.only(
-        top: 32,
-        left: 24,
-        right: 24
-      ),
-      child: ListView(
-        children: [
-          DrawerTitleDesc(
-            title: 'Pilih Harga Cepat',
-            desc: 'Pilih harga dengan cepat untuk mempermudah penginputan harga',
-          )
-        ],
-      ),
+    return StatefulBuilder(
+      builder: ((BuildContext context, StateSetter setState) {
+        return Container(
+          margin: EdgeInsets.only(
+            top: 32,
+            left: 24,
+            right: 24
+          ),
+          child: ListView(
+            children: [
+              DrawerTitleDesc(
+                title: 'Pilih Harga Cepat',
+                desc: 'Pilih harga dengan cepat untuk mempermudah penginputan harga',
+              ),
+              SizedBox(height: 24,),
+              RowPriceItem(
+                leftPrice: 50000,
+                rightPrice: 100000,
+                onLeft: (){
+                  setFastPrice(50000, setState);
+                },
+                onRight: (){
+                  setFastPrice(100000, setState);
+                },
+                leftActive: isPriceActive(50000),
+                rightActive: isPriceActive(100000),
+              ),
+              RowPriceItem(
+                leftPrice: 200000,
+                rightPrice: 300000,
+                onLeft: (){
+                  setFastPrice(200000, setState);
+                },
+                onRight: (){
+                  setFastPrice(300000, setState);
+                },
+                leftActive: isPriceActive(200000),
+                rightActive: isPriceActive(300000),
+              ),
+              RowPriceItem(
+                leftPrice: 500000,
+                rightPrice: 1000000,
+                onLeft: (){
+                  setFastPrice(500000, setState);
+                },
+                onRight: (){
+                  setFastPrice(1000000, setState);
+                },
+                leftActive: isPriceActive(500000),
+                rightActive: isPriceActive(1000000),
+              ),
+            ],
+          ),
+        );
+      })
     );
   }
 
@@ -221,10 +277,11 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                 child: Container(
                   margin: EdgeInsets.only(
                     left: 24,
-                    right: 24
+                    right: 24,
                   ),
                   child: ListView(
                     children: [
+                      SizedBox(height: 12,),
                       ImageInput(),
                       SizedBox(height: 20,),
                       MainInputCustom(
@@ -234,10 +291,15 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                       ),
                       SizedBox(height: 20,),
                       InputWithButtonCustom(
+                        onChanged: (value) {
+                          this.setState(() {
+                            currentPrice = int.parse(value);
+                          });
+                        },
                         inputType: TextInputType.number,
                         title: "Harga Bantuan",
                         hint: "Masukkan Judul Bantuan",
-                        controller: hargaController,
+                        controller: priceController,
                         onPress: (){
                           showDrawer(context, Platform.isIOS ? 361 : 341, PriceDrawerContent());
                         },

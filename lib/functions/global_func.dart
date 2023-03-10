@@ -10,6 +10,12 @@ String formatter(int number) {
   return 'IDR. ' + formatted.replaceAll(',', '.');
 }
 
+String rawFormat(int number) {
+  var formatted = intl.NumberFormat.decimalPattern().format(number);
+
+  return formatted.replaceAll(',', '.');
+}
+
 Color getColorType(type) {
   if (type == 'danger') {
     return red1;

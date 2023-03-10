@@ -1,5 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
-import 'package:bantuin/widgets/bantuan_money_contents/bantuan_money.dart';
+import 'package:bantuin/widgets/bm_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/buttons/mini_icon_button_custom.dart';
 import 'package:bantuin/widgets/main_items/expensive_item.dart';
 import 'package:bantuin/widgets/main_items/new_item.dart';

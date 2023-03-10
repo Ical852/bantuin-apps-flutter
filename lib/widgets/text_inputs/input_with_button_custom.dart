@@ -9,6 +9,7 @@ class InputWithButtonCustom extends StatelessWidget {
   TextInputType inputType;
   Widget iconContent;
   Function() onPress;
+  Function(String)? onChanged;
 
   InputWithButtonCustom({
     required this.title,
@@ -17,7 +18,8 @@ class InputWithButtonCustom extends StatelessWidget {
     required this.controller,
     this.inputType = TextInputType.text,
     required this.iconContent,
-    required this.onPress
+    required this.onPress,
+    this.onChanged
   });
 
   @override
@@ -40,6 +42,7 @@ class InputWithButtonCustom extends StatelessWidget {
             child: Stack(
               children: [
                 TextFormField(
+                  onChanged: onChanged,
                   keyboardType: inputType,
                   controller: controller,
                   obscureText: password,

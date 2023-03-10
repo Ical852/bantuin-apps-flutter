@@ -17,8 +17,8 @@ class MainHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: 30,
+      padding: EdgeInsets.symmetric(
+        vertical: 16,
         horizontal: 24
       ),
       child: Row(

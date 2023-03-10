@@ -6,13 +6,15 @@ class MainInputCustom extends StatelessWidget {
   bool password;
   TextEditingController controller;
   TextInputType inputType;
+  Function(String)? onChanged;
 
   MainInputCustom({
     required this.title, 
     required this.hint,
     this.password = false, 
     required this.controller,
-    this.inputType = TextInputType.text
+    this.inputType = TextInputType.text,
+    this.onChanged
   });
 
   @override
@@ -31,6 +33,7 @@ class MainInputCustom extends StatelessWidget {
           ),
           SizedBox(height: 6,),
           TextFormField(
+            onChanged: onChanged,
             keyboardType: inputType,
             controller: controller,
             obscureText: password,
