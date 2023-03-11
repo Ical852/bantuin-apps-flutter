@@ -1,5 +1,6 @@
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/category_tag.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/location_tag.dart';
@@ -68,11 +69,7 @@ class SpecialItem extends StatelessWidget {
             SizedBox(height: 12,),
             Text(
               title,
-              style: poppinsText.copyWith(
-                fontSize: 14,
-                fontWeight: semiBold,
-                color: black1
-              ),
+              style: regularBlackSemibold,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -81,11 +78,7 @@ class SpecialItem extends StatelessWidget {
             Spacer(),
             Text(
               formatter(price),
-              style: poppinsText.copyWith(
-                fontSize: 14,
-                fontWeight: semiBold,
-                color: green1
-              ),
+              style: regularPrimarySemibold
             )
           ],
         ),

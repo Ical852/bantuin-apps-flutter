@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:flutter/material.dart';
 
 class MiniButtonCustom extends StatelessWidget {
@@ -28,10 +29,7 @@ class MiniButtonCustom extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           title,
-          style: poppinsText.copyWith(
-            fontSize: 16,
-            fontWeight: medium
-          ),
+          style: mediumWhiteMedium
         ),
       ),
     );

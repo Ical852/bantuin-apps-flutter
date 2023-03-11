@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 
@@ -34,11 +35,7 @@ class MainHeader extends StatelessWidget {
           ),
           Text(
             title,
-            style: poppinsText.copyWith(
-              fontSize: 14,
-              fontWeight: semiBold,
-              color: black1
-            ),
+            style: regularBlackSemibold
           ),
           GestureDetector(
             onTap: onRihtPress,

@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:flutter/material.dart';
 
 class MainInputCustom extends StatelessWidget {
@@ -25,11 +26,7 @@ class MainInputCustom extends StatelessWidget {
         children: [
           Text(
             title,
-            style: poppinsText.copyWith(
-              fontSize: 14,
-              fontWeight: regular,
-              color: black1
-            ),
+            style: regularBlackRegular
           ),
           SizedBox(height: 6,),
           TextFormField(
@@ -37,16 +34,10 @@ class MainInputCustom extends StatelessWidget {
             keyboardType: inputType,
             controller: controller,
             obscureText: password,
-            style: poppinsText.copyWith(
-              fontSize: 16,
-              fontWeight: regular,
-              color: black1
-            ),
+            style: mediumBlackRegular,
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: poppinsText.copyWith(
-                fontSize: 16,
-                fontWeight: regular,
+              hintStyle: mediumPrimaryRegular.copyWith(
                 color: green3
               ),
               enabledBorder: OutlineInputBorder(

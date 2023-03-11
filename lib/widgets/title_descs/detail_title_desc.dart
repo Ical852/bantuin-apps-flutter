@@ -2,10 +2,10 @@ import 'package:bantuin/shared/constatns.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:flutter/material.dart';
 
-class MainTitleDesc extends StatelessWidget {
-  String title, desc;
+class DetailTitleDesc extends StatelessWidget {
 
-  MainTitleDesc({
+  String title, desc;
+  DetailTitleDesc({
     required this.title,
     required this.desc
   });
@@ -18,9 +18,9 @@ class MainTitleDesc extends StatelessWidget {
         children: [
           Text(
             title,
-            style: baseBlackSemibold
+            style: regularBlackSemibold
           ),
-          SizedBox(height: 2,),
+          SizedBox(height: 4,),
           Text(
             desc,
             style: smallGrayLight

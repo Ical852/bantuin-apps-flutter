@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
@@ -28,20 +29,12 @@ class WelcomePage extends StatelessWidget {
               ),
               Text(
                 'Selamat datang di aplikasi bantuin!',
-                style: poppinsText.copyWith(
-                  fontSize: 24,
-                  color: black1,
-                  fontWeight: semiBold
-                ),
+                style: extraBlackSemibold
               ),
               SizedBox(height: 8,),
               Text(
                 'Selamat datang di aplikasi bantuin, terima kasih telah mendaftarkan akun di aplikasi ini, selamat mencari bantuan dan membantu sesama',
-                style: poppinsText.copyWith(
-                  fontSize: 16,
-                  fontWeight: regular,
-                  color: grey1
-                ),
+                style: mediumGrayRegular
               ),
               SizedBox(height: 32,),
               MainButtonCustom(

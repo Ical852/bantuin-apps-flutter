@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/chat_items/chat_item.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/toggler/double_btn_toggler.dart';
@@ -44,11 +45,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
             Text(
               'Your Recent Chats',
-              style: poppinsText.copyWith(
-                fontSize: 14,
-                fontWeight: semiBold,
-                color: black1
-              ),
+              style: regularBlackSemibold
             ),
             GestureDetector(
               onTap: (){
@@ -94,17 +91,9 @@ class _ChatPageState extends State<ChatPage> {
                 child: TextFormField(
                   decoration: InputDecoration.collapsed(
                     hintText: 'Search Text',
-                    hintStyle: poppinsText.copyWith(
-                      fontSize: 14,
-                      fontWeight: regular,
-                      color: grey1
-                    ),
+                    hintStyle: regularGrayRegular
                   ),
-                  style: poppinsText.copyWith(
-                    fontSize: 14,
-                    fontWeight: regular,
-                    color: black1
-                  ),
+                  style: regularBlackRegular
                 ),
               ),
             ),
@@ -128,11 +117,7 @@ class _ChatPageState extends State<ChatPage> {
         ),
         child: Text(
           'Messages',
-          style: poppinsText.copyWith(
-            fontSize: 18,
-            fontWeight: semiBold,
-            color: black1
-          ),
+          style: baseBlackSemibold
         ),
       );
     }

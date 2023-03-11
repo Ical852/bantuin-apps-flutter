@@ -1,5 +1,6 @@
 import 'package:bantuin/shared/constatns.dart';
-import 'package:bantuin/widgets/bm_contents/bantuan_money.dart';
+import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/buttons/mini_icon_button_custom.dart';
 import 'package:bantuin/widgets/main_items/expensive_item.dart';
 import 'package:bantuin/widgets/main_items/new_item.dart';
@@ -58,11 +59,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Text(
                   'Cari Bantuan',
-                  style: poppinsText.copyWith(
-                    fontSize: 14,
-                    fontWeight: semiBold,
-                    color: white
-                  ),
+                  style: regularWhiteSemibold
                 ),
                 Row(
                   children: [

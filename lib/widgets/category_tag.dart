@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:flutter/material.dart';
 
 class CategoryTag extends StatelessWidget {
@@ -19,11 +20,7 @@ class CategoryTag extends StatelessWidget {
       ),
       child: Text(
         title,
-        style: poppinsText.copyWith(
-          fontSize: 10,
-          fontWeight: regular,
-          color: white
-        ),
+        style: xSmallWhiteRegular
       ),
     );
   }

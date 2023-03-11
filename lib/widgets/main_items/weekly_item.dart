@@ -1,5 +1,6 @@
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/location_tag.dart';
 import 'package:flutter/material.dart';
@@ -55,33 +56,21 @@ class WeeklyItem extends StatelessWidget {
                 SizedBox(height: 4,),
                 Text(
                   title,
-                  style: poppinsText.copyWith(
-                    fontSize: 14,
-                    fontWeight: semiBold,
-                    color: black1
-                  ),
+                  style: regularBlackSemibold,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 7,),
                 Text(
                   desc,
-                  style: poppinsText.copyWith(
-                    fontSize: 10,
-                    fontWeight: regular,
-                    color: grey1
-                  ),
+                  style: xSmallGrayRegular,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 4,),
                 Text(
                   formatter(price),
-                  style: poppinsText.copyWith(
-                    fontSize: 14,
-                    fontWeight: semiBold,
-                    color: green1
-                  ),
+                  style: regularPrimarySemibold
                 ),
                 SizedBox(height: 9,),
                 Container(
@@ -103,10 +92,7 @@ class WeeklyItem extends StatelessWidget {
                     onPressed: onPress,
                     child: Text(
                       'Help',
-                      style: poppinsText.copyWith(
-                        fontSize: 10,
-                        fontWeight: medium
-                      ),
+                      style: xSmallWhiteMedium
                     ),
                   ),
                 )

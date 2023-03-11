@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:flutter/material.dart';
 
 class MainButtonCustom extends StatelessWidget {
@@ -38,10 +39,7 @@ class MainButtonCustom extends StatelessWidget {
           onPressed: disabled ? (){} : onPressed,
           child: Text(
             title,
-            style: poppinsText.copyWith(
-              fontSize: 16,
-              fontWeight: medium
-            ),
+            style: mediumWhiteMedium
           ),
         ),
       ),

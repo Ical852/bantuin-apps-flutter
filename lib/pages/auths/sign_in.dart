@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/text_inputs/main_input_custom.dart';
@@ -63,11 +64,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     child: Text(
                       'Lupa Password ?',
-                      style: poppinsText.copyWith(
-                        fontSize: 14,
-                        fontWeight: semiBold,
-                        color: green1
-                      ),
+                      style: regularPrimarySemibold
                     ),
                   ),
                 ),

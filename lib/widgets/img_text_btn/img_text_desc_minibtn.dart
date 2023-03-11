@@ -1,14 +1,15 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/buttons/mini_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 
-class TextDescButton extends StatelessWidget {
+class ImgTextDescMiniButton extends StatelessWidget {
 
   String image, title, desc, btnTitle;
   Function() onPressed;
 
-  TextDescButton({
+  ImgTextDescMiniButton({
     required this.image,
     required this.title,
     required this.desc,
@@ -32,11 +33,7 @@ class TextDescButton extends StatelessWidget {
           ),
           Text(
             title,
-            style: poppinsText.copyWith(
-              fontSize: 20,
-              fontWeight: semiBold,
-              color: black1
-            ),
+            style: megaBlackSemibold
           ),
           Container(
             margin: EdgeInsets.only(
@@ -46,11 +43,7 @@ class TextDescButton extends StatelessWidget {
             width: 240,
             child: Text(
               desc,
-              style: poppinsText.copyWith(
-                fontSize: 14,
-                fontWeight: light,
-                color: grey1
-              ),
+              style: regularGrayLight,
               textAlign: TextAlign.center,
             ),
           ),

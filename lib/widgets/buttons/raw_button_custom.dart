@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:flutter/material.dart';
 
 class RawButtonCustom extends StatelessWidget {
@@ -35,10 +36,7 @@ class RawButtonCustom extends StatelessWidget {
         onPressed: onPress,
         child: child != null ? child : Text(
           title!,
-          style: poppinsText.copyWith(
-            fontSize: 14,
-            fontWeight: medium
-          ),
+          style: regularWhiteMedium
         ),
       ),
     );

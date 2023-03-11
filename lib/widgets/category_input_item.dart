@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/circle_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -31,11 +32,7 @@ class CategoryInputItem extends StatelessWidget {
             SizedBox(width: 12,),
             Text(
               title,
-              style: poppinsText.copyWith(
-                fontSize: 16,
-                fontWeight: regular,
-                color: black1
-              ),
+              style: mediumBlackRegular
             )
           ],
         ),

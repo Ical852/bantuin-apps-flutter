@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:flutter/material.dart';
 
 class TextPress extends StatelessWidget {
@@ -20,21 +21,13 @@ class TextPress extends StatelessWidget {
         children: [
           Text(
             text,
-            style: poppinsText.copyWith(
-              fontSize: 14,
-              fontWeight: regular,
-              color: black1
-            ),
+            style: regularBlackRegular
           ),
           GestureDetector(
             onTap: onPress,
             child: Text(
               pressText,
-              style: poppinsText.copyWith(
-                fontSize: 14,
-                fontWeight: semiBold,
-                color: green1
-              ),
+              style: regularPrimarySemibold
             ),
           )
         ],

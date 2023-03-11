@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/headers/ob_header.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
@@ -48,11 +49,7 @@ class TutorGuideChoosePage extends StatelessWidget {
                               ),
                               Text(
                                 'Sebagai Helper',
-                                style: poppinsText.copyWith(
-                                  fontSize: 24,
-                                  fontWeight: semiBold,
-                                  color: black1
-                                ),
+                                style: extraBlackSemibold
                               )
                             ],
                           ),
@@ -77,11 +74,7 @@ class TutorGuideChoosePage extends StatelessWidget {
                               ),
                               Text(
                                 'Sebagai Customer',
-                                style: poppinsText.copyWith(
-                                  fontSize: 24,
-                                  fontWeight: semiBold,
-                                  color: black1
-                                ),
+                                style: extraBlackSemibold
                               )
                             ],
                           ),

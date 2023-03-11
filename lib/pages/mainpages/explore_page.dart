@@ -1,5 +1,6 @@
 import 'package:bantuin/shared/constatns.dart';
-import 'package:bantuin/widgets/bm_contents/bantuan_money.dart';
+import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/main_items/special_item.dart';
 import 'package:bantuin/widgets/main_items/weekly_item.dart';
@@ -48,11 +49,7 @@ class _ExplorePageState extends State<ExplorePage> {
               ),
               Text(
                 'Explore campaigns',
-                style: poppinsText.copyWith(
-                  fontSize: 14,
-                  fontWeight: regular,
-                  color: grey1
-                ),
+                style: regularGrayRegular
               )
             ],
           ),

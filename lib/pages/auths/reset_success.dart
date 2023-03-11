@@ -1,5 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
-import 'package:bantuin/widgets/text_desc_btn.dart';
+import 'package:bantuin/widgets/img_text_btn/img_text_desc_minibtn.dart';
 import 'package:flutter/material.dart';
 
 class ResetSuccessPage extends StatefulWidget {
@@ -13,7 +13,7 @@ class _ResetSuccessPageState extends State<ResetSuccessPage> {
     return Scaffold(
       backgroundColor: white,
       body: Center(
-        child: TextDescButton(
+        child: ImgTextDescMiniButton(
           image: 'assets/illustrations/il_reset_success.png',
           title: 'Berhasil Mengirim ke Email',
           desc: 'Kami mengirim link reset untuk memperbarui password kamu, tunggu beberapa saat kemudian',

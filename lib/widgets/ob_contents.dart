@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
@@ -38,21 +39,13 @@ class OBContents extends StatelessWidget {
           ),
           Text(
             title,
-            style: poppinsText.copyWith(
-              fontSize: 24,
-              fontWeight: semiBold,
-              color: black1
-            ),
+            style: extraBlackSemibold,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 16,),
           Text(
             desc,
-            style: poppinsText.copyWith(
-              fontSize: 16,
-              fontWeight: regular,
-              color: grey1
-            ),
+            style: mediumGrayRegular,
             textAlign: TextAlign.center,
           ),
           Spacer(),

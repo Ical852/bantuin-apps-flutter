@@ -5,6 +5,7 @@ import 'package:bantuin/pages/mainpages/explore_page.dart';
 import 'package:bantuin/pages/mainpages/home_page.dart';
 import 'package:bantuin/pages/mainpages/profile_page.dart';
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/menu_item.dart';
 import 'package:flutter/material.dart';
@@ -149,11 +150,7 @@ class _MainPageState extends State<MainPage> {
                 ),
                 Text(
                   'Help',
-                  style: poppinsText.copyWith(
-                    fontSize: 14,
-                    fontWeight: semiBold,
-                    color: white
-                  ),
+                  style: regularWhiteSemibold
                 ),
               ],
             ),

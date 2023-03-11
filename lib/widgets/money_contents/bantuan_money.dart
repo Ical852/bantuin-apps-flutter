@@ -1,5 +1,6 @@
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 
@@ -40,19 +41,11 @@ class BantuanMoney extends StatelessWidget {
             children: [
               Text(
                 'Bantuan Money Anda',
-                style: poppinsText.copyWith(
-                  fontSize: 14,
-                  fontWeight: regular,
-                  color: grey1
-                ),
+                style: regularGrayRegular
               ),
               Text(
                 formatter(money),
-                style: poppinsText.copyWith(
-                  fontSize: 18,
-                  fontWeight: semiBold,
-                  color: green1
-                ),
+                style: basePrimarySemibold
               )
             ],
           ),

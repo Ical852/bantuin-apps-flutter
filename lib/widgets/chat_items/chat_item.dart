@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 
@@ -41,11 +42,7 @@ class ChatItem extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: poppinsText.copyWith(
-                          fontSize: 16,
-                          fontWeight: semiBold,
-                          color: black1
-                        ),
+                        style: mediumBlackSemibold
                       ),
                       Text(
                         text,
@@ -63,11 +60,7 @@ class ChatItem extends StatelessWidget {
                     children: [
                       Text(
                         time,
-                        style: poppinsText.copyWith(
-                          fontSize: 14,
-                          fontWeight: light,
-                          color: grey1
-                        ),
+                        style: regularGrayLight
                       ),
                       Spacer(),
                       notif > 0 ? Container(
@@ -80,11 +73,7 @@ class ChatItem extends StatelessWidget {
                         child: Center(
                           child: Text(
                             notif.toString(),
-                            style: poppinsText.copyWith(
-                              fontSize: 10,
-                              fontWeight: semiBold,
-                              color: white
-                            ),
+                            style: xSmallWhiteSemibold
                           ),
                         ),
                       ) : SizedBox(),

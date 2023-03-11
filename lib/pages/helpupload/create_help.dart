@@ -2,6 +2,8 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/pages/helpupload/create_summary.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/buttons/mini_button_icon_custom.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
@@ -85,6 +87,16 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
     } catch (e) {
       showGLobalAlert('danger', 'Terjadi Kesalahan, Coba Lagi Beberapa Saat', context);
     }
+  }
+  
+  bool getDisable() {
+    return pickedImage != null &&
+    titleController.text != "" &&
+    priceController.text != "" &&
+    descController.text != "" &&
+    category != "" &&
+    location != null &&
+    locationLatLng != null;
   }
   // Main Content State And Functions
 
@@ -184,11 +196,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                 children: [
                   Text(
                     'Pilih Pengambilan Gambar',
-                    style: poppinsText.copyWith(
-                      fontSize: 16,
-                      fontWeight: semiBold,
-                      color: black1
-                    ),
+                    style: mediumBlackSemibold
                   ),
                   SizedBox(height: 8,),
                   Text(
@@ -295,11 +303,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
         children: [
           Text(
             'Gambar Bantuan',
-            style: poppinsText.copyWith(
-              fontSize: 14,
-              fontWeight: regular,
-              color: black1
-            ),
+            style: regularBlackRegular
           ),
           SizedBox(height: 6,),
           pickedImage != null ? PickedImageRender() : NullImageRender()
@@ -315,11 +319,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
         children: [
           Text(
             'Kategori Bantuan',
-            style: poppinsText.copyWith(
-              fontSize: 14,
-              fontWeight: regular,
-              color: black1
-            ),
+            style: regularBlackRegular
           ),
           GestureDetector(
             onTap: (){
@@ -344,11 +344,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                 children: [
                   Text(
                     category,
-                    style: poppinsText.copyWith(
-                      fontSize: 16,
-                      fontWeight: regular,
-                      color: black1
-                    ),
+                    style: mediumBlackRegular
                   ),
                   ImageCustom(
                     height: 8,
@@ -387,8 +383,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
           children: [
             Text(
               'Lokasi Bantuan',
-              style: poppinsText.copyWith(
-                  fontSize: 14, fontWeight: regular, color: black1),
+              style: regularBlackRegular,
             ),
             Container(
               padding: EdgeInsets.symmetric(
@@ -410,11 +405,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                   Expanded(
                     child: Text(
                       location != null ? location : 'Pilih Lokasi',
-                      style: poppinsText.copyWith(
-                        fontSize: 16,
-                        fontWeight: regular,
-                        color: black1
-                      ),
+                      style: mediumBlackRegular,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -441,11 +432,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
             SizedBox(height: 6,),
             Text(
               'Menyiapkan Lokasi...',
-              style: poppinsText.copyWith(
-                fontSize: 16,
-                fontWeight: semiBold,
-                color: white
-              ),
+              style: mediumWhiteSemibold
             )
           ],
         ),
@@ -530,7 +517,22 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                           SizedBox(height: 32,),
                           MainButtonCustom(
                             title: 'Cari Bantuan',
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context, MaterialPageRoute(
+                                  builder: (context) => CreateSummaryPage(
+                                    pickedImage,
+                                    titleController.text,
+                                    descController.text,
+                                    category,
+                                    location,
+                                    currentPrice,
+                                    locationLatLng!
+                                  )
+                                )
+                              );
+                            },
+                            disabled: !(getDisable()),
                           ),
                           SizedBox(height: 120,)
                         ],
@@ -622,11 +624,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
           children: [
             Text(
               location != null ? location : 'Pilih Map',
-              style: poppinsText.copyWith(
-                fontSize: 14,
-                fontWeight: semiBold,
-                color: black1
-              ),
+              style: regularBlackSemibold,
               maxLines: 2,
             ),
             Spacer(),
@@ -672,11 +670,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
             children: [
               Text(
                 'Pemberitahuan',
-                style: poppinsText.copyWith(
-                  fontSize: 16,
-                  fontWeight: semiBold,
-                  color: black1
-                ),
+                style: mediumBlackSemibold,
               ),
               SizedBox(height: 8,),
               Text(

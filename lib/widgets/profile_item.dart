@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 
@@ -68,20 +69,12 @@ class ProfileItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: poppinsText.copyWith(
-                      fontSize: 14,
-                      fontWeight: semiBold,
-                      color: black1
-                    ),
+                    style: regularBlackSemibold
                   ),
                   SizedBox(height: 4,),
                   Text(
                     desc,
-                    style: poppinsText.copyWith(
-                      fontSize: 12,
-                      fontWeight: regular,
-                      color: grey1
-                    ),
+                    style: smallGrayRegular
                   )
                 ],
               ),

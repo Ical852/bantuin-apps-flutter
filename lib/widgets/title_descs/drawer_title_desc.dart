@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:flutter/material.dart';
 
 class DrawerTitleDesc extends StatelessWidget {
@@ -17,20 +18,12 @@ class DrawerTitleDesc extends StatelessWidget {
         children: [
           Text(
             title,
-            style: poppinsText.copyWith(
-              fontSize: 16,
-              fontWeight: semiBold,
-              color: black1
-            ),
+            style: mediumBlackSemibold
           ),
           SizedBox(height: 4,),
           Text(
             desc,
-            style: poppinsText.copyWith(
-              fontSize: 12,
-              fontWeight: regular,
-              color: black1
-            ),
+            style: smallBlackRegular
           )
         ],
       ),

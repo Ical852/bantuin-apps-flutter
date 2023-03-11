@@ -1,3 +1,5 @@
+import 'package:bantuin/pages/helpupload/create_success_page.dart';
+import 'package:bantuin/pages/helpupload/processing_page.dart';
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
 import 'package:bantuin/pages/test/test.dart';
@@ -135,7 +137,9 @@ class MyApp extends StatelessWidget {
         // Main Pages
 
         // Help Create Pages
-        "/create-help":(context) => CreateHelpPage()
+        "/create-help":(context) => CreateHelpPage(),
+        "/processing-page":(context) => ProcessingPage(),
+        "/create-success-page":(context) => CreateSuccessPage(),
       },
     );
   }

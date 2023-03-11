@@ -1,5 +1,6 @@
 import 'package:bantuin/shared/constatns.dart';
-import 'package:bantuin/widgets/bm_contents/bantuan_money.dart';
+import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/profile_item.dart';
 import 'package:flutter/material.dart';
@@ -51,11 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Text(
               'My Profile',
-              style: poppinsText.copyWith(
-                fontSize: 14,
-                fontWeight: semiBold,
-                color: white
-              ),
+              style: regularWhiteSemibold
             ),
             ImageCustom(
               height: 20,
@@ -102,29 +99,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     Text(
                       'Shalahuddin Ahmad Aziz',
-                      style: poppinsText.copyWith(
-                        fontSize: 16,
-                        fontWeight: semiBold,
-                        color: white
-                      ),
+                      style: mediumWhiteSemibold
                     ),
                     SizedBox(height: 4,),
                     Text(
                       'shalahuddin@gmail.com',
-                      style: poppinsText.copyWith(
-                        fontSize: 14,
-                        fontWeight: regular,
-                        color: white
-                      ),
+                      style: regularWhiteRegular
                     ),
                     SizedBox(height: 4,),
                     Text(
                       'Customer & Helper',
-                      style: poppinsText.copyWith(
-                        fontSize: 14,
-                        fontWeight: regular,
-                        color: white
-                      ),
+                      style: regularWhiteRegular
                     ),
                   ],
                 ),
@@ -169,11 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Text(
               'Profile Settings',
-              style: poppinsText.copyWith(
-                fontSize: 16,
-                fontWeight: semiBold,
-                color: black1
-              ),
+              style: mediumBlackSemibold
             ),
             SizedBox(height: 16,),
             ProfileItem(

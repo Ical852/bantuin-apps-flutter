@@ -1,4 +1,5 @@
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 
@@ -19,11 +20,7 @@ class LocationTag extends StatelessWidget {
           SizedBox(width: 6,),
           Text(
             location,
-            style: poppinsText.copyWith(
-              fontSize: 12,
-              fontWeight: regular,
-              color: grey1
-            ),
+            style: smallGrayRegular
           )
         ],
       ),

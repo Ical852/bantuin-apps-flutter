@@ -1,5 +1,6 @@
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/category_tag.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/location_tag.dart';
@@ -69,11 +70,7 @@ class ExpensiveItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
-                      style: poppinsText.copyWith(
-                        fontSize: 16,
-                        fontWeight: semiBold,
-                        color: black1
-                      ),
+                      style: mediumBlackSemibold,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -111,19 +108,11 @@ class ExpensiveItem extends StatelessWidget {
                 children: [
                   Text(
                     'Price Start from:',
-                    style: poppinsText.copyWith(
-                      fontSize: 12,
-                      fontWeight: regular,
-                      color: grey1
-                    ),
+                    style: smallGrayRegular
                   ),
                   Text(
                     formatter(price),
-                    style: poppinsText.copyWith(
-                      fontSize: 14,
-                      fontWeight: semiBold,
-                      color: green1
-                    ),
+                    style: regularPrimarySemibold
                   )
                 ],
               ),
