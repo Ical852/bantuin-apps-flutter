@@ -19,7 +19,7 @@ class _ExplorePageState extends State<ExplorePage> {
     Widget HeaderBackground() {
       return Container(
         color: green1,
-        height: 150,
+        height: 120 + safeAreaPadding(context),
       );
     }
 
@@ -92,7 +92,7 @@ class _ExplorePageState extends State<ExplorePage> {
     Widget HeaderContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 54,
+          top: 24 + safeAreaPadding(context),
           left: 24,
           right: 24
         ),

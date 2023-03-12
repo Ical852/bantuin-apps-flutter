@@ -40,7 +40,7 @@ class _TopUpPageState extends State<TopUpPage> {
   Widget build(BuildContext context) {
     Widget HeaderBackground() {
       return Container(
-        height: 155,
+        height: 125 + safeAreaPadding(context),
         decoration: BoxDecoration(
           color: green1,
           borderRadius: BorderRadius.only(
@@ -54,7 +54,7 @@ class _TopUpPageState extends State<TopUpPage> {
     Widget HeaderContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 55,
+          top: 25 + safeAreaPadding(context),
           left: 24,
           right: 24
         ),

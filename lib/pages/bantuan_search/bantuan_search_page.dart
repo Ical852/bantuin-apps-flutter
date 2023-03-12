@@ -18,12 +18,12 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
     Widget HeaderContent() {
       return Container(
         padding: EdgeInsets.only(
-          bottom: 16,
           left: 24,
           right: 24,
-          top: 66
+          bottom: 16,
+          top: 16 + safeAreaPadding(context),
         ),
-        height: 122,
+        height: 72 + safeAreaPadding(context),
         color: green1,
         child: Row(
           children: [
@@ -66,8 +66,8 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
                           hintText: 'Explore Campaign',
                           hintStyle: regularGrayRegular
                         ),
-                        onFieldSubmitted: ((value) => {
-                          print(value)
+                        onFieldSubmitted: ((value) {
+                          print(value);
                         }),
                         autofocus: true,
                       ),

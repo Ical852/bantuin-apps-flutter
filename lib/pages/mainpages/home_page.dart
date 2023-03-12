@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
     Widget HeaderBackground() {
       return Container(
-        height: 155,
+        height: 125 + safeAreaPadding(context),
         decoration: BoxDecoration(
           color: green1,
           borderRadius: BorderRadius.only(
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     Widget HeaderContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 62,
+          top: 32 + safeAreaPadding(context),
           left: 24,
           right: 24
         ),

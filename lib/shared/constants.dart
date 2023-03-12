@@ -7,6 +7,10 @@ const String google_api_key = "AIzaSyDABhwBawiYKTI63cP4xr1fUZmtXaP8iqI";
 
 TextStyle poppinsText = GoogleFonts.poppins();
 
+double safeAreaPadding(context) {
+  return MediaQuery.of(context).padding.top;
+}
+
 Color green1 = Color(0xff61B176);
 Color green2 = Color(0xff79BD8A);
 Color green3 = Color(0xffD7ECD9);

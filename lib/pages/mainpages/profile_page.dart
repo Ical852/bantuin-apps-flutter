@@ -19,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     Widget HeaderBackground() {
       return Container(
-        height: 250,
+        height: 220 + safeAreaPadding(context),
         decoration: BoxDecoration(
           color: green1,
           borderRadius: BorderRadius.only(
@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Widget TopContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 58,
+          top: 28 + safeAreaPadding(context),
           left: 24,
           right: 24
         ),
