@@ -1,3 +1,5 @@
+import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/pages/bantuan_search/modes/search_mode.dart';
 import 'package:bantuin/pages/bantuan_search/modes/searched_mode.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
@@ -12,9 +14,63 @@ class BantuanSerachPage extends StatefulWidget {
 class _BantuanSerachPageState extends State<BantuanSerachPage> {
   var submitted = false;
   TextEditingController searchController = TextEditingController(text: "");
+  void onSubmitted(submittedText) {
+    print(submittedText);
+  }
+  
+  var mostSearched = [
+    'Cleaning', 'Push Rank', 'Desain', 'Sapu Halaman', 'Ngeronda'
+  ];
+  var histories = [
+    'Bantu Buat Website', 'Bantu Buat Mobile', 'Bantu Bersihin Kolam'
+  ];
+  void onChoose(choosed) {
+    showGLobalAlert('success', choosed, context);
+  }
+  void onLongPress(choosed) {
+    showGLobalAlert('danger', 'Long Press Active', context);
+  }
+  void onDeleteHistory() {
+    showGLobalAlert('info', 'On Delete Function Ready', context);
+  }
 
   @override
   Widget build(BuildContext context) {
+    Widget SearchBar() {
+      return Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 16
+        ),
+        decoration: BoxDecoration(
+          color: white,
+          borderRadius: BorderRadius.circular(8)
+        ),
+        height: 40,
+        child: Row(
+          children: [
+            Flexible(
+              child: TextFormField(
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Explore Campaign',
+                  hintStyle: regularGrayRegular
+                ),
+                onFieldSubmitted: onSubmitted,
+                autofocus: true,
+              ),
+            ),
+            ImageCustom(
+              width: 20,
+              height: 20,
+              image: AssetImage('assets/icons/ic_search_green.png'),
+              margin: EdgeInsets.only(
+                left: 16
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
     Widget HeaderContent() {
       return Container(
         padding: EdgeInsets.only(
@@ -49,40 +105,7 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
             ),
             SizedBox(width: 16,),
             Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16
-                ),
-                decoration: BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.circular(8)
-                ),
-                height: 40,
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: TextFormField(
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Explore Campaign',
-                          hintStyle: regularGrayRegular
-                        ),
-                        onFieldSubmitted: ((value) {
-                          print(value);
-                        }),
-                        autofocus: true,
-                      ),
-                    ),
-                    ImageCustom(
-                      width: 20,
-                      height: 20,
-                      image: AssetImage('assets/icons/ic_search_green.png'),
-                      margin: EdgeInsets.only(
-                        left: 16
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              child: SearchBar()
             )
           ],
         ),
@@ -90,17 +113,24 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
     }
 
     Widget RenderContent() {
-      return submitted ? SearchedMode() : SearchedMode();
+      return submitted ? 
+      SearchedMode()
+      : 
+      SearchMode(mostSearched, histories, onChoose, onDeleteHistory, onLongPress);
     }
 
     return Scaffold(
       backgroundColor: white,
-      body: Column(
+      body: Stack(
         children: [
-          HeaderContent(),
-          Expanded(
-            child: RenderContent(),
-          )
+          Column(
+            children: [
+              HeaderContent(),
+              Expanded(
+                child: RenderContent(),
+              )
+            ],
+          ),
         ],
       ),
     );
