@@ -1,4 +1,4 @@
-import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/widgets/headers/ob_header.dart';
 import 'package:bantuin/widgets/ob_contents.dart';
 import 'package:flutter/material.dart';

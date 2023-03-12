@@ -1,4 +1,4 @@
-import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/constants.dart';
 import 'package:flutter/material.dart';
 
 // NOTE

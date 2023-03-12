@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 

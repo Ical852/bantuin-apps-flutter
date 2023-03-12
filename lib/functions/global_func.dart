@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/constants.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 

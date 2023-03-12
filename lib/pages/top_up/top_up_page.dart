@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:bantuin/pages/top_up/top_up_summary.dart';
-import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/buttons/mini_icon_button_custom.dart';

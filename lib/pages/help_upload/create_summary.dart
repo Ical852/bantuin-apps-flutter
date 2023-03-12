@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:bantuin/functions/global_func.dart';
-import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/detail_page_items/payment_summary.dart';

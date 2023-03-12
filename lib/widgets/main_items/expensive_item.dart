@@ -1,5 +1,5 @@
 import 'package:bantuin/functions/global_func.dart';
-import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/category_tag.dart';
 import 'package:bantuin/widgets/image_custom.dart';

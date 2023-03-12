@@ -1,5 +1,5 @@
 import 'package:bantuin/functions/global_func.dart';
-import 'package:bantuin/shared/constatns.dart';
+import 'package:bantuin/shared/constants.dart';
 import 'package:flutter/material.dart';
 
 class PriceItem extends StatelessWidget {
