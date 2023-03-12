@@ -19,7 +19,7 @@ class _ExplorePageState extends State<ExplorePage> {
     Widget HeaderBackground() {
       return Container(
         color: green1,
-        height: 140,
+        height: 150,
       );
     }
 
@@ -37,21 +37,26 @@ class _ExplorePageState extends State<ExplorePage> {
             color: white,
             borderRadius: BorderRadius.circular(8)
           ),
-          child: Row(
-            children: [
-              ImageCustom(
-                height: 20,
-                width: 20,
-                image: AssetImage('assets/icons/ic_search_green.png'),
-                margin: EdgeInsets.only(
-                  right: 12
+          child: GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(context, '/bantuan-search');
+            },
+            child: Row(
+              children: [
+                ImageCustom(
+                  height: 20,
+                  width: 20,
+                  image: AssetImage('assets/icons/ic_search_green.png'),
+                  margin: EdgeInsets.only(
+                    right: 12
+                  ),
                 ),
-              ),
-              Text(
-                'Explore campaigns',
-                style: regularGrayRegular
-              )
-            ],
+                Text(
+                  'Explore campaigns',
+                  style: regularGrayRegular
+                )
+              ],
+            ),
           ),
         ),
       );
@@ -87,7 +92,7 @@ class _ExplorePageState extends State<ExplorePage> {
     Widget HeaderContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 44,
+          top: 54,
           left: 24,
           right: 24
         ),
@@ -102,7 +107,9 @@ class _ExplorePageState extends State<ExplorePage> {
             SizedBox(height: 14,),
             BantuanMoney(
               money: 9200301,
-              onPress: (){},
+              onPress: (){
+                Navigator.pushNamed(context, '/top-up');
+              },
             )
           ],
         ),

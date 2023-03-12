@@ -1,5 +1,5 @@
-import 'package:bantuin/pages/helpupload/create_success_page.dart';
-import 'package:bantuin/pages/helpupload/processing_page.dart';
+
+import 'package:bantuin/pages/bantuan_search/bantuan_search_page.dart';
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
 import 'package:bantuin/pages/test/test.dart';
@@ -27,11 +27,16 @@ import 'package:bantuin/pages/auths/reset_success.dart';
 import 'package:bantuin/pages/auths/sign_up.dart';
 import 'package:bantuin/pages/auths/sign_in.dart';
 import 'package:bantuin/pages/auths/sign_up_success.dart';
+import 'package:bantuin/pages/top_up/top_up_page.dart';
+import 'package:bantuin/pages/top_up/top_up_success_page.dart';
 import 'package:bantuin/pages/welcome.dart';
 
 import 'package:bantuin/pages/mainpages/main_page.dart';
 
-import 'package:bantuin/pages/helpupload/create_help.dart';
+import 'package:bantuin/pages/help_upload/create_help.dart';
+import 'package:bantuin/pages/help_upload/create_success_page.dart';
+import 'package:bantuin/pages/help_upload/processing_page.dart';
+
 import 'package:bantuin/shared/constatns.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -140,6 +145,16 @@ class MyApp extends StatelessWidget {
         "/create-help":(context) => CreateHelpPage(),
         "/processing-page":(context) => ProcessingPage(),
         "/create-success-page":(context) => CreateSuccessPage(),
+        // Help Create Pages
+
+         // Top Up Pages
+        "/top-up":(context) => TopUpPage(),
+        "/top-up-success":(context) => TopUpSuccessPage(),
+        // Top Up Pages
+
+         // Top Up Pages
+        "/bantuan-search":(context) => BantuanSerachPage(),
+        // Top Up Pages
       },
     );
   }

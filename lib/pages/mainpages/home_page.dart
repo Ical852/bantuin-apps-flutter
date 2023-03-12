@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
     Widget HeaderBackground() {
       return Container(
-        height: 145,
+        height: 155,
         decoration: BoxDecoration(
           color: green1,
           borderRadius: BorderRadius.only(
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     Widget HeaderContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 52,
+          top: 62,
           left: 24,
           right: 24
         ),
@@ -85,7 +85,9 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 24,),
             BantuanMoney(
               money: 9200301,
-              onPress: (){},
+              onPress: (){
+                Navigator.pushNamed(context, '/top-up');
+              },
             )
           ],
         ),

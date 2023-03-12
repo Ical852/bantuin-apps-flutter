@@ -8,13 +8,15 @@ class ImgTextDescMiniButton extends StatelessWidget {
 
   String image, title, desc, btnTitle;
   Function() onPressed;
+  double? width;
 
   ImgTextDescMiniButton({
     required this.image,
     required this.title,
     required this.desc,
     required this.btnTitle,
-    required this.onPressed  
+    required this.onPressed,
+    this.width  
   });
 
   @override
@@ -40,7 +42,7 @@ class ImgTextDescMiniButton extends StatelessWidget {
               top: 6,
               bottom: 30
             ),
-            width: 240,
+            width: width ?? 240,
             child: Text(
               desc,
               style: regularGrayLight,

@@ -19,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     Widget HeaderBackground() {
       return Container(
-        height: 240,
+        height: 250,
         decoration: BoxDecoration(
           color: green1,
           borderRadius: BorderRadius.only(
@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Widget TopContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 48,
+          top: 58,
           left: 24,
           right: 24
         ),
@@ -134,7 +134,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: BantuanMoney(
                 money: 9200301,
-                onPress: (){},
+                onPress: (){
+                  Navigator.pushNamed(context, '/top-up');
+                },
               ),
             )
           ],

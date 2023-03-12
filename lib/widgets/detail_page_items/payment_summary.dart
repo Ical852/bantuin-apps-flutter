@@ -13,6 +13,8 @@ class PaymentSummary extends StatelessWidget {
     required this.keyVals,
     required this.total
   });
+  String? title;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +34,7 @@ class PaymentSummary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Payment Summary',
+            title ?? 'Payment Summary',
             style: mediumBlackSemibold,
           ),
           SizedBox(height: 13,),
