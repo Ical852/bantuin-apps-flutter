@@ -221,7 +221,7 @@ class _ExplorePageState extends State<ExplorePage> {
     Widget MainContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 202
+          top: 182 + safeAreaPadding(context)
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

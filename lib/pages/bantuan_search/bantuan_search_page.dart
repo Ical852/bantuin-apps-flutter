@@ -3,7 +3,10 @@ import 'package:bantuin/pages/bantuan_search/modes/search_mode.dart';
 import 'package:bantuin/pages/bantuan_search/modes/searched_mode.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/widgets/buttons/mini_button_icon_custom.dart';
+import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
+import 'package:bantuin/widgets/modals/dialog_modal.dart';
 import 'package:flutter/material.dart';
 
 class BantuanSerachPage extends StatefulWidget {
@@ -13,9 +16,19 @@ class BantuanSerachPage extends StatefulWidget {
 
 class _BantuanSerachPageState extends State<BantuanSerachPage> {
   var submitted = false;
+  var choosedText = "";
   TextEditingController searchController = TextEditingController(text: "");
+  void toggleSubmitted(value) {
+    this.setState(() {
+      submitted = value;
+    });
+  }
   void onSubmitted(submittedText) {
-    print(submittedText);
+    if (submittedText != "") {
+      toggleSubmitted(true);
+    } else {
+      toggleSubmitted(false);
+    }
   }
   
   var mostSearched = [
@@ -25,13 +38,44 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
     'Bantu Buat Website', 'Bantu Buat Mobile', 'Bantu Bersihin Kolam'
   ];
   void onChoose(choosed) {
-    showGLobalAlert('success', choosed, context);
+    searchController.text = choosed;
+    toggleSubmitted(true);
+  }
+
+  var showLongPressedDialog = false;
+  void toggleShowLongPressDialog(value) {
+    this.setState(() {
+      showLongPressedDialog = value;
+    });
   }
   void onLongPress(choosed) {
-    showGLobalAlert('danger', 'Long Press Active', context);
+    this.setState(() {
+      choosedText = choosed;
+    });
+    toggleShowLongPressDialog(true);
+  }
+  void onLongPressDelete() {
+    this.setState(() {
+      histories = histories.where((val) => val != choosedText).toList();
+      showLongPressedDialog = false;
+    });
+  }
+
+  var showDeleteConfirm = false;
+  void toggleDeleteConfirm(value) {
+    this.setState(() {
+      showDeleteConfirm = value;
+    });
   }
   void onDeleteHistory() {
-    showGLobalAlert('info', 'On Delete Function Ready', context);
+    toggleDeleteConfirm(true);
+  }
+  void onDeleteConfirmed() {
+    this.setState(() {
+      histories = [];
+      showDeleteConfirm = false;
+    });
+    showGLobalAlert('success', 'Berhasil Menghapus Riwayat Pencarian', context);
   }
 
   @override
@@ -56,6 +100,8 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
                 ),
                 onFieldSubmitted: onSubmitted,
                 autofocus: true,
+                controller: searchController,
+                style: regularBlackRegular,
               ),
             ),
             ImageCustom(
@@ -119,6 +165,107 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
       SearchMode(mostSearched, histories, onChoose, onDeleteHistory, onLongPress);
     }
 
+    Widget DeleteConfirmDialog() {
+      return showDeleteConfirm ?
+      GestureDetector(
+        onTap: () => toggleDeleteConfirm(false),
+        child: DialogModal(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 12
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Perhatian',
+                    style: mediumBlackSemibold
+                  ),
+                  SizedBox(height: 8,),
+                  Text(
+                    'Hapus Semua Riwayat Pencarian Kamu?',
+                    style: poppinsText.copyWith(
+                      fontSize: 13,
+                      fontWeight: regular,
+                      color: black1
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 12,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RawButtonCustom(
+                        height: 40,
+                        onPress: () => toggleDeleteConfirm(false),
+                        title: 'Batal',
+                        color: red1,
+                      ),
+                      SizedBox(width: 8,),
+                      RawButtonCustom(
+                        height: 40,
+                        onPress: onDeleteConfirmed,
+                        title: 'Hapus',
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      )
+      :
+      SizedBox();
+    }
+
+    Widget LongPressDialog() {
+      return showLongPressedDialog ?
+      GestureDetector(
+        onTap: () => toggleShowLongPressDialog(false),
+        child: DialogModal(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 12
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Pilih Aksi',
+                    style: mediumBlackSemibold
+                  ),
+                  SizedBox(height: 8,),
+                  Text(
+                    "Hapus Riwayat " + choosedText + " ?",
+                    style: poppinsText.copyWith(
+                      fontSize: 13,
+                      fontWeight: regular,
+                      color: black1
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 12,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RawButtonCustom(
+                        height: 40,
+                        onPress: onLongPressDelete,
+                        title: 'Hapus',
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      )
+      :
+      SizedBox();
+    }
+
     return Scaffold(
       backgroundColor: white,
       body: Stack(
@@ -131,6 +278,8 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
               )
             ],
           ),
+          DeleteConfirmDialog(),
+          LongPressDialog()
         ],
       ),
     );

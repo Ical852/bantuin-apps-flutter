@@ -65,6 +65,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     MiniIconButtonCustom(
                       onPressed: (){
+                        Navigator.pushNamed(context, '/bantuan-search');
                       },
                       icons: 'assets/icons/ic_search_home.png',
                       width: 18,
@@ -199,7 +200,7 @@ class _HomePageState extends State<HomePage> {
     Widget MainContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 202
+          top: 182 + safeAreaPadding(context)
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

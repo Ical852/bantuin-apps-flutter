@@ -147,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Widget MainContent() {
       return Container(
         margin: EdgeInsets.only(
-          top: 306,
+          top: 286 + safeAreaPadding(context),
           left: 24,
           right: 24
         ),

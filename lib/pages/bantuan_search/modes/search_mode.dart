@@ -63,7 +63,8 @@ class SearchMode extends StatelessWidget {
     }
 
     Widget DeleteHistoryButton() {
-      return GestureDetector(
+      return histories.length > 0 ?
+      GestureDetector(
         onTap: onDelete,
         child: Container(
           height: 45,
@@ -90,11 +91,16 @@ class SearchMode extends StatelessWidget {
             ],
           ),
         ),
-      );
+      )
+      :
+      SizedBox();
     }
 
     return Container(
       child: ListView(
+        padding: EdgeInsets.only(
+          top: 24
+        ),
         children: [
           MostSearchedContent(),
           SizedBox(height: 8,),
