@@ -1,4 +1,5 @@
 
+import 'package:bantuin/pages/detail_pages/bantuan_detail_pages.dart';
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
 import 'package:bantuin/pages/test/test.dart';
@@ -28,7 +29,7 @@ import 'package:bantuin/pages/auths/sign_in.dart';
 import 'package:bantuin/pages/auths/sign_up_success.dart';
 import 'package:bantuin/pages/welcome.dart';
 
-import 'package:bantuin/pages/mainpages/main_page.dart';
+import 'package:bantuin/pages/main_pages/main_page.dart';
 
 import 'package:bantuin/pages/bantuan_search/bantuan_search_page.dart';
 
@@ -155,6 +156,7 @@ class MyApp extends StatelessWidget {
 
          // Top Up Pages
         "/bantuan-search":(context) => BantuanSerachPage(),
+        "/bantuan-detail": (context) => BantuanDetailPage(),
         // Top Up Pages
       },
     );

@@ -6,21 +6,22 @@ import 'package:flutter/material.dart';
 class LocationTag extends StatelessWidget {
 
   String location;
-  LocationTag({ required this.location });
+  bool? small;
+  LocationTag({ required this.location, this.small });
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Row(
         children: [
           ImageCustom(
-            height: 11,
-            width: 8,
+            height: small != null ? 8.5 : 11,
+            width: small != null ? 6 : 8,
             image: AssetImage('assets/icons/ic_location.png'),
           ),
           SizedBox(width: 6,),
           Text(
             location,
-            style: smallGrayRegular
+            style: small != null ? xSmallGrayRegular : smallGrayRegular
           )
         ],
       ),
