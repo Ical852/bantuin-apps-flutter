@@ -8,21 +8,24 @@ class BantuanMoneyProfile extends StatelessWidget {
 
   String name, phone;
   int price;
-  int? minus;
-  int? plus;
+  int? minus, plus;
+  bool noMain;
+  String? title;
 
   BantuanMoneyProfile({
     required this.name,
     required this.phone,
     required this.price,
     this.minus,
-    this.plus
+    this.plus,
+    this.noMain = false,
+    this.title
   });
 
   Widget RenderPrice() {
     return Row(
       children: [
-        Text(
+        noMain ? SizedBox() : Text(
           formatter(price),
           style: basePrimarySemibold
         ),
@@ -102,7 +105,7 @@ class BantuanMoneyProfile extends StatelessWidget {
                 ),
                 SizedBox(height: 16,),
                 Text(
-                  'Bantuin Money Anda',
+                  title ?? 'Bantuin Money Anda',
                   style: smallGrayRegular
                 ),
                 Spacer(),

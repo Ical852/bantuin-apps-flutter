@@ -1,3 +1,4 @@
+import 'package:bantuin/pages/detail_pages/bantuan_detail_pages.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
@@ -124,7 +125,13 @@ class _HomePageState extends State<HomePage> {
                     category: 'Game',
                     location: 'Bekasi, Indonesia',
                     price: 6000000,
-                    onPress: (){},
+                    onPress: (){
+                      Navigator.push(
+                        context, MaterialPageRoute(
+                          builder: (context) => BantuanDetailPage()
+                        )
+                      );
+                    },
                   ),
                   ExpensiveItem(
                     image: 'assets/dummies/dummy2.png',

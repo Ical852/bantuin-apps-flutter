@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 class CashOnDelivery extends StatelessWidget {
 
   int price;
+  bool detail;
   CashOnDelivery({
-    required this.price
+    required this.price,
+    this.detail = false
   });
 
   @override
@@ -32,14 +34,14 @@ class CashOnDelivery extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Total Bayar:',
+                detail ? 'Akan Dapat Cash :' : 'Total Bayar:',
                 style: regularGrayRegular.copyWith(
                   fontSize: 13
                 ),
               ),
               Text(
                 formatter(price),
-                style: baseBlackSemibold,
+                style: detail ? basePrimarySemibold : baseBlackSemibold,
               )
             ],
           ),
