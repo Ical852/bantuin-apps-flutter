@@ -232,7 +232,7 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
               child: Column(
                 children: [
                   Text(
-                    'Pilih Aksi',
+                    'Info',
                     style: mediumBlackSemibold
                   ),
                   SizedBox(height: 8,),

@@ -16,8 +16,8 @@ class ChatBtn extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: white,
-        border: Border.all(
+        color: isDetail ? green8 : white,
+        border: isDetail ? Border() : Border.all(
           color: green1,
           width: 1.5
         ),

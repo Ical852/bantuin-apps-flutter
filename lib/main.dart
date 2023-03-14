@@ -1,5 +1,4 @@
 
-import 'package:bantuin/pages/detail_pages/bantuan_detail_pages.dart';
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
 import 'package:bantuin/pages/test/test.dart';
@@ -32,6 +31,10 @@ import 'package:bantuin/pages/welcome.dart';
 import 'package:bantuin/pages/main_pages/main_page.dart';
 
 import 'package:bantuin/pages/bantuan_search/bantuan_search_page.dart';
+import 'package:bantuin/pages/detail_pages/bantuan_detail_pages.dart';
+
+import 'package:bantuin/pages/info_pages/notifications_page.dart';
+import 'package:bantuin/pages/info_pages/transactions_page.dart';
 
 import 'package:bantuin/pages/top_up/top_up_page.dart';
 import 'package:bantuin/pages/top_up/top_up_success_page.dart';
@@ -149,15 +152,20 @@ class MyApp extends StatelessWidget {
         "/create-success-page":(context) => CreateSuccessPage(),
         // Help Create Pages
 
-         // Top Up Pages
+        // Top Up Pages
         "/top-up":(context) => TopUpPage(),
         "/top-up-success":(context) => TopUpSuccessPage(),
         // Top Up Pages
 
-         // Top Up Pages
+        // Top Up Pages
         "/bantuan-search":(context) => BantuanSerachPage(),
         "/bantuan-detail": (context) => BantuanDetailPage(),
         // Top Up Pages
+
+        // Info Pages
+        "/notifications": (context) => NotificationsPage(),
+        "/transactions": (context) => TransactionsPage(),
+        // Info Pages
       },
     );
   }

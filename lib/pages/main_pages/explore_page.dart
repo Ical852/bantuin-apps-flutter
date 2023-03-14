@@ -76,7 +76,9 @@ class _ExplorePageState extends State<ExplorePage> {
             shadowColor: Colors.transparent.withOpacity(0.1),
             padding: EdgeInsets.all(0)
           ),
-          onPressed: (){},
+          onPressed: (){
+            Navigator.pushNamed(context, '/notifications');
+          },
           child: Center(
             child: ImageCustom(
               height: 17,

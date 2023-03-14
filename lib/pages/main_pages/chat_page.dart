@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bantuin/pages/chat_pages/detail_chat_page.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/chat_items/chat_item.dart';
@@ -49,6 +50,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
             GestureDetector(
               onTap: (){
+                Navigator.pushNamed(context, '/notifications');
               },
               child: ImageCustom(
                 height: 20,
@@ -147,7 +149,7 @@ class _ChatPageState extends State<ChatPage> {
       );
     }
 
-    Widget Chats() {
+    Widget HelperChats() {
       return Container(
         margin: EdgeInsets.only(
           top: 24,
@@ -157,12 +159,20 @@ class _ChatPageState extends State<ChatPage> {
         child: Column(
           children: [
             ChatItem(
+              onPress: (){
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => DetailChatPage()
+                  )
+                );
+              },
               image: 'assets/dummies/user1.png',
               name: 'James Curt',
               text: 'I saw it clearly and might be go...',
               time: '12.30',
             ),
             ChatItem(
+              onPress: (){},
               image: 'assets/dummies/user2.png',
               name: 'Rosalie Emily',
               text: 'Did you know how to get the...',
@@ -170,12 +180,14 @@ class _ChatPageState extends State<ChatPage> {
               notif: 2,
             ),
             ChatItem(
+              onPress: (){},
               image: 'assets/dummies/user3.png',
               name: 'Anna Joeson',
               text: 'Wanna hang out or something?...',
               time: '21:30',
             ),
             ChatItem(
+              onPress: (){},
               image: 'assets/dummies/user4.png',
               name: 'Justin Anderson',
               text: 'Nobody’s gonna know until we...',
@@ -183,6 +195,7 @@ class _ChatPageState extends State<ChatPage> {
               notif: 5,
             ),
             ChatItem(
+              onPress: (){},
               image: 'assets/dummies/user5.png',
               name: 'Angela Claire',
               text: 'Why don’t you come to my hou...',
@@ -194,13 +207,26 @@ class _ChatPageState extends State<ChatPage> {
       );
     }
 
+    Widget CustomerChats() {
+      return Container(
+        margin: EdgeInsets.only(top: 24, left: 24, right: 24),
+        child: Column(
+          children: [],
+        ),
+      );
+    }
+
+    Widget RenderChats() {
+      return current == 'left' ? HelperChats() : CustomerChats();
+    }
+
     return ListView(
       children: [
         HeaderContent(),
         SearchBar(),
         Title(),
         Toggler(),
-        Chats(),
+        RenderChats(),
         SizedBox(height: 150,)
       ],
     );

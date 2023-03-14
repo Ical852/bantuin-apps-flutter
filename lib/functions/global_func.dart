@@ -26,6 +26,42 @@ Color getColorType(type) {
   }
 }
 
+String getMonthName(month) {
+  switch (month) {
+    case 1 | 01:
+      return 'Jan';
+    case 2 | 02:
+      return 'Feb';
+    case 3 | 03:
+      return 'Mar';
+    case 4 | 04:
+      return 'Apr';
+    case 5 | 05:
+      return 'May';
+    case 6 | 06:
+      return 'Jun';
+    case 7 | 07:
+      return 'Jul';
+    case 8 | 08:
+      return 'Aug';
+    case 9 | 09:
+      return 'Sep';
+    case 10:
+      return 'Oct';
+    case 11:
+      return 'Nov';
+    case 12:
+      return 'Dec';
+    default:
+      return 'January';
+  }
+}
+
+String getDayMonth(year, month, day) {
+  DateTime newDate = DateTime(year, month, day);
+  return newDate.day.toString() + " " + getMonthName(newDate.month);
+}
+
 void showGLobalAlert(type, text, context) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     duration: Duration(seconds: 2),

@@ -75,6 +75,7 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(width: 8,),
                     MiniIconButtonCustom(
                       onPressed: (){
+                        Navigator.pushNamed(context, '/notifications');
                       },
                       icons: 'assets/icons/ic_notif.png',
                       width: 16,

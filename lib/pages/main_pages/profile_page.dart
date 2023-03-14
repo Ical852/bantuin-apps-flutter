@@ -54,10 +54,15 @@ class _ProfilePageState extends State<ProfilePage> {
               'My Profile',
               style: regularWhiteSemibold
             ),
-            ImageCustom(
-              height: 20,
-              width: 17,
-              image: AssetImage('assets/icons/ic_notif_profile.png'),
+            GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, '/notifications');
+              },
+              child: ImageCustom(
+                height: 20,
+                width: 17,
+                image: AssetImage('assets/icons/ic_notif_profile.png'),
+              ),
             )
           ],
         ),
@@ -189,7 +194,9 @@ class _ProfilePageState extends State<ProfilePage> {
               desc: 'Semua transaksi anda',
               width: 12,
               height: 22,
-              onPress: (){},
+              onPress: (){
+                Navigator.pushNamed(context, '/transactions');
+              },
             ),
             ProfileItem(
               icon: 'assets/icons/ic_ask.png',
