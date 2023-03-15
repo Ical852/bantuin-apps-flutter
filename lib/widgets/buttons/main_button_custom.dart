@@ -23,7 +23,7 @@ class MainButtonCustom extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: type == 'secondary' ? [yellow2, yellow1] : [green2, green1],
+            colors: type == 'secondary' ? [yellow2, yellow1] : type == 'danger' ? [red2, red1] : [green2, green1],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter
           ),

@@ -1,3 +1,5 @@
+import 'package:bantuin/pages/bantuan_pages/my_bantuan_detail.dart';
+import 'package:bantuin/pages/bantuan_pages/my_bantuan_detail_accepted.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
@@ -84,7 +86,14 @@ class _MyBantuanPageState extends State<MyBantuanPage> {
               desc: 'Ada kosan di bekasi, butuh bantuan bersihin dalem sampe selesai',
               location: 'Bekasi, Indonesia',
               price: 2125000,
-              onPress: (){},
+              onPress: (){
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => MyBantuanDetailPage()
+                  )
+                );
+              },
+              isMine: true,
             ),
             WeeklyItem(
               image: 'assets/dummies/dummy11.png',
@@ -92,7 +101,14 @@ class _MyBantuanPageState extends State<MyBantuanPage> {
               desc: 'Kolam renang gua ijo, kotor, butuh bantuan bersihin, 1,5k lepas',
               location: 'Bogor, Indonesia',
               price: 1500000,
-              onPress: (){},
+              onPress: (){
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => MyBantuanDetailAcceptedPage()
+                  )
+                );
+              },
+              isMine: true,
             ),
             WeeklyItem(
               image: 'assets/dummies/dummy12.png',
@@ -101,6 +117,7 @@ class _MyBantuanPageState extends State<MyBantuanPage> {
               location: 'Jakarta, Indonesia',
               price: 1725000,
               onPress: (){},
+              isMine: true,
             ),
           ],
         ),

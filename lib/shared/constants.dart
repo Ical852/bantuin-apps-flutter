@@ -33,6 +33,7 @@ Color grey5 = Color(0xffEDF0ED);
 Color yellow1 = Color(0xffEBBC6A);
 Color yellow2 = Color(0xffEEC680);
 Color red1 = Color(0xffE64848);
+Color red2 = Color(0xffEA6363);
 Color white = Color(0xffFFFFFF);
 Color blue1 = Color(0xff509CE4);
 
