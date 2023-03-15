@@ -8,11 +8,13 @@ class MainHeader extends StatelessWidget {
   Function() onBack;
   String title;
   Widget? rightContent;
-  Function()? onRihtPress;
+  Function()? onRightPress;
 
   MainHeader({
     required this.title,
     required this.onBack,
+    this.rightContent,
+    this.onRightPress
   });
 
   @override
@@ -35,7 +37,7 @@ class MainHeader extends StatelessWidget {
             style: regularBlackSemibold
           ),
           GestureDetector(
-            onTap: onRihtPress,
+            onTap: onRightPress,
             child: Container(
               width: 24,
               child: rightContent,

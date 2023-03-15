@@ -1,4 +1,4 @@
-import 'package:bantuin/pages/info_pages/notification_detail.dart';
+import 'package:bantuin/pages/notification_pages/notification_detail.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';

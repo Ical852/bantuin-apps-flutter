@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class MainInputCustom extends StatelessWidget {
   String title, hint;
-  bool password;
+  bool password, enabled;
   TextEditingController controller;
   TextInputType inputType;
   Function(String)? onChanged;
@@ -15,7 +15,8 @@ class MainInputCustom extends StatelessWidget {
     this.password = false, 
     required this.controller,
     this.inputType = TextInputType.text,
-    this.onChanged
+    this.onChanged,
+    this.enabled = true
   });
 
   @override
@@ -29,34 +30,38 @@ class MainInputCustom extends StatelessWidget {
             style: regularBlackRegular
           ),
           SizedBox(height: 6,),
-          TextFormField(
-            onChanged: onChanged,
-            keyboardType: inputType,
-            controller: controller,
-            obscureText: password,
-            style: mediumBlackRegular,
-            decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: mediumPrimaryRegular.copyWith(
-                color: green3
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+          Opacity(
+            opacity: enabled ? 1 : 0.7,
+            child: TextFormField(
+              enabled: enabled,
+              onChanged: onChanged,
+              keyboardType: inputType,
+              controller: controller,
+              obscureText: password,
+              style: mediumBlackRegular,
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: mediumPrimaryRegular.copyWith(
                   color: green3
                 ),
-                borderRadius: BorderRadius.circular(8)
-              ),
-              contentPadding: EdgeInsets.only(
-                top: 13,
-                bottom: 13,
-                left: 21,
-                right: 21
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: green1
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: green3
+                  ),
+                  borderRadius: BorderRadius.circular(8)
                 ),
-                borderRadius: BorderRadius.circular(8)
+                contentPadding: EdgeInsets.only(
+                  top: 13,
+                  bottom: 13,
+                  left: 21,
+                  right: 21
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: green1
+                  ),
+                  borderRadius: BorderRadius.circular(8)
+                ),
               ),
             ),
           )

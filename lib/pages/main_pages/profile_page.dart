@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/widgets/img_text_btn/img_desc_btn.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/profile_item.dart';
@@ -149,6 +153,27 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
+    Widget RequestHelperDrawer() {
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: 24),
+        child: ListView(
+          children: [
+            SizedBox(
+              height: 24,
+            ),
+            ImgDescBtn(
+              image: 'assets/illustrations/il_obhelp.png',
+              title: 'Daftar',
+              desc: 'Request ke admin untuk mendaftar menjadi helper?',
+              onPress: () {
+                Navigator.pushNamed(context, '/request-success');
+              },
+            )
+          ],
+        ),
+      );
+    }
+
     Widget MainContent() {
       return Container(
         margin: EdgeInsets.only(
@@ -170,7 +195,9 @@ class _ProfilePageState extends State<ProfilePage> {
               desc: 'Edit data pribadi anda',
               width: 20,
               height: 20,
-              onPress: (){},
+              onPress: (){
+                Navigator.pushNamed(context, '/edit-profile');
+              },
             ),
             ProfileItem(
               icon: 'assets/icons/ic_dashboard.png',
@@ -178,7 +205,9 @@ class _ProfilePageState extends State<ProfilePage> {
               desc: 'Insight anda sebagai helper',
               width: 20,
               height: 21,
-              onPress: (){},
+              onPress: (){
+                showDrawer(context, Platform.isIOS ? 418 : 398, RequestHelperDrawer());
+              },
             ),
             ProfileItem(
               icon: 'assets/icons/ic_bantuan.png',
@@ -186,7 +215,9 @@ class _ProfilePageState extends State<ProfilePage> {
               desc: 'Bantuan yang kamu publikasi',
               width: 24,
               height: 24,
-              onPress: (){},
+              onPress: (){
+                Navigator.pushNamed(context, '/my-bantuan');
+              },
             ),
             ProfileItem(
               icon: 'assets/icons/ic_dollar.png',

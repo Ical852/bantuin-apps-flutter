@@ -150,7 +150,7 @@ class _BantuanDetailPageState extends State<BantuanDetailPage> {
               title: 'Daftar',
               desc: 'Request ke admin untuk mendaftar menjadi helper?',
               onPress: () {
-                Navigator.pushNamed(context, '/main');
+                Navigator.pushNamed(context, '/request-success');
               },
             )
           ],

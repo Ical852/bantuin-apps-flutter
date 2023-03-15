@@ -1,4 +1,3 @@
-
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
 import 'package:bantuin/pages/test/test.dart';
@@ -33,8 +32,14 @@ import 'package:bantuin/pages/main_pages/main_page.dart';
 import 'package:bantuin/pages/bantuan_search/bantuan_search_page.dart';
 import 'package:bantuin/pages/detail_pages/bantuan_detail_pages.dart';
 
-import 'package:bantuin/pages/info_pages/notifications_page.dart';
-import 'package:bantuin/pages/info_pages/transactions_page.dart';
+import 'package:bantuin/pages/notification_pages/notifications_page.dart';
+import 'package:bantuin/pages/profile_pages/transactions_page.dart';
+
+import 'package:bantuin/pages/helper_pages/request_success.dart';
+import 'package:bantuin/pages/profile_pages/change_password_page.dart';
+import 'package:bantuin/pages/profile_pages/edit_profile_page.dart';
+
+import 'package:bantuin/pages/bantuan_pages/my_bantuan_page.dart';
 
 import 'package:bantuin/pages/top_up/top_up_page.dart';
 import 'package:bantuin/pages/top_up/top_up_success_page.dart';
@@ -166,6 +171,16 @@ class MyApp extends StatelessWidget {
         "/notifications": (context) => NotificationsPage(),
         "/transactions": (context) => TransactionsPage(),
         // Info Pages
+
+        // Profile Pages
+        "/edit-profile": (context) => EditProfilePage(),
+        "/change-pw": (context) => ChangePasswordPage(),
+        "/request-success": (context) => RequestSuccessPage(),
+        // Profile Pages
+
+        // Profile Pages
+        "/my-bantuan": (context) => MyBantuanPage(),
+        // Profile Pages
       },
     );
   }
