@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart' as intl;
 
 String baseUrl = "http://192.168.100.16:8000/api";
 const String google_api_key = "AIzaSyDABhwBawiYKTI63cP4xr1fUZmtXaP8iqI";
@@ -30,6 +29,8 @@ Color grey2 = Color(0xffEEEEEE);
 Color grey3 = Color(0xffF8F9FC);
 Color grey4 = Color(0xffBAC7D5);
 Color grey5 = Color(0xffEDF0ED);
+Color grey6 = Color(0xffF5F5F5);
+Color grey7 = Color(0xffFAFAFA);
 Color yellow1 = Color(0xffEBBC6A);
 Color yellow2 = Color(0xffEEC680);
 Color red1 = Color(0xffE64848);

@@ -231,7 +231,7 @@ class _MyBantuanDetailPageState extends State<MyBantuanDetailPage> {
                 color: red1,
                 title: 'Hapus Minta Bantuan',
                 onPressed: (){
-                  showDrawer(context, 398, DeleteBantuanContent());
+                  showDrawer(context, 358, DeleteBantuanContent());
                 },
                 icon: ImageCustom(
                   width: 24,

@@ -9,6 +9,7 @@ class NewItem extends StatelessWidget {
   String image, title, desc, location;
   int price;
   Function() onPress;
+  bool noButton;
 
   NewItem({
     required this.image,
@@ -16,7 +17,8 @@ class NewItem extends StatelessWidget {
     required this.desc,
     required this.location,
     required this.price,
-    required this.onPress
+    required this.onPress,
+    this.noButton = false
   });
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,7 @@ class NewItem extends StatelessWidget {
                       formatter(price),
                       style: regularPrimarySemibold
                     ),
-                    Container(
+                    noButton ? SizedBox() : Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: green1

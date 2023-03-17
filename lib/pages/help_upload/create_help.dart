@@ -615,7 +615,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
         alignment: Alignment.bottomLeft,
         child: Container(
           padding: EdgeInsets.all(12),
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: screenWidthPercentage(context, 0.8),
           height: 120,
           decoration: BoxDecoration(
             color: white,

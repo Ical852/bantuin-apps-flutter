@@ -2,30 +2,25 @@ import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 
-class ChatBtn extends StatelessWidget {
+class ActionButton extends StatelessWidget {
 
-  bool isDetail;
+  String type;
   Function() onPressed;
-  double? size;
 
-  ChatBtn({
+  ActionButton({
     required this.onPressed,
-    this.isDetail = false,
-    this.size
+    this.type = 'primary'  
   });
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: isDetail ? green8 : white,
-        border: isDetail ? Border() : Border.all(
-          color: green1,
-          width: 1.5
-        ),
+        borderRadius: BorderRadius.circular(50),
+        color: type == 'danger' ? red1 : green1
       ),
-      width: size ?? 46,
-      height: size ?? 46,
+      width: 30,
+      height: 30,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
@@ -34,9 +29,9 @@ class ChatBtn extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: ImageCustom(
-          width: 19.6,
-          height: 18.7,
-          image: AssetImage('assets/icons/ic_chat_btn.png'),
+          width: type == 'danger' ? 10 : 13,
+          height: 10,
+          image: AssetImage('assets/icons/' + (type == 'danger' ? 'ic_cross' : 'ic_check_btn') + '.png'),
         ),
       ),
     );

@@ -2,49 +2,42 @@ import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:flutter/material.dart';
 
-class DetailButtonCustom extends StatelessWidget {
+class CancelItem extends StatelessWidget {
 
-  Color? color;
-  String title;
-  Widget icon;
+  String text;
   Function() onPressed;
-  double? size;
+  bool selected;
 
-  DetailButtonCustom({
-    required this.title,
-    required this.icon,
+  CancelItem({
+    required this.text,
     required this.onPressed,
-    this.color,
-    this.size
+    this.selected = false
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: color ?? green1
+      height: 30,
+      margin: EdgeInsets.only(
+        bottom: 12
       ),
-      height: size ?? 44,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: selected ? green1 : grey6,
+      ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent.withOpacity(0.1),
           padding: EdgeInsets.symmetric(
-            horizontal: 16
+            horizontal: 12
           )
         ),
         onPressed: onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: regularWhiteMedium,
-            ),
-            icon
-          ],
-        )
+        child: Text(
+          text,
+          style: selected ? smallWhiteMedium : smallBlackMedium
+        ),
       ),
     );
   }

@@ -1,3 +1,5 @@
+import 'package:bantuin/pages/bantuan_pages/my_bantuan_accept_success.dart';
+import 'package:bantuin/pages/bantuan_pages/my_bantuan_done.dart';
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
 import 'package:bantuin/pages/test/test.dart';
@@ -180,6 +182,8 @@ class MyApp extends StatelessWidget {
 
         // Profile Pages
         "/my-bantuan": (context) => MyBantuanPage(),
+        "/my-bantuan-done": (context) => MyBantuanDonePage(),
+        "/my-bantuan-accept-success": (context) => MyBantuanAcceptSuccess(),
         // Profile Pages
       },
     );

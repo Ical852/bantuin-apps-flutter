@@ -3,6 +3,8 @@ import 'package:bantuin/pages/bantuan_pages/my_bantuan_helper_request.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/buttons/detail_button_custom.dart';
+import 'package:bantuin/widgets/buttons/main_button_custom.dart';
+import 'package:bantuin/widgets/cancel_item.dart';
 import 'package:bantuin/widgets/chat_items/chat_btn.dart';
 import 'package:bantuin/widgets/detail_page_items/price_start_item.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
@@ -14,6 +16,7 @@ import 'package:bantuin/widgets/money_contents/bantuan_money_profile.dart';
 import 'package:bantuin/widgets/money_contents/cash_on_delivery.dart';
 import 'package:bantuin/widgets/money_contents/midtrans_pay.dart';
 import 'package:bantuin/widgets/owner_item.dart';
+import 'package:bantuin/widgets/rate_items/rate_control.dart';
 import 'package:bantuin/widgets/title_descs/detail_title_desc.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +27,55 @@ class MyBantuanDetailAcceptedPage extends StatefulWidget {
 
 class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPage> {
   var payType = 'bmoney';
+
+  var cancels = [
+    'Helper Kurang Ramah', 'Berubah Pikiran', 'Waktu Lewat', 'Kurang Jelas', 'Penipuan',
+    'Diluar Perkiraan', 'Kurang Uang', 'Tidak Sesuai', 'Helper Cabul'
+  ];
+  var selected = [];
+  TextEditingController reasonController = TextEditingController(text: "");
+  var currentReason = "";
+
+  var rating = 0;
+  void setRate(int rate, setState) {
+    this.setState(() {
+      rating = rate;
+    });
+    setState((){
+      rating = rate;
+    });
+  }
+
+  void selectReason(reason, Function(void Function()) setState) {
+    if (selected.contains(reason)) {
+      this.setState(() {
+        selected.remove(reason);
+      });
+      setState(() {
+        selected.remove(reason);
+      });
+    } else {
+      this.setState(() {
+        selected.add(reason);
+      });
+      setState(() {
+        selected.add(reason);
+      });
+    }
+  }
+
+  bool isContain(reason) {
+    return  selected.contains(reason);
+  }
+
+  void onChange(reason, setState) {
+    this.setState(() {
+      currentReason = reason;
+    });
+    setState((){
+      currentReason = reason;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,24 +239,234 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
       );
     }
 
-    Widget RequestHelperContent() {
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: 24),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 24,
+    Widget CancelHelperContent() {
+      return StatefulBuilder(
+        builder: ((BuildContext context, StateSetter setState) {
+          return Container(
+            margin: EdgeInsets.only(
+              top: 24
             ),
-            ImgDescBtn(
-              image: 'assets/illustrations/il_obhelp.png',
-              title: 'Daftar',
-              desc: 'Request ke admin untuk mendaftar menjadi helper?',
-              onPress: () {
-                Navigator.pushNamed(context, '/request-success');
-              },
-            )
-          ],
-        ),
+            child: ListView(
+              padding: EdgeInsets.only(
+                bottom: 72
+              ),
+              children: [
+                ImageCustom(
+                  width: 180,
+                  height: 180,
+                  image: AssetImage('assets/illustrations/il_cry.png'),
+                ),
+                Marginner(
+                  margin: EdgeInsets.all(24),
+                  child: Text(
+                    'Helper sedih nih, kamu yakin mau batalin bantuan dari helper?',
+                    style: mediumBlackSemibold,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Line(),
+                SizedBox(height: 24,),
+                Text(
+                  'Berikan alasan kamu dong : ',
+                  style: regularBlackRegular,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 16,),
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 24
+                  ),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 12,
+                    children: cancels.map((data) {
+                      return CancelItem(
+                        text: data,
+                        onPressed: (){
+                          selectReason(data, setState);
+                        },
+                        selected: isContain(data),
+                      );
+                    }).toList()
+                  ),
+                ),
+                SizedBox(height: 24,),
+                Text(
+                  'Boleh Beri Alasan Detail Dari Kamu Dong',
+                  style: regularBlackRegular,
+                  textAlign: TextAlign.center,
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 24,
+                    right: 24,
+                    top: 6
+                  ),
+                  child: TextField(
+                    onChanged: (value){
+                      onChange(value, setState);
+                    },
+                    controller: reasonController,
+                    keyboardType: TextInputType.multiline,
+                    minLines: 1,
+                    maxLines: 5,
+                    style: mediumBlackRegular,
+                    decoration: InputDecoration (
+                      hintText: 'Masukkan Alasan',
+                      hintStyle: mediumPrimaryRegular.copyWith(
+                        color: green3
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: green3
+                      ),
+                      borderRadius: BorderRadius.circular(8)
+                    ),
+                    contentPadding: EdgeInsets.only(
+                      top: 16,
+                      bottom: 16,
+                      left: 21,
+                      right: 21
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: green1
+                      ),
+                      borderRadius: BorderRadius.circular(8)
+                    ),
+                    ),
+                  ),
+                ),
+                Marginner(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 32,
+                    horizontal: 24
+                  ),
+                  child: MainButtonCustom(
+                    title: 'Batalkan',
+                    onPressed: (){
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      showGLobalAlert('success', "Berhasil membatalkan bantuan", context);
+                    },
+                    type: 'danger',
+                    disabled: selected.length < 1 && currentReason == "",
+                  ),
+                ),
+                SizedBox(height: 240,)
+              ],
+            ),
+          );
+        }),
+      );
+    }
+
+    Widget DoneHelperContent() {
+      return StatefulBuilder(
+        builder: ((BuildContext context, StateSetter setState) {
+          return Container(
+            margin: EdgeInsets.only(
+              top: 24
+            ),
+            child: ListView(
+              children: [
+                ImageCustom(
+                  width: 180,
+                  height: 180,
+                  image: AssetImage('assets/illustrations/il_think.png'),
+                ),
+                Marginner(
+                  margin: EdgeInsets.all(24),
+                  child: Text(
+                    'Apa kamu yakin mau selesain bantuan yg kamu request ke helper?',
+                    style: mediumBlackSemibold,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Line(),
+                SizedBox(height: 24,),
+                Text(
+                  'Kasih rating buat helper dulu dong',
+                  style: regularBlackRegular,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 16,),
+                Marginner(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 48
+                  ),
+                  child: RateControl(
+                    rate: rating,
+                    onPress: setRate,
+                    setState: setState,
+                  )
+                ),
+                SizedBox(height: 24,),
+                Text(
+                  'Beri ulasan kamu ke helper yuk',
+                  style: regularBlackRegular,
+                  textAlign: TextAlign.center,
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 24,
+                    right: 24,
+                    top: 6
+                  ),
+                  child: TextField(
+                    onChanged: (value){
+                      onChange(value, setState);
+                    },
+                    controller: reasonController,
+                    keyboardType: TextInputType.multiline,
+                    minLines: 1,
+                    maxLines: 5,
+                    style: mediumBlackRegular,
+                    decoration: InputDecoration (
+                      hintText: 'Masukkan Alasan',
+                      hintStyle: mediumPrimaryRegular.copyWith(
+                        color: green3
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: green3
+                      ),
+                      borderRadius: BorderRadius.circular(8)
+                    ),
+                    contentPadding: EdgeInsets.only(
+                      top: 16,
+                      bottom: 16,
+                      left: 21,
+                      right: 21
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: green1
+                      ),
+                      borderRadius: BorderRadius.circular(8)
+                    ),
+                    ),
+                  ),
+                ),
+                Marginner(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 32,
+                    horizontal: 24
+                  ),
+                  child: MainButtonCustom(
+                    title: 'Selesai',
+                    onPressed: (){
+                      Navigator.pushNamed(context, "/my-bantuan-done");
+                    },
+                    disabled: rating == 0,
+                  ),
+                ),
+                SizedBox(height: 240,)
+              ],
+            ),
+          );
+        }),
       );
     }
 
@@ -233,9 +495,9 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
             Expanded(
               child: DetailButtonCustom(
                 color: red1,
-                title: 'Bantuin',
+                title: 'Batal',
                 onPressed: (){
-                  showDrawer(context, 398, RequestHelperContent());
+                  showDrawer(context, screenHeightPercentage(context, 0.8), CancelHelperContent());
                 },
                 icon: ImageCustom(
                   width: 24,
@@ -249,7 +511,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
               child: DetailButtonCustom(
                 title: 'Selesai',
                 onPressed: (){
-                  showDrawer(context, 398, RequestHelperContent());
+                  showDrawer(context, screenHeightPercentage(context, 0.7), DoneHelperContent());
                 },
                 icon: ImageCustom(
                   width: 24,

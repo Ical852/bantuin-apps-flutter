@@ -16,6 +16,14 @@ String rawFormat(int number) {
   return formatted.replaceAll(',', '.');
 }
 
+double screenWidthPercentage(context, double percentage) {
+  return MediaQuery.of(context).size.width * percentage;
+}
+
+double screenHeightPercentage(context, double percentage) {
+  return MediaQuery.of(context).size.height * percentage;
+}
+
 Color getColorType(type) {
   if (type == 'danger') {
     return red1;
