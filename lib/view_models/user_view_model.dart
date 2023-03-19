@@ -75,6 +75,13 @@ class UserViewModel {
     }
 
     SignInResponseModel result = SignInResponseModel.fromJson(response);
+    var updatedDId = await getFcmToken();
+    var deviceUpdate = await userService.updateDevice(userId: result.user.id, deviceId: updatedDId!);
+    if (deviceUpdate == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
     setStringPref('isLoggedIn', 'yes');
     this.setUserData(result.user);
     this.setToken('Bearer ${result.accessToken}');
@@ -172,6 +179,154 @@ class UserViewModel {
 
     showGLobalAlert('success', 'Sign Up Success', context);
     return true;
+  }
+
+  Future<bool> reset({
+    required String email,
+  }) async {
+    if (email == "") {
+      showGLobalAlert('danger', 'Isi Form Dengan Benar!', context);
+      return false;
+    }
+
+    var response = await userService.reset(email: email);
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      if (response.data != null) {
+        if (response.data.containsKey('error')) {
+          showGLobalAlert('danger', response.data['error'], context);
+        }
+      }
+      return false;
+    }
+
+    showGLobalAlert('success', response.meta.message, context);
+    return true;
+  }
+
+  Future<bool> userUpdate({
+    required String fullName,
+    required String username,
+    required String phoneNumber
+  }) async {
+    if (fullName == "" || username == "" || phoneNumber == "") {
+      showGLobalAlert('danger', 'Form Tidak Boleh Kosong!', context);
+      return false;
+    }
+
+    var response = await userService.userUpdate(
+      fullName: fullName,
+      username: username,
+      phoneNumber: phoneNumber,
+      token: this.getToken()
+    );
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      if (response.data != null) {
+        if (response.data.containsKey('error')) {
+          showGLobalAlert('danger', response.data['error'], context);
+        }
+      }
+      return false;
+    }
+
+    UserModel user = UserModel.fromJson(response.data);
+    this.setUserData(user);
+
+    showGLobalAlert('success', 'Update User Data Success', context);
+    return true;
+  }
+
+  Future<bool> updatePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    if (currentPassword == "" || newPassword == "" || confirmPassword == "") {
+      showGLobalAlert('danger', 'Isi Form Dengan Benar!', context);
+      return false;
+    }
+
+    if (newPassword != confirmPassword) {
+      showGLobalAlert('danger', 'Password Baru Tidak Cocok dengan Konfirmasi', context);
+      return false;
+    }
+
+    var response = await userService.updatePassword(
+      password: currentPassword,
+      newPassword: newPassword,
+      token: this.getToken()
+    );
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      } else {
+        if (response.meta.message.containsKey('new_password')) {
+          errorShower(response.meta.message['new_password']);
+        }
+      }
+      if (response.data != null) {
+        if (response.data.containsKey('error')) {
+          showGLobalAlert('danger', response.data['error'], context);
+        }
+      }
+      return false;
+    }
+
+    showGLobalAlert('success', 'Change Password Success', context);
+    return true;
+  }
+
+  Future<bool> logout() async {
+    var response = await userService.logout(
+      token: this.getToken()
+    );
+    if (response == null) {
+      removeStringPref('isLoggedIn');
+      removeStringPref('token');
+      removeStringPref('user');
+      
+      showGLobalAlert('success', 'Logout Success', context);
+      return true;
+    }
+
+    if (response.meta.code != 200) {
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      } 
+      return false;
+    }
+
+    if (response.data == true) {
+      removeStringPref('isLoggedIn');
+      removeStringPref('token');
+      removeStringPref('user');
+
+      showGLobalAlert('success', 'Logout Success', context);
+      return true;
+    }
+
+    showGLobalAlert('danger', 'Logout Failed', context);
+    return false;
   }
 
 }

@@ -14,6 +14,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  late var userVm = UserViewModel(context);
+
   TextEditingController fullNameController = TextEditingController(text: "");
   TextEditingController usernameController = TextEditingController(text: "");
   TextEditingController emailController = TextEditingController(text: "");
@@ -27,9 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  void signUp(context) async {
-    var userVm = UserViewModel(context);
-
+  void signUp() async {
     toggleLoading(true);
     var result = await userVm.signUp(
       fullName: fullNameController.text,
@@ -154,7 +154,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 MainButtonCustom(
                   onPressed: (){
-                    signUp(context);
+                    signUp();
                   },
                   title: 'Daftar',
                 ),

@@ -6,10 +6,11 @@ import 'package:bantuin/pages/main_pages/home_page.dart';
 import 'package:bantuin/pages/main_pages/profile_page.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/user_view_model.dart';
+import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/menu_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -17,6 +18,16 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late var userVm = UserViewModel(context);
+  late var user = userVm.getUserData();
+
+  void logout() async {
+    var result = await userVm.logout();
+    if (result) {
+      Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
+    }
+  }
+
   final globalKey = GlobalKey<ScaffoldState>();
 
   var currentMenu = 'home';
@@ -166,10 +177,31 @@ class _MainPageState extends State<MainPage> {
       : ProfilePage(openDrawer);
     }
 
+    Widget DrawerContent() {
+      return Container(
+        margin: EdgeInsets.only(
+          top: 24
+        ),
+        child: ListView(
+          padding: EdgeInsets.all(24),
+          children: [
+            MainButtonCustom(
+              title: 'Logout',
+              onPressed: (){
+                logout();
+              },
+            )
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: white,
       key: globalKey,
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: DrawerContent(),
+      ),
       body: Container(
         child: Stack(
           children: [

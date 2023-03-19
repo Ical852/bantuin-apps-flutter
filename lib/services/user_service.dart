@@ -52,6 +52,13 @@ class UserService {
     }
 
     var decoded = jsonDecode(response.body);
+
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated') {
+        return null;
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -129,6 +136,101 @@ class UserService {
     }
 
     var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> reset({
+    required String email,
+  }) async {
+    var url = "$baseUrl/user/resetpw";
+    var body = jsonEncode({
+      "email": email,
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: body
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> userUpdate({
+    required String fullName,
+    required String username,
+    required String phoneNumber,
+    required String token,
+  }) async {
+    var url = "$baseUrl/user";
+    var body = jsonEncode({
+      "full_name": fullName,
+      "username": username,
+      "phone_number": phoneNumber,
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+      body: body
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> updatePassword({
+    required String password,
+    required String newPassword,
+    required String token
+  }) async {
+    var url = "$baseUrl/user/changepw";
+    var body = jsonEncode({
+      "password": password,
+      "new_password": newPassword,
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+      body: body
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> logout({
+    required String token
+  }) async {
+    var url = "$baseUrl/user/logout";
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated') {
+        return null;
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 }

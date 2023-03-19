@@ -16,6 +16,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  late var userVm = UserViewModel(context);
+
   TextEditingController emailController = TextEditingController(text: "");
   TextEditingController passwordController = TextEditingController(text: "");
 
@@ -26,9 +28,7 @@ class _SignInPageState extends State<SignInPage> {
     });
   }
 
-  void signIn(context) async {
-    var userVm = UserViewModel(context);
-
+  void signIn() async {
     toggleLoading(true);
     var result = await userVm.signIn(
       email: emailController.text,
@@ -92,7 +92,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 MainButtonCustom(
                   onPressed: () {
-                    signIn(context);
+                    signIn();
                   },
                   title: 'Masuk',
                 ),
