@@ -1,3 +1,4 @@
+import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/widgets/headers/ob_header.dart';
 import 'package:bantuin/widgets/ob_contents.dart';
@@ -30,10 +31,14 @@ class OBCustomer5Page extends StatelessWidget {
                   title: 'Bantuan Selesai',
                   desc: 'Setelah bantuan yang kamu butuhkan selesai, helper akan mendapatkan uang yang kamu pasang, baik pembayaran cash / bantuan money ataupun midtrans payment',
                   mainBtnTitle: 'Lanjutkan',
-                  onMainPress: (){
-                    Navigator.pushNamed(context, '/sign-in');
+                  secBtnTitle: 'Kembali Ke Awal',
+                  onMainPress: () async {
+                    setStringPref('onboarding', 'done');
+                    Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
                   },
-                  mainOnly: true,
+                  onSecPress: (){
+                    Navigator.pushNamedAndRemoveUntil(context, '/tutor-guide', (route) => false);
+                  },
                 )
               )
             ],

@@ -3,11 +3,21 @@ import 'dart:ffi';
 import 'package:bantuin/shared/constants.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String formatter(int number) {
   var formatted = intl.NumberFormat.decimalPattern().format(number);
 
   return 'IDR. ' + formatted.replaceAll(',', '.');
+}
+
+Future<SharedPreferences> prefs() async {
+  return await SharedPreferences.getInstance();
+}
+
+void setStringPref(key, value) async {
+  var pref = await prefs();
+  pref.setString(key, value);
 }
 
 String rawFormat(int number) {

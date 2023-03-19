@@ -1,3 +1,4 @@
+import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/widgets/headers/ob_header.dart';
 import 'package:bantuin/widgets/ob_contents.dart';
@@ -35,7 +36,8 @@ class OBHelper3Page extends StatelessWidget {
                     Navigator.pushNamed(context, '/ob-helper4');
                   },
                   onSecPress: (){
-                    Navigator.pushNamed(context, '/sign-in');
+                    setStringPref('onboarding', 'done');
+                    Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
                   },
                 )
               )

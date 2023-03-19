@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -13,9 +15,26 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), (){
-      Navigator.pushNamed(context, '/get-started');
-    });
+
+    check();
+  }
+
+  void check() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    // prefs.remove('onboarding');
+
+    print(prefs.getString('onboarding'));
+
+    if (prefs.getString('onboarding') != null) {
+      Timer(Duration(seconds: 2), (){
+        Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
+      });
+    } else {
+      Timer(Duration(seconds: 2), (){
+        Navigator.pushNamedAndRemoveUntil(context, '/get-started', (route) => false);
+      });
+    }
   }
 
   @override

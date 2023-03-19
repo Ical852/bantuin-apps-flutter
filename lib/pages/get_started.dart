@@ -36,7 +36,7 @@ class GetStartedPage extends StatelessWidget {
               MainButtonCustom(
                 title: 'Get Started',
                 onPressed: (){
-                  Navigator.pushNamed(context, '/tutor-guide');
+                  Navigator.pushNamedAndRemoveUntil(context, '/tutor-guide', (route) => false);
                 },
               ),
             ],

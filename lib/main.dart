@@ -1,5 +1,5 @@
-import 'package:bantuin/pages/bantuan_pages/my_bantuan_accept_success.dart';
-import 'package:bantuin/pages/bantuan_pages/my_bantuan_done.dart';
+import 'package:bantuin/cubit/base_url_cubit.dart';
+
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
 import 'package:bantuin/pages/test/test.dart';
@@ -46,6 +46,9 @@ import 'package:bantuin/pages/bantuan_pages/my_bantuan_page.dart';
 import 'package:bantuin/pages/top_up/top_up_page.dart';
 import 'package:bantuin/pages/top_up/top_up_success_page.dart';
 
+import 'package:bantuin/pages/bantuan_pages/my_bantuan_accept_success.dart';
+import 'package:bantuin/pages/bantuan_pages/my_bantuan_done.dart';
+
 import 'package:bantuin/pages/help_upload/create_help.dart';
 import 'package:bantuin/pages/help_upload/create_success_page.dart';
 import 'package:bantuin/pages/help_upload/processing_page.dart';
@@ -54,6 +57,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'firebase_options.dart';
 import 'notification_service.dart';
@@ -111,81 +115,86 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: green1));
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: {
-        // Test 3rd Party
-        "/test": (context) => TestPage(),
-        "/maptest":(context) => MapTestPage(),
-        "/chattest":(context) => ChatTestPage(),
-        // Test 3rd Party
-
-        // On Boarding
-        "/" :(context) => SplashPage(),
-        "/get-started":(context) => GetStartedPage(),
-        "/tutor-guide":(context) => TutorGuidePage(),
-        "/tutor-guide-choose":(context) => TutorGuideChoosePage(),
-        "/ob-helper1":(context) => OBHelper1Page(),
-        "/ob-helper2":(context) => OBHelper2Page(),
-        "/ob-helper3":(context) => OBHelper3Page(),
-        "/ob-helper4":(context) => OBHelper4Page(),
-        "/ob-helper5":(context) => OBHelper5Page(),
-        "/ob-customer1":(context) => OBCustomer1Page(),
-        "/ob-customer2":(context) => OBCustomer2Page(),
-        "/ob-customer3":(context) => OBCustomer3Page(),
-        "/ob-customer4":(context) => OBCustomer4Page(),
-        "/ob-customer5":(context) => OBCustomer5Page(),
-        // On Boarding
-
-        // Authentication
-        "/sign-in":(context) => SignInPage(),
-        "/sign-up":(context) => SignUpPage(),
-        "/reset":(context) => ResetPage(),
-        "/reset-success":(context) => ResetSuccessPage(),
-        "/signup-success":(context) => SignUpSuccessPage(),
-        // Authentication
-
-        // Stack Nav
-        "/welcome":(context) => WelcomePage(),
-        // Stack Nav
-
-        // Main Pages
-        "/main":(context) => MainPage(),
-        // Main Pages
-
-        // Help Create Pages
-        "/create-help":(context) => CreateHelpPage(),
-        "/processing-page":(context) => ProcessingPage(),
-        "/create-success-page":(context) => CreateSuccessPage(),
-        // Help Create Pages
-
-        // Top Up Pages
-        "/top-up":(context) => TopUpPage(),
-        "/top-up-success":(context) => TopUpSuccessPage(),
-        // Top Up Pages
-
-        // Top Up Pages
-        "/bantuan-search":(context) => BantuanSerachPage(),
-        "/bantuan-detail": (context) => BantuanDetailPage(),
-        // Top Up Pages
-
-        // Info Pages
-        "/notifications": (context) => NotificationsPage(),
-        "/transactions": (context) => TransactionsPage(),
-        // Info Pages
-
-        // Profile Pages
-        "/edit-profile": (context) => EditProfilePage(),
-        "/change-pw": (context) => ChangePasswordPage(),
-        "/request-success": (context) => RequestSuccessPage(),
-        // Profile Pages
-
-        // Profile Pages
-        "/my-bantuan": (context) => MyBantuanPage(),
-        "/my-bantuan-done": (context) => MyBantuanDonePage(),
-        "/my-bantuan-accept-success": (context) => MyBantuanAcceptSuccess(),
-        // Profile Pages
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => BaseUrlCubit())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        routes: {
+          // Test 3rd Party
+          "/test": (context) => TestPage(),
+          "/maptest":(context) => MapTestPage(),
+          "/chattest":(context) => ChatTestPage(),
+          // Test 3rd Party
+    
+          // On Boarding
+          "/" :(context) => SplashPage(),
+          "/get-started":(context) => GetStartedPage(),
+          "/tutor-guide":(context) => TutorGuidePage(),
+          "/tutor-guide-choose":(context) => TutorGuideChoosePage(),
+          "/ob-helper1":(context) => OBHelper1Page(),
+          "/ob-helper2":(context) => OBHelper2Page(),
+          "/ob-helper3":(context) => OBHelper3Page(),
+          "/ob-helper4":(context) => OBHelper4Page(),
+          "/ob-helper5":(context) => OBHelper5Page(),
+          "/ob-customer1":(context) => OBCustomer1Page(),
+          "/ob-customer2":(context) => OBCustomer2Page(),
+          "/ob-customer3":(context) => OBCustomer3Page(),
+          "/ob-customer4":(context) => OBCustomer4Page(),
+          "/ob-customer5":(context) => OBCustomer5Page(),
+          // On Boarding
+    
+          // Authentication
+          "/sign-in":(context) => SignInPage(),
+          "/sign-up":(context) => SignUpPage(),
+          "/reset":(context) => ResetPage(),
+          "/reset-success":(context) => ResetSuccessPage(),
+          "/signup-success":(context) => SignUpSuccessPage(),
+          // Authentication
+    
+          // Stack Nav
+          "/welcome":(context) => WelcomePage(),
+          // Stack Nav
+    
+          // Main Pages
+          "/main":(context) => MainPage(),
+          // Main Pages
+    
+          // Help Create Pages
+          "/create-help":(context) => CreateHelpPage(),
+          "/processing-page":(context) => ProcessingPage(),
+          "/create-success-page":(context) => CreateSuccessPage(),
+          // Help Create Pages
+    
+          // Top Up Pages
+          "/top-up":(context) => TopUpPage(),
+          "/top-up-success":(context) => TopUpSuccessPage(),
+          // Top Up Pages
+    
+          // Top Up Pages
+          "/bantuan-search":(context) => BantuanSerachPage(),
+          "/bantuan-detail": (context) => BantuanDetailPage(),
+          // Top Up Pages
+    
+          // Info Pages
+          "/notifications": (context) => NotificationsPage(),
+          "/transactions": (context) => TransactionsPage(),
+          // Info Pages
+    
+          // Profile Pages
+          "/edit-profile": (context) => EditProfilePage(),
+          "/change-pw": (context) => ChangePasswordPage(),
+          "/request-success": (context) => RequestSuccessPage(),
+          // Profile Pages
+    
+          // Profile Pages
+          "/my-bantuan": (context) => MyBantuanPage(),
+          "/my-bantuan-done": (context) => MyBantuanDonePage(),
+          "/my-bantuan-accept-success": (context) => MyBantuanAcceptSuccess(),
+          // Profile Pages
+        },
+      ),
     );
   }
 }

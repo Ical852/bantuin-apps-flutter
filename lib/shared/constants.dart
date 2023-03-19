@@ -1,7 +1,16 @@
+import 'package:bantuin/cubit/base_url_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-String baseUrl = "http://192.168.100.16:8000/api";
+String getBaseUrl(BuildContext context) {
+  return context.read<BaseUrlCubit>().state + "/api";
+}
+
+void setBaseUrl(BuildContext context, newUrl) {
+  context.read<BaseUrlCubit>().setBaseUrl(newUrl);
+}
+
 const String google_api_key = "AIzaSyDABhwBawiYKTI63cP4xr1fUZmtXaP8iqI";
 
 TextStyle poppinsText = GoogleFonts.poppins();
