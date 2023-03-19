@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/pages/helper_pages/helper_dashboard.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/img_text_btn/img_desc_btn.dart';
@@ -206,7 +207,13 @@ class _ProfilePageState extends State<ProfilePage> {
               width: 20,
               height: 21,
               onPress: (){
-                showDrawer(context, Platform.isIOS ? 418 : 398, RequestHelperDrawer());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HelperDashboardPage()
+                  )
+                );
+                // showDrawer(context, Platform.isIOS ? 418 : 398, RequestHelperDrawer());
               },
             ),
             ProfileItem(

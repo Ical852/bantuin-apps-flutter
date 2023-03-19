@@ -9,7 +9,7 @@ class WeeklyItem extends StatelessWidget {
   String image, title, desc, location;
   int price;
   Function() onPress;
-  bool isMine;
+  bool isMine, isHelper;
 
   WeeklyItem({
     required this.image,
@@ -18,7 +18,8 @@ class WeeklyItem extends StatelessWidget {
     required this.location,
     required this.price,
     required this.onPress,
-    this.isMine = false
+    this.isMine = false,
+    this.isHelper = false,
   });
 
   @override
@@ -93,7 +94,7 @@ class WeeklyItem extends StatelessWidget {
                     ),
                     onPressed: onPress,
                     child: Text(
-                      isMine ? 'Check' : 'Help',
+                      isMine ? 'Check' : isHelper ? 'Detail' : 'Help',
                       style: xSmallWhiteMedium
                     ),
                   ),
