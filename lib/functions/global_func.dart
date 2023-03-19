@@ -20,6 +20,11 @@ void setStringPref(key, value) async {
   pref.setString(key, value);
 }
 
+void removeStringPref(key) async {
+  var pref = await prefs();
+  pref.remove(key);
+}
+
 String rawFormat(int number) {
   var formatted = intl.NumberFormat.decimalPattern().format(number);
 

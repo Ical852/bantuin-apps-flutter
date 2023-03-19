@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bantuin/shared/constants.dart';
+import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,18 +23,37 @@ class _SplashPageState extends State<SplashPage> {
   void check() async {
     var prefs = await SharedPreferences.getInstance();
 
-    // prefs.remove('onboarding');
+    if (prefs.get('isLoggedIn') != null) {
+      var userVm = UserViewModel(context);
 
-    print(prefs.getString('onboarding'));
+      if (prefs.get('token') != null) {
+        userVm.setToken(prefs.get('token').toString());
+        var result = await userVm.fetch();
 
-    if (prefs.getString('onboarding') != null) {
-      Timer(Duration(seconds: 2), (){
-        Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
-      });
+        if (result) {
+          Timer(Duration(seconds: 2), (){
+            Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+          });
+        } else {
+          Timer(Duration(seconds: 2), (){
+            Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
+          });
+        }
+      } else {
+        Timer(Duration(seconds: 2), (){
+          Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
+        });
+      }
     } else {
-      Timer(Duration(seconds: 2), (){
-        Navigator.pushNamedAndRemoveUntil(context, '/get-started', (route) => false);
-      });
+      if (prefs.getString('onboarding') != null) {
+        Timer(Duration(seconds: 2), (){
+          Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
+        });
+      } else {
+        Timer(Duration(seconds: 2), (){
+          Navigator.pushNamedAndRemoveUntil(context, '/get-started', (route) => false);
+        });
+      }
     }
   }
 

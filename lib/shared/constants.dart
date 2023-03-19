@@ -11,6 +11,18 @@ void setBaseUrl(BuildContext context, newUrl) {
   context.read<BaseUrlCubit>().setBaseUrl(newUrl);
 }
 
+var headers = {
+  "Content-Type": "application/json",
+};
+
+Map<String, String> tokenedHeader(token) {
+  return {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": token
+  };
+}
+
 const String google_api_key = "AIzaSyDABhwBawiYKTI63cP4xr1fUZmtXaP8iqI";
 
 TextStyle poppinsText = GoogleFonts.poppins();

@@ -1,4 +1,6 @@
 import 'package:bantuin/cubit/base_url_cubit.dart';
+import 'package:bantuin/cubit/token_cubit.dart';
+import 'package:bantuin/cubit/user_cubit.dart';
 
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
@@ -117,7 +119,9 @@ class MyApp extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => BaseUrlCubit())
+        BlocProvider(create: (context) => BaseUrlCubit()),
+        BlocProvider(create: (context) => UserCubit()),
+        BlocProvider(create: (context) => TokenCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
