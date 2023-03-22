@@ -1,6 +1,7 @@
 import 'package:bantuin/pages/detail_pages/bantuan_detail_pages.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/buttons/mini_icon_button_custom.dart';
 import 'package:bantuin/widgets/main_items/expensive_item.dart';
@@ -17,6 +18,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late var userVm = UserViewModel(context);
+  late var user = userVm.getUserData();
+
   @override
   Widget build(BuildContext context) {
 
@@ -87,7 +91,7 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: 24,),
             BantuanMoney(
-              money: 9200301,
+              money: user.balance,
               onPress: (){
                 Navigator.pushNamed(context, '/top-up');
               },

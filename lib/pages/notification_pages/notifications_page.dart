@@ -1,6 +1,7 @@
 import 'package:bantuin/pages/notification_pages/notification_detail.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/notification_view_model.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/img_text_btn/img_text_desc_minibtn.dart';
 import 'package:bantuin/widgets/info_items/notification_item.dart';
@@ -12,7 +13,29 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
-  var empty = false;
+  var notifData = [];
+  var loading = false;
+  void toggleLoading(value) {
+    this.setState(() {
+      loading = value;
+    });
+  }
+
+  late var notifVm = NotificationViewModel(context);
+  void getNotifData() async {
+    toggleLoading(true);
+    var result = await notifVm.getAll();
+    toggleLoading(false);
+    this.setState(() {
+      notifData = result;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getNotifData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +87,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
               title: 'New Koz on Jakarta, Check Now !',
               desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard...',
               date: [2023, 05, 20],
-              onPressed: (){},
+              onPressed: (){
+                var test = "2023-03-19T11:54:29.000000Z";
+                var splitted = test.split(test[10]);
+                print(splitted[0]);
+              },
             ),
             NotificationItem(
               title: 'New Modern Place on Bekasi',
@@ -84,8 +111,28 @@ class _NotificationsPageState extends State<NotificationsPage> {
       );
     }
 
+    Widget LoadingContent() {
+      return Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: green1,
+              ),
+              SizedBox(height: 12,),
+              Text(
+                "Sedang mengambil data . . .",
+                style: basePrimarySemibold,
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
     Widget RenderContent() {
-      return empty ? EmptyContent() : ExistContent();
+      return loading ? LoadingContent() : notifData.length > 0 ? ExistContent() : EmptyContent();
     }
 
     return Scaffold(

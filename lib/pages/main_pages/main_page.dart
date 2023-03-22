@@ -190,6 +190,13 @@ class _MainPageState extends State<MainPage> {
               onPressed: (){
                 logout();
               },
+            ),
+            SizedBox(height: 12,),
+            MainButtonCustom(
+              title: 'Check Token',
+              onPressed: () {
+                print(userVm.getToken());
+              },
             )
           ],
         ),

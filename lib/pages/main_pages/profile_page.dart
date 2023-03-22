@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bantuin/functions/global_func.dart';
@@ -7,10 +8,12 @@ import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/img_text_btn/img_desc_btn.dart';
+import 'package:bantuin/widgets/modals/image_picker_modal.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/profile_item.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -24,8 +27,54 @@ class _ProfilePageState extends State<ProfilePage> {
   late var userVm = UserViewModel(context);
   late UserModel user = userVm.getUserData();
 
+  var choosePickImage = false;
+  void toggleChoose(value) {
+    this.setState(() {
+      choosePickImage = value;
+    });
+  }
+
+  Future pickImage(ImageSource source) async {
+    try {
+      XFile? image = await ImagePicker().pickImage(source: source);
+      if (image == null) {
+        return showGLobalAlert('danger', 'Batal Mengambil Gambar?', context);
+      }
+      File img = File(image.path);
+      toggleChoose(false);
+      var result = await userVm.updateAvatar(filePath: img.path);
+      if (result) {
+        this.setState(() {
+          user = userVm.getUserData();
+        });
+      }
+    } catch (e) {
+      showGLobalAlert('danger', 'Terjadi Kesalahan, Coba Lagi Beberapa Saat', context);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userVm.fetch();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget ChooseImagePicker() {
+      return choosePickImage ?
+      ImagePickerModal(
+        bgPress: () => toggleChoose(false),
+        onLibrary: (){
+          pickImage(ImageSource.gallery);
+        },
+        onCamera: (){
+          pickImage(ImageSource.camera);
+        },
+      )
+      :
+      SizedBox();
+    }
 
     Widget HeaderBackground() {
       return Container(
@@ -88,20 +137,24 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         child: Row(
           children: [
-            Container(
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                color: white,
-                borderRadius: BorderRadius.circular(50)
-              ),
-              child: ImageCustom(
-                margin: EdgeInsets.all(4),
-                height: 90,
+            GestureDetector(
+              onTap: () => toggleChoose(true),
+              child: Container(
                 width: 90,
-                image: NetworkImage(user.image),
-                borderRadius: BorderRadius.circular(50),
-                fit: BoxFit.cover,
+                height: 90,
+                decoration: BoxDecoration(
+                  color: white,
+                  borderRadius: BorderRadius.circular(50)
+                ),
+                child: ImageCustom(
+                  margin: EdgeInsets.all(4),
+                  height: 90,
+                  width: 90,
+                  borderRadius: BorderRadius.circular(50),
+                  fit: BoxFit.cover,
+                  network: true,
+                  nwUrl: user.image,
+                ),
               ),
             ),
             Expanded(
@@ -266,14 +319,19 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
-    return SingleChildScrollView(
-      child: Stack(
-        children: [
-          HeaderBackground(),
-          HeaderContent(),
-          MainContent()
-        ],
-      ),
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Stack(
+            children: [
+              HeaderBackground(),
+              HeaderContent(),
+              MainContent(),
+            ],
+          ),
+        ),
+        ChooseImagePicker(),
+      ],
     );
   }
 }

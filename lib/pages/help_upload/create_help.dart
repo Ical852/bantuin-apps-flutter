@@ -11,6 +11,7 @@ import 'package:bantuin/widgets/category_input_item.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/modals/dialog_modal.dart';
+import 'package:bantuin/widgets/modals/image_picker_modal.dart';
 import 'package:bantuin/widgets/price_items/row_price_item.dart';
 import 'package:bantuin/widgets/text_inputs/input_with_button_custom.dart';
 import 'package:bantuin/widgets/text_inputs/main_input_custom.dart';
@@ -177,65 +178,18 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
 
     Widget ChooseImagePicker() {
       return choosePickImage ?
-      GestureDetector(
-        onTap: (){
+      ImagePickerModal(
+        bgPress: (){
           this.setState(() {
             choosePickImage = false;
           });
         },
-        child: Container(
-          color: black.withOpacity(0.5),
-          width: double.infinity,
-          height: double.infinity,
-          child: SimpleDialog(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: 12
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Pilih Pengambilan Gambar',
-                      style: mediumBlackSemibold
-                    ),
-                    SizedBox(height: 8,),
-                    Text(
-                      'Pilih Dari Mana Kamu Ingin Mengambil Gambar Kamu',
-                      style: poppinsText.copyWith(
-                        fontSize: 13,
-                        fontWeight: regular,
-                        color: black1
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 12,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        MiniButtonIconCustom(
-                          icon: Icons.folder,
-                          title: 'Library',
-                          onPress: (){
-                            pickImage(ImageSource.gallery);
-                          },
-                        ),
-                        SizedBox(width: 8,),
-                        MiniButtonIconCustom(
-                          icon: Icons.camera_alt,
-                          title: 'Camera',
-                          onPress: (){
-                            pickImage(ImageSource.camera);
-                          },
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+        onLibrary: (){
+          pickImage(ImageSource.gallery);
+        },
+        onCamera: (){
+          pickImage(ImageSource.camera);
+        },
       )
       :
       SizedBox();

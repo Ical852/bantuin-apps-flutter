@@ -296,6 +296,32 @@ class UserViewModel {
     return true;
   }
 
+  Future<bool> updateAvatar({
+    required String filePath,
+  }) async {
+    var response = await userService.updateAvatar(filePath: filePath, token: this.getToken());
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      return false;
+    }
+
+    var update = await this.fetch();
+    if (update) {
+      showGLobalAlert('success', 'Berhasil Mengganti Gambar', context);
+      return true;
+    } else {
+      showGLobalAlert('danger', 'Gagal Mengganti Gambar', context);
+      return false;
+    }
+  }
+
   Future<bool> logout() async {
     var response = await userService.logout(
       token: this.getToken()
@@ -328,5 +354,4 @@ class UserViewModel {
     showGLobalAlert('danger', 'Logout Failed', context);
     return false;
   }
-
 }

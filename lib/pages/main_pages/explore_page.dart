@@ -1,5 +1,6 @@
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/main_items/special_item.dart';
@@ -13,6 +14,9 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
+  late var userVm = UserViewModel(context);
+  late var user = userVm.getUserData();
+
   @override
   Widget build(BuildContext context) {
 
@@ -108,7 +112,7 @@ class _ExplorePageState extends State<ExplorePage> {
             ),
             SizedBox(height: 14,),
             BantuanMoney(
-              money: 9200301,
+              money: user.balance,
               onPress: (){
                 Navigator.pushNamed(context, '/top-up');
               },

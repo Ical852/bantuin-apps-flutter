@@ -29,7 +29,6 @@ class UserService {
       headers: headers,
       body: body
     );
-
     if (response.body.isEmpty) {
       return null;
     }
@@ -46,13 +45,11 @@ class UserService {
       Uri.parse(url),
       headers: tokenedHeader(token),
     );
-
     if (response.body.isEmpty) {
       return null;
     }
 
     var decoded = jsonDecode(response.body);
-
     if (decoded.containsKey('message')) {
       if (decoded['message'] == 'Unauthenticated') {
         return null;
@@ -82,7 +79,6 @@ class UserService {
       headers: headers,
       body: body
     );
-
     if (response.body.isEmpty) {
       return null;
     }
@@ -107,7 +103,6 @@ class UserService {
       headers: headers,
       body: body
     );
-
     if (response.body.isEmpty) {
       return null;
     }
@@ -130,7 +125,6 @@ class UserService {
       headers: headers,
       body: body
     );
-
     if (response.body.isEmpty) {
       return null;
     }
@@ -151,7 +145,6 @@ class UserService {
       headers: headers,
       body: body
     );
-
     if (response.body.isEmpty) {
       return null;
     }
@@ -177,7 +170,6 @@ class UserService {
       headers: tokenedHeader(token),
       body: body
     );
-
     if (response.body.isEmpty) {
       return null;
     }
@@ -201,7 +193,6 @@ class UserService {
       headers: tokenedHeader(token),
       body: body
     );
-
     if (response.body.isEmpty) {
       return null;
     }
@@ -218,19 +209,36 @@ class UserService {
       Uri.parse(url),
       headers: tokenedHeader(token),
     );
-
     if (response.body.isEmpty) {
       return null;
     }
 
     var decoded = jsonDecode(response.body);
-    
     if (decoded.containsKey('message')) {
       if (decoded['message'] == 'Unauthenticated') {
         return null;
       }
     }
 
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> updateAvatar({
+    required String filePath,
+    required String token
+  }) async {
+    var url = "$baseUrl/user/avatar";
+    var request = await http.MultipartRequest(
+      'POST', Uri.parse(url)
+    )
+      ..files.add(await http.MultipartFile.fromPath('file', filePath))
+      ..headers.addAll(tokenedHeader(token)
+    );
+
+    var streamedResponse  = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+
+    var decoded = jsonDecode(response.body);
     return ResponseModel.fromJson(decoded);
   }
 }
