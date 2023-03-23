@@ -11,7 +11,7 @@ class GetAllNotifResponse {
 
   Map<String, dynamic> toJson() {
     return {
-      "notifications": notifications
+      "notifications": notifications.map((notif) => notif.toJson()).toList()
     };
   }
 }

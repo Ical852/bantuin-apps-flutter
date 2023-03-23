@@ -1,8 +1,11 @@
-import 'dart:io';
+import 'dart:async';
 
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/models/bantuan_category_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/bantuan_view_model.dart';
+import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/detail_page_items/payment_summary.dart';
 import 'package:bantuin/widgets/detail_page_items/price_start_item.dart';
@@ -10,6 +13,7 @@ import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/img_text_btn/img_desc_btn.dart';
 import 'package:bantuin/widgets/line.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:bantuin/widgets/marginner.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money_profile.dart';
 import 'package:bantuin/widgets/money_contents/cash_on_delivery.dart';
@@ -18,15 +22,17 @@ import 'package:bantuin/widgets/title_descs/detail_title_desc.dart';
 import 'package:bantuin/widgets/toggler/multiple_toggler.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class CreateSummaryPage extends StatefulWidget {
   @override
   State<CreateSummaryPage> createState() => _CreateSummaryPageState();
 
   var pickedImage;
-  String title, desc, category, location;
+  String title, desc, location;
   int price;
   LatLng locationLatLng;
+  BantuanCategoryModel category;
 
   CreateSummaryPage(
     this.pickedImage,
@@ -40,6 +46,10 @@ class CreateSummaryPage extends StatefulWidget {
 }
 
 class _CreateSummaryPageState extends State<CreateSummaryPage> {
+  late var userVm = UserViewModel(context);
+  late var bantuanVm = BantuanViewModel(context);
+  late var user = userVm.getUserData();
+
   var currentToggle = 'Bantuan Money';
   var toggles = ['Bantuan Money', 'Midtrans Payment', 'Cash on Delivery'];
   void changeToggle(toggle) {
@@ -47,16 +57,48 @@ class _CreateSummaryPageState extends State<CreateSummaryPage> {
       currentToggle = toggle;
     });
   }
-
-  var currentBM = 500000;
-
-  var keyVals = [
-    ['Full Name', 'Shalahuddin Ahmad Aziz'],
-    ['Email address', 'shalahuddin@gmail.com'],
-    ['Phone Number', '089674839221'],
+  String getPayType() {
+    return currentToggle == "Bantuan Money" ? 'bmoney' : currentToggle == "Midtrans Payment" ? "midtrans" : 'cash';
+  }
+  late var currentBM = user.balance;
+  late var keyVals = [
+    ['Full Name', user.fullName],
+    ['Email address', user.email],
+    ['Phone Number', user.phoneNumber],
   ];
 
+  var loading = false;
+  void toggleLoading(value) {
+    this.setState(() {
+      loading = value;
+    });
+  }
   
+  var paymentUrl = "";
+  void createBantuan() async {
+    toggleLoading(true);
+    var result = await bantuanVm.createBantuan(
+      price: this.widget.price,
+      categoryId: this.widget.category.id,
+      image: this.widget.pickedImage.path,
+      title: this.widget.title,
+      desc: this.widget.desc,
+      location: "${(this.widget.locationLatLng).toString()}|${this.widget.location}",
+      payType: getPayType()
+    );
+    toggleLoading(false);
+    
+    if (getPayType() == "midtrans") {
+      if (result != "") {
+        this.setState(() {
+          paymentUrl = result;
+        });
+      }
+    } else {
+      Navigator.pushNamedAndRemoveUntil(context, '/processing-page', (route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget ImageAndTitle() {
@@ -124,8 +166,8 @@ class _CreateSummaryPageState extends State<CreateSummaryPage> {
           right: 24
         ),
         child: BantuanMoneyProfile(
-          name: 'Shalahuddin Ahmad Aziz',
-          phone: '089674839221',
+          name: user.fullName,
+          phone: user.phoneNumber,
           price: currentBM,
           minus: this.widget.price,
         ),
@@ -202,7 +244,7 @@ class _CreateSummaryPageState extends State<CreateSummaryPage> {
               title: 'Lanjutkan',
               desc: 'Pastikan Kamu Punya Uang Cash yang Pas Untuk Bayar Nanti Yaa',
               onPress: (){
-                Navigator.pushNamed(context, '/processing-page');
+                createBantuan();
               },
             )
           ],
@@ -210,56 +252,95 @@ class _CreateSummaryPageState extends State<CreateSummaryPage> {
       );
     }
 
+    Widget PaymentContent() {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Midtrans Payment"),
+          backgroundColor: green1,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: (){
+              this.setState(() {
+                paymentUrl = "";
+              });
+              Timer(Duration(seconds: 1), () {
+                Navigator.pushNamedAndRemoveUntil(context, '/processing-page', (route) => false);
+              });
+            },
+          ),
+        ),
+        body: WebView(
+          initialUrl: paymentUrl,
+          javascriptMode: JavascriptMode.unrestricted,
+        ),
+      );
+    }
 
-    return Scaffold(
-      backgroundColor: white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            MainHeader(
-              title: 'Pembayaran',
-              onBack: (){
-                Navigator.pop(context);
-              },
-            ),
-            Expanded(
-              child: ListView(
+    Widget LoadingContent() {
+      return Container(
+        color: black.withOpacity(0.5),
+        child: LoadingCustom(title: "Creating Bantuan . . .", isWhite: true,),
+      );
+    }
+
+    Widget DefaultContent() {
+      return Scaffold(
+        backgroundColor: white,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Column(
                 children: [
-                  SizedBox(height: 12,),
-                  ImageAndTitle(),
-                  Line(),
-                  BantuanDetails(),
-                  Line(),
-                  PaymentMethod(),
-                  PaymentSummary(
-                    keyVals: keyVals,
-                    total: this.widget.price,
+                  MainHeader(
+                    title: 'Pembayaran',
+                    onBack: (){
+                      Navigator.pop(context);
+                    },
                   ),
-                  Marginner(
-                    margin: EdgeInsets.only(
-                      top: 32,
-                      left: 24,
-                      right: 24,
-                      bottom: 32
-                    ),
-                    child: MainButtonCustom(
-                      title: 'Cari Bantuan',
-                      onPressed: (){
-                        if (currentToggle == 'Cash on Delivery') {
-                          showDrawer(context, 398, CODDrawerContent());
-                        } else {
-                          Navigator.pushNamed(context, '/processing-page');
-                        }
-                      },
-                      disabled: currentToggle == 'Bantuan Money' && this.widget.price > currentBM,
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        SizedBox(height: 12,),
+                        ImageAndTitle(),
+                        Line(),
+                        BantuanDetails(),
+                        Line(),
+                        PaymentMethod(),
+                        PaymentSummary(
+                          keyVals: keyVals,
+                          total: this.widget.price,
+                        ),
+                        Marginner(
+                          margin: EdgeInsets.only(
+                            top: 32,
+                            left: 24,
+                            right: 24,
+                            bottom: 32
+                          ),
+                          child: MainButtonCustom(
+                            title: 'Cari Bantuan',
+                            onPressed: (){
+                              if (currentToggle == 'Cash on Delivery') {
+                                showDrawer(context, 398, CODDrawerContent());
+                              } else {
+                                createBantuan();
+                              }
+                            },
+                            disabled: currentToggle == 'Bantuan Money' && this.widget.price > currentBM,
+                          ),
+                        )
+                      ],
                     ),
                   )
                 ],
               ),
-            )
-          ],
+              loading ? LoadingContent() : SizedBox()
+            ],
+          )
         ),
-      ),
-    );
+      );
+    }
+
+    return paymentUrl != "" ? PaymentContent() : DefaultContent();
   }
 }

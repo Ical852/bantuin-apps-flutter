@@ -1,3 +1,4 @@
+import 'package:bantuin/models/bantuan_order_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/buttons/detail_button_custom.dart';
@@ -9,13 +10,11 @@ import 'package:flutter/material.dart';
 
 class HelperRequestItem extends StatelessWidget {
 
-  String image, name, desc;
+  BantuanOrderModel order;
   Function() onAccept, onDeny, onChat, onProfile;
 
   HelperRequestItem({
-    required this.image,
-    required this.name,
-    required this.desc,
+    required this.order,
     required this.onAccept,
     required this.onDeny,
     required this.onChat,
@@ -49,8 +48,10 @@ class HelperRequestItem extends StatelessWidget {
                 ImageCustom(
                   width: 46,
                   height: 46,
-                  image: AssetImage(image),
                   borderRadius: BorderRadius.circular(50),
+                  fit: BoxFit.cover,
+                  network: true,
+                  nwUrl: order.helper.user.image,
                 ),
                 SizedBox(width: 12,),
                 Expanded(
@@ -58,11 +59,11 @@ class HelperRequestItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name,
+                        order.helper.user.fullName,
                         style: mediumBlackSemibold,
                       ),
                       Text(
-                        desc,
+                        'Helper',
                         style: regularGrayLight,
                       )
                     ],

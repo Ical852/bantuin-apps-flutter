@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bantuin/cubit/page_cubit.dart';
 import 'package:bantuin/pages/main_pages/chat_page.dart';
 import 'package:bantuin/pages/main_pages/explore_page.dart';
 import 'package:bantuin/pages/main_pages/home_page.dart';
@@ -11,6 +12,7 @@ import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/menu_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -30,9 +32,8 @@ class _MainPageState extends State<MainPage> {
 
   final globalKey = GlobalKey<ScaffoldState>();
 
-  var currentMenu = 'home';
-  bool isActive(menu) {
-    return currentMenu == menu;
+  bool isActive(state, menu) {
+    return state == menu;
   }
 
   void openDrawer() {
@@ -54,7 +55,7 @@ class _MainPageState extends State<MainPage> {
       });
     }
 
-    Widget BottomNavigator() {
+    Widget BottomNavigator(curState) {
       return Align(
         alignment: Alignment.bottomCenter,
         child: Container(
@@ -78,20 +79,16 @@ class _MainPageState extends State<MainPage> {
               MenuItemCustom(
                 icon: 'home',
                 onPress: (){
-                  this.setState(() {
-                    currentMenu = 'home';
-                  });
+                  setPage(context, 'home');
                 },
-                active: isActive('home'),
+                active: isActive(curState, 'home'),
               ),
               MenuItemCustom(
                 icon: 'explore',
                 onPress: (){
-                  this.setState(() {
-                    currentMenu = 'explore';
-                  });
+                  setPage(context, 'explore');
                 },
-                active: isActive('explore'),
+                active: isActive(curState, 'explore'),
               ),
               Container(
                 width: 48,
@@ -99,20 +96,16 @@ class _MainPageState extends State<MainPage> {
               MenuItemCustom(
                 icon: 'chat',
                 onPress: (){
-                  this.setState(() {
-                    currentMenu = 'chat';
-                  });
+                  setPage(context, 'chat');
                 },
-                active: isActive('chat'),
+                active: isActive(curState, 'chat'),
               ),
               MenuItemCustom(
                 icon: 'profile',
                 onPress: (){
-                  this.setState(() {
-                    currentMenu = 'profile';
-                  });
+                  setPage(context, 'profile');
                 },
-                active: isActive('profile'),
+                active: isActive(curState, 'profile'),
               ),
             ],
           ),
@@ -170,10 +163,10 @@ class _MainPageState extends State<MainPage> {
       );
     }
 
-    Widget MainContent() {
-      return currentMenu == 'home' ? HomePage(openDrawer)
-      : currentMenu == 'explore' ? ExplorePage()
-      : currentMenu == 'chat' ? ChatPage(openDrawer)
+    Widget MainContent(curState) {
+      return curState == 'home' ? HomePage(openDrawer)
+      : curState == 'explore' ? ExplorePage()
+      : curState == 'chat' ? ChatPage(openDrawer)
       : ProfilePage(openDrawer);
     }
 
@@ -209,14 +202,18 @@ class _MainPageState extends State<MainPage> {
       drawer: Drawer(
         child: DrawerContent(),
       ),
-      body: Container(
-        child: Stack(
-          children: [
-            MainContent(),
-            navHidden ? SizedBox() : BottomNavigator(),
-            navHidden ? SizedBox() : UploadButton()
-          ],
-        ),
+      body: BlocBuilder<PageCubit, String>(
+        builder: (context, state) {
+          return Container(
+              child: Stack(
+                children: [
+                  MainContent(state),
+                  navHidden ? SizedBox() : BottomNavigator(state),
+                  navHidden ? SizedBox() : UploadButton()
+                ],
+              ),
+            );
+        },
       ),
     );
   }

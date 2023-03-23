@@ -17,7 +17,7 @@ class SignInResponseModel {
     return {
       "access_token": accessToken,
       "token_type": tokenType,
-      "user": user,
+      "user": user.toJson(),
     };
   }
 }

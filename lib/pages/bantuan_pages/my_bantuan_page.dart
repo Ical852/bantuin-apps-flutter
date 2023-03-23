@@ -1,10 +1,15 @@
+import 'dart:convert';
+
+import 'package:bantuin/models/bantuan_model.dart';
 import 'package:bantuin/pages/bantuan_pages/my_bantuan_detail.dart';
 import 'package:bantuin/pages/bantuan_pages/my_bantuan_detail_accepted.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/bantuan_view_model.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/img_text_btn/img_text_desc_minibtn.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:bantuin/widgets/main_items/weekly_item.dart';
 import 'package:bantuin/widgets/title_descs/main_title_desc.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +20,53 @@ class MyBantuanPage extends StatefulWidget {
 }
 
 class _MyBantuanPageState extends State<MyBantuanPage> {
-  var empty = false;
+  late var bantuanVm = BantuanViewModel(context);
+
+  List<BantuanModel> bantuanData = [];
+  List<BantuanModel> filterData = [];
+  bool loading = false;
+  void toggleLoading(value) {
+    this.setState(() {
+      loading = value;
+    });
+  }
+
+  void getMyBantuanData() async {
+    toggleLoading(true);
+    var result = await bantuanVm.getBantuanByUserId();
+    toggleLoading(false);
+    if (result) {
+      this.setState(() {
+        bantuanData = bantuanVm.getMyBantuan();
+        filterData = bantuanVm.getMyBantuan();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMyBantuanData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    getMyBantuanData();
+  }
+
+  void onSearch(value) {
+    var newData = [...bantuanData];
+    var filter = newData.where((bantuan) => 
+      bantuan.title.toLowerCase().contains(value.toString().toLowerCase()) ||
+      bantuan.desc.toLowerCase().contains(value.toString().toLowerCase()) ||
+      bantuan.location.toLowerCase().contains(value.toString().toLowerCase()) ||
+      bantuan.price.toString().contains(value.toString())
+    ).toList();
+    this.setState(() {
+      filterData = filter;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +96,10 @@ class _MyBantuanPageState extends State<MyBantuanPage> {
                     hintText: 'Search Text',
                     hintStyle: regularGrayRegular
                   ),
-                  style: regularBlackRegular
+                  style: regularBlackRegular,
+                  onChanged: (value) {
+                    onSearch(value);
+                  },
                 ),
               ),
             ),
@@ -80,52 +134,42 @@ class _MyBantuanPageState extends State<MyBantuanPage> {
         child: Column(
           children: [
             SizedBox(height: 24,),
-            WeeklyItem(
-              image: 'assets/dummies/dummy10.png',
-              title: 'Bersihin Interior Dalem',
-              desc: 'Ada kosan di bekasi, butuh bantuan bersihin dalem sampe selesai',
-              location: 'Bekasi, Indonesia',
-              price: 2125000,
-              onPress: (){
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => MyBantuanDetailPage()
-                  )
+            Column(
+              children: filterData.map((bantuan) {
+                return WeeklyItem(
+                  bantuan: bantuan,
+                  onPress: (){
+                    Navigator.push(
+                      context, MaterialPageRoute(
+                        builder: (context) {
+                          if (bantuan.status == 'process' || bantuan.status == 'done') {
+                            return MyBantuanDetailAcceptedPage(bantuan);
+                          }
+                          return MyBantuanDetailPage(bantuan);
+                        } 
+                      )
+                    );
+                  },
+                  isMine: true,
                 );
-              },
-              isMine: true,
-            ),
-            WeeklyItem(
-              image: 'assets/dummies/dummy11.png',
-              title: 'Bersihin Kolam Renang',
-              desc: 'Kolam renang gua ijo, kotor, butuh bantuan bersihin, 1,5k lepas',
-              location: 'Bogor, Indonesia',
-              price: 1500000,
-              onPress: (){
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => MyBantuanDetailAcceptedPage()
-                  )
-                );
-              },
-              isMine: true,
-            ),
-            WeeklyItem(
-              image: 'assets/dummies/dummy12.png',
-              title: 'Cuci Motor Gue',
-              desc: 'Motor lama mo di repain, tapi butuh bantu buat di cuci',
-              location: 'Jakarta, Indonesia',
-              price: 1725000,
-              onPress: (){},
-              isMine: true,
-            ),
+              }).toList(),
+            )
           ],
         ),
       );
     }
 
+    Widget LoadingContent() {
+      return Container(
+        margin: EdgeInsets.only(
+          top: 200
+        ),
+        child: LoadingCustom(title: 'Getting Bantuan Data . . .',)
+      );
+    }
+
     Widget RenderContent() {
-      return empty ? EmptyContent() : ExistContent();
+      return loading ? LoadingContent() : bantuanData.length > 0 ? ExistContent() : EmptyContent();
     }
 
     return Scaffold(

@@ -1,4 +1,5 @@
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/models/bantuan_model.dart';
 import 'package:bantuin/pages/bantuan_pages/my_bantuan_helper_request.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
@@ -23,6 +24,9 @@ import 'package:flutter/material.dart';
 class MyBantuanDetailAcceptedPage extends StatefulWidget {
   @override
   State<MyBantuanDetailAcceptedPage> createState() => _MyBantuanDetailAcceptedPageState();
+
+  BantuanModel bantuan;
+  MyBantuanDetailAcceptedPage(this.bantuan);
 }
 
 class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPage> {
@@ -84,49 +88,6 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
         title: 'Detail Bantuin',
         onBack: (){
           Navigator.pop(context);
-        },
-        rightContent: Container(
-          height: 24,
-          width: 24,
-          child: Stack(
-            children: [
-              ImageCustom(
-                width: 17,
-                height: 20,
-                image: AssetImage('assets/icons/ic_notif_chat.png'),
-                fit: BoxFit.cover,
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  width: 11,
-                  height: 11,
-                  margin: EdgeInsets.only(
-                    right: 4
-                  ),
-                  decoration: BoxDecoration(
-                    color: red1,
-                    borderRadius: BorderRadius.circular(50)
-                  ),
-                  child: Center(
-                    child: Text(
-                      "2",
-                      style: xSmallWhiteMedium.copyWith(
-                        fontSize: 5
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        onRightPress: (){
-          Navigator.push(
-            context, MaterialPageRoute(
-              builder: (context) => MyBantuanHelperRequestPage(),
-            )
-          );
         },
       );
     }
@@ -545,7 +506,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                   OwnerItem(
                     ownerImage: 'assets/dummies/owner.png',
                     title: 'Budi Setianto',
-                    subTitle: 'Butuh Bantuan',
+                    subTitle: 'Helper Kamu',
                     onPressed: (){},
                   ),
                   RenderPayType(),

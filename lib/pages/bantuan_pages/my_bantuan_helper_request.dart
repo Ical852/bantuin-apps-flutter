@@ -1,4 +1,5 @@
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/models/bantuan_order_model.dart';
 import 'package:bantuin/pages/helper_pages/helper_profile_page.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
@@ -11,6 +12,9 @@ import 'package:flutter/material.dart';
 class MyBantuanHelperRequestPage extends StatefulWidget {
   @override
   State<MyBantuanHelperRequestPage> createState() => _MyBantuanHelperRequestPageState();
+
+  List<BantuanOrderModel> orders;
+  MyBantuanHelperRequestPage(this.orders);
 }
 
 class _MyBantuanHelperRequestPageState extends State<MyBantuanHelperRequestPage> {
@@ -30,6 +34,7 @@ class _MyBantuanHelperRequestPageState extends State<MyBantuanHelperRequestPage>
           width: 260,
           btnTitle: 'Ke Home',
           onPressed: (){
+            setPage(context, 'home');
             Navigator.pushNamed(context, '/main');
           },
         ),
@@ -87,11 +92,9 @@ class _MyBantuanHelperRequestPageState extends State<MyBantuanHelperRequestPage>
           top: 24
         ),
         child: Column(
-          children: [
-            HelperRequestItem(
-              image: 'assets/dummies/user1.png',
-              name: 'James Curt',
-              desc: 'Helper',
+          children: this.widget.orders.map((order) {
+            return HelperRequestItem(
+              order: order,
               onAccept: () {
                 showDrawer(context, 398, AcceptDrawerContent());
               },
@@ -106,52 +109,14 @@ class _MyBantuanHelperRequestPageState extends State<MyBantuanHelperRequestPage>
                   )
                 );
               },
-            ),
-            HelperRequestItem(
-              image: 'assets/dummies/user2.png',
-              name: 'Rosalie Emily',
-              desc: 'Helper',
-              onAccept: () {
-                showDrawer(context, 398, AcceptDrawerContent());
-              },
-              onDeny: () {
-                showDrawer(context, 398, DenyDrawerContent());
-              },
-              onChat: () {},
-              onProfile: () {
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => HelperProfilePage()
-                  )
-                );
-              },
-            ),
-            HelperRequestItem(
-              image: 'assets/dummies/user3.png',
-              name: 'Anna Joeson',
-              desc: 'Helper',
-              onAccept: () {
-                showDrawer(context, 398, AcceptDrawerContent());
-              },
-              onDeny: () {
-                showDrawer(context, 398, DenyDrawerContent());
-              },
-              onChat: () {},
-              onProfile: () {
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => HelperProfilePage()
-                  )
-                );
-              },
-            ),
-          ],
+            );
+          }).toList()
         ),
       );
     }
 
     Widget RenderContent() {
-      return empty ? EmptyContent() : ExistContent();
+      return this.widget.orders.length > 0 ?  ExistContent() : EmptyContent();
     }
 
     return Scaffold(

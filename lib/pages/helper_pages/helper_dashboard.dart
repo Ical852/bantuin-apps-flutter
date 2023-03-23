@@ -107,53 +107,53 @@ class _HelperDashboardPageState extends State<HelperDashboardPage> {
         ),
         child: Column(
           children: [
-            WeeklyItem(
-              image: 'assets/dummies/dummy10.png',
-              title: 'Bersihin Interior Dalem', 
-              desc:
-                  'Ada kosan di bekasi, butuh bantuan bersihin dalem sampe selesai',
-              location: 'Bekasi, Indonesia',
-              price: 2125000,
-              onPress: () {
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => HelperBantuanDetailOnGoingPage(),
-                  )
-                );
-              },
-              isHelper: true,
-            ),
-            WeeklyItem(
-              image: 'assets/dummies/dummy11.png',
-              title: 'Bersihin Kolam Renang',
-              desc:
-                  'Kolam renang gua ijo, kotor, butuh bantuan bersihin, 1,5k lepas',
-              location: 'Bogor, Indonesia',
-              price: 1500000,
-              onPress: () {
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => HelperBantuanDetailOnGoingPage(),
-                  )
-                );
-              },
-              isHelper: true,
-            ),
-            WeeklyItem(
-              image: 'assets/dummies/dummy12.png',
-              title: 'Cuci Motor Gue',
-              desc: 'Motor lama mo di repain, tapi butuh bantu buat di cuci',
-              location: 'Jakarta, Indonesia',
-              price: 1725000,
-              onPress: () {
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => HelperBantuanDetailOnGoingPage(),
-                  )
-                );
-              },
-              isHelper: true,
-            ),
+            // WeeklyItem(
+            //   image: 'assets/dummies/dummy10.png',
+            //   title: 'Bersihin Interior Dalem', 
+            //   desc:
+            //       'Ada kosan di bekasi, butuh bantuan bersihin dalem sampe selesai',
+            //   location: 'Bekasi, Indonesia',
+            //   price: 2125000,
+            //   onPress: () {
+            //     Navigator.push(
+            //       context, MaterialPageRoute(
+            //         builder: (context) => HelperBantuanDetailOnGoingPage(),
+            //       )
+            //     );
+            //   },
+            //   isHelper: true,
+            // ),
+            // WeeklyItem(
+            //   image: 'assets/dummies/dummy11.png',
+            //   title: 'Bersihin Kolam Renang',
+            //   desc:
+            //       'Kolam renang gua ijo, kotor, butuh bantuan bersihin, 1,5k lepas',
+            //   location: 'Bogor, Indonesia',
+            //   price: 1500000,
+            //   onPress: () {
+            //     Navigator.push(
+            //       context, MaterialPageRoute(
+            //         builder: (context) => HelperBantuanDetailOnGoingPage(),
+            //       )
+            //     );
+            //   },
+            //   isHelper: true,
+            // ),
+            // WeeklyItem(
+            //   image: 'assets/dummies/dummy12.png',
+            //   title: 'Cuci Motor Gue',
+            //   desc: 'Motor lama mo di repain, tapi butuh bantu buat di cuci',
+            //   location: 'Jakarta, Indonesia',
+            //   price: 1725000,
+            //   onPress: () {
+            //     Navigator.push(
+            //       context, MaterialPageRoute(
+            //         builder: (context) => HelperBantuanDetailOnGoingPage(),
+            //       )
+            //     );
+            //   },
+            //   isHelper: true,
+            // ),
           ],
         ),
       );
@@ -190,53 +190,53 @@ class _HelperDashboardPageState extends State<HelperDashboardPage> {
         ),
         child: Column(
           children: [
-            WeeklyItem(
-              image: 'assets/dummies/dummy11.png',
-              title: 'Bersihin Kolam Renang',
-              desc:
-                  'Kolam renang gua ijo, kotor, butuh bantuan bersihin, 1,5k lepas',
-              location: 'Bogor, Indonesia',
-              price: 1500000,
-              onPress: () {
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => HelperBantuanDetailDonePage(),
-                  )
-                );
-              },
-              isHelper: true,
-            ),
-            WeeklyItem(
-              image: 'assets/dummies/dummy12.png',
-              title: 'Cuci Motor Gue',
-              desc: 'Motor lama mo di repain, tapi butuh bantu buat di cuci',
-              location: 'Jakarta, Indonesia',
-              price: 1725000,
-              onPress: () {
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => HelperBantuanDetailDonePage(),
-                  )
-                );
-              },
-              isHelper: true,
-            ),
-            WeeklyItem(
-              image: 'assets/dummies/dummy10.png',
-              title: 'Bersihin Interior Dalem', 
-              desc:
-                  'Ada kosan di bekasi, butuh bantuan bersihin dalem sampe selesai',
-              location: 'Bekasi, Indonesia',
-              price: 2125000,
-              onPress: () {
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => HelperBantuanDetailDonePage(),
-                  )
-                );
-              },
-              isHelper: true,
-            ),
+            // WeeklyItem(
+            //   image: 'assets/dummies/dummy11.png',
+            //   title: 'Bersihin Kolam Renang',
+            //   desc:
+            //       'Kolam renang gua ijo, kotor, butuh bantuan bersihin, 1,5k lepas',
+            //   location: 'Bogor, Indonesia',
+            //   price: 1500000,
+            //   onPress: () {
+            //     Navigator.push(
+            //       context, MaterialPageRoute(
+            //         builder: (context) => HelperBantuanDetailDonePage(),
+            //       )
+            //     );
+            //   },
+            //   isHelper: true,
+            // ),
+            // WeeklyItem(
+            //   image: 'assets/dummies/dummy12.png',
+            //   title: 'Cuci Motor Gue',
+            //   desc: 'Motor lama mo di repain, tapi butuh bantu buat di cuci',
+            //   location: 'Jakarta, Indonesia',
+            //   price: 1725000,
+            //   onPress: () {
+            //     Navigator.push(
+            //       context, MaterialPageRoute(
+            //         builder: (context) => HelperBantuanDetailDonePage(),
+            //       )
+            //     );
+            //   },
+            //   isHelper: true,
+            // ),
+            // WeeklyItem(
+            //   image: 'assets/dummies/dummy10.png',
+            //   title: 'Bersihin Interior Dalem', 
+            //   desc:
+            //       'Ada kosan di bekasi, butuh bantuan bersihin dalem sampe selesai',
+            //   location: 'Bekasi, Indonesia',
+            //   price: 2125000,
+            //   onPress: () {
+            //     Navigator.push(
+            //       context, MaterialPageRoute(
+            //         builder: (context) => HelperBantuanDetailDonePage(),
+            //       )
+            //     );
+            //   },
+            //   isHelper: true,
+            // ),
           ],
         ),
       );

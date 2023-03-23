@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bantuin/pages/top_up/top_up_summary.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/buttons/mini_icon_button_custom.dart';
 import 'package:bantuin/widgets/line.dart';
@@ -18,6 +19,9 @@ class TopUpPage extends StatefulWidget {
 }
 
 class _TopUpPageState extends State<TopUpPage> {
+  late var userVm = UserViewModel(context);
+  late var user = userVm.getUserData();
+
   TextEditingController priceController = TextEditingController(text: "");
   var currentPrice = 0;
   var prices = [
@@ -80,9 +84,9 @@ class _TopUpPageState extends State<TopUpPage> {
             ),
             SizedBox(height: 27,),
             BantuanMoneyProfile(
-              name: 'Shalahuddin Ahmad Aziz',
-              phone: '089674839221',
-              price: 9200301,
+              name: user.fullName,
+              phone: user.phoneNumber,
+              price: user.balance,
             ),
             SizedBox(height: 32,),
             Line()

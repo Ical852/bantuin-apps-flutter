@@ -1,4 +1,5 @@
 import 'package:bantuin/cubit/base_url_cubit.dart';
+import 'package:bantuin/cubit/page_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +10,10 @@ String getBaseUrl(BuildContext context) {
 
 void setBaseUrl(BuildContext context, newUrl) {
   context.read<BaseUrlCubit>().setBaseUrl(newUrl);
+}
+
+void setPage(BuildContext context, newPage) {
+  context.read<PageCubit>().setPage(newPage);
 }
 
 var headers = {

@@ -71,39 +71,19 @@ class _NotificationsPageState extends State<NotificationsPage> {
               style: mediumBlackSemibold,
             ),
             SizedBox(height: 16,),
-            NotificationItem(
-              title: 'Your account has been verified',
-              desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard...',
-              date: [2023, 05, 20],
-              onPressed: (){
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => NotificationDetailPage()
-                  )
+            Column(
+              children: this.notifData.map((notif) {
+                return NotificationItem(
+                  notif: notif,
+                  onPressed: (){
+                    Navigator.push(
+                      context, MaterialPageRoute(
+                        builder: (context) => NotificationDetailPage(notif)
+                      )
+                    );
+                  },
                 );
-              },
-            ),
-            NotificationItem(
-              title: 'New Koz on Jakarta, Check Now !',
-              desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard...',
-              date: [2023, 05, 20],
-              onPressed: (){
-                var test = "2023-03-19T11:54:29.000000Z";
-                var splitted = test.split(test[10]);
-                print(splitted[0]);
-              },
-            ),
-            NotificationItem(
-              title: 'New Modern Place on Bekasi',
-              desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard...',
-              date: [2023, 05, 20],
-              onPressed: (){},
-            ),
-            NotificationItem(
-              title: 'Don’t Forget to Check Your Rent !',
-              desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry`s standard...',
-              date: [2023, 05, 20],
-              onPressed: (){},
+              }).toList(),
             ),
             SizedBox(height: 120,)
           ],

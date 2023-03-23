@@ -11,15 +11,17 @@ class NotificationViewModel {
   late BuildContext context;
   late NotificationService notificationService;
   late UserViewModel userVm;
+  late String token;
 
   NotificationViewModel(BuildContext context) {
     this.notificationService = NotificationService(context);
     this.userVm = UserViewModel(context);
+    this.token = this.userVm.getToken();
     this.context = context;
   }
 
   Future<List<NotificationModel>> getAll() async {
-    var response = await notificationService.getAll(token: userVm.getToken());
+    var response = await notificationService.getAll(token: token);
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
       return [];
@@ -34,7 +36,6 @@ class NotificationViewModel {
     }
 
     var notifResponse = GetAllNotifResponse.fromJson(response);
-    showGLobalAlert('success', 'Get Notifications Data Success', context);
     return notifResponse.notifications;
   }
 }

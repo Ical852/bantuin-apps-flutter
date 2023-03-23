@@ -32,8 +32,8 @@ class UserModel {
       "phone_number": phoneNumber,
       "email": email,
       "role": role,
-      "helper": helper,
-      "user_device": userDevice,
+      "helper": helper != null ? helper!.toJson() : helper,
+      "user_device": userDevice != null ? userDevice!.toJson() : userDevice,
     };
   }
 }

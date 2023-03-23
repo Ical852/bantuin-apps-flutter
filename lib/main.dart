@@ -1,4 +1,6 @@
 import 'package:bantuin/cubit/base_url_cubit.dart';
+import 'package:bantuin/cubit/my_bantuan_cubit.dart';
+import 'package:bantuin/cubit/page_cubit.dart';
 import 'package:bantuin/cubit/token_cubit.dart';
 import 'package:bantuin/cubit/user_cubit.dart';
 
@@ -122,6 +124,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => BaseUrlCubit()),
         BlocProvider(create: (context) => UserCubit()),
         BlocProvider(create: (context) => TokenCubit()),
+        BlocProvider(create: (context) => MyBantuanCubit()),
+        BlocProvider(create: (context) => PageCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

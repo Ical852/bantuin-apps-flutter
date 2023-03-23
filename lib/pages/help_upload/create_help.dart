@@ -1,11 +1,11 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/models/bantuan_category_model.dart';
 import 'package:bantuin/pages/help_upload/create_summary.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/bantuan_view_model.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
-import 'package:bantuin/widgets/buttons/mini_button_icon_custom.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/category_input_item.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
@@ -34,16 +34,29 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
   TextEditingController titleController = TextEditingController(text: "");
   TextEditingController priceController = TextEditingController(text: "");
   TextEditingController descController = TextEditingController(text: "");
+  late var bantuanVm = BantuanViewModel(context);
+
   var currentPrice = 0;
   var prices = [
     [50000, 100000], [200000, 300000], [500000, 1000000]
   ];
-  var category = 'Lainnya';
-  var categories = [
-    'Game', 'Pembangunan', 'Kebersihan', 'Lainnya'
-  ];
+  BantuanCategoryModel category = BantuanCategoryModel(1, "Game");
+  List<BantuanCategoryModel> categories = [];
   File? pickedImage = null;
   var choosePickImage = false;
+
+  void getCategories() async {
+    var result = await bantuanVm.getCategories();
+    this.setState(() {
+      categories = result;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCategories();
+  }
 
   void setFastPrice(price, setState) {
     this.priceController.text = price.toString();
@@ -147,6 +160,9 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
         builder: ((BuildContext context, StateSetter setState) {
           return Container(
             child: ListView(
+              padding: EdgeInsets.only(
+                bottom: 70
+              ),
               children: [
                 Container(
                   margin: EdgeInsets.symmetric(
@@ -161,7 +177,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                 Column(
                   children: categories.map((cat) {
                     return CategoryInputItem(
-                      title: cat,
+                      title: cat.name,
                       onPress: (){
                         setCategory(cat, setState);
                       },
@@ -298,7 +314,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      category,
+                      category.name,
                       style: mediumBlackRegular
                     ),
                     ImageCustom(
