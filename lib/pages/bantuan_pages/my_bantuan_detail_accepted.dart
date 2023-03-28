@@ -1,8 +1,10 @@
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/models/bantuan_model.dart';
+import 'package:bantuin/models/bantuan_order_model.dart';
 import 'package:bantuin/pages/bantuan_pages/my_bantuan_helper_request.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/bantuan_order_view_model.dart';
 import 'package:bantuin/widgets/buttons/detail_button_custom.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/cancel_item.dart';
@@ -12,6 +14,7 @@ import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/img_text_btn/img_desc_btn.dart';
 import 'package:bantuin/widgets/line.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:bantuin/widgets/marginner.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money_profile.dart';
 import 'package:bantuin/widgets/money_contents/cash_on_delivery.dart';
@@ -30,7 +33,22 @@ class MyBantuanDetailAcceptedPage extends StatefulWidget {
 }
 
 class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPage> {
-  var payType = 'bmoney';
+  BantuanOrderModel? order = null;
+  late var boVm = BantuanOrderViewModel(context);
+  void getOrderDetailData() async {
+    var result = await boVm.getDetailOrderByBantuanId(bantuanId: this.widget.bantuan.id);
+
+    if (result != null) {
+      this.setState(() {
+        order = result;
+      });
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    getOrderDetailData();
+  }
 
   var cancels = [
     'Helper Kurang Ramah', 'Berubah Pikiran', 'Waktu Lewat', 'Kurang Jelas', 'Penipuan',
@@ -69,7 +87,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
   }
 
   bool isContain(reason) {
-    return  selected.contains(reason);
+    return selected.contains(reason);
   }
 
   void onChange(reason, setState) {
@@ -101,7 +119,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
           bottom: 32
         ),
         child: CashOnDelivery(
-          price: 6000000,
+          price: order!.bantuan!.price,
           detail: true,
         ),
       );
@@ -115,7 +133,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
         ),
         child: MidtransPay(
           detail: true,
-          total: 6000000,
+          total: order!.bantuan!.price,
         ),
       );
     }
@@ -133,15 +151,15 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
           phone: '089674839221',
           price: 0,
           noMain: true,
-          plus: 6000000,
+          plus: order!.bantuan!.price,
           title: 'Helper akan mendapatkan',
         ),
       );
     }
 
     Widget RenderPayType() {
-      return payType == 'bmoney' ? BMoneyPayType()
-      : payType == 'midtrans' ? MidtransPayType()
+      return order!.bantuan!.payType == 'bmoney' ? BMoneyPayType()
+      : order!.bantuan!.payType == 'midtrans' ? MidtransPayType()
       : CODPayType();
     }
 
@@ -152,12 +170,13 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
           ImageCustom(
             height: 227,
             width: double.infinity,
-            image: AssetImage('assets/dummies/dummy1.png'),
             margin: EdgeInsets.symmetric(
               horizontal: 24
             ),
             fit: BoxFit.cover,
             borderRadius: BorderRadius.circular(12),
+            network: true,
+            nwUrl: order!.bantuan!.image,
           ),
           SizedBox(height: 24,),
           Marginner(
@@ -165,7 +184,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
               horizontal: 24  
             ),
             child: Text(
-              'Jadi Keamanan Camping Hutan Mangroove',
+              order!.bantuan!.title,
               style: baseBlackSemibold,
             ),
           ),
@@ -182,17 +201,17 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PriceStartItem(
-              price: 6000000,
+              price: order!.bantuan!.price,
             ),
             SizedBox(height: 20,),
             DetailTitleDesc(
               title: 'Description',
-              desc: 'Jadi kemanan camping gua ngejaga malam pagi siang dan sore, 18 jam, fasilitas tersedia semua, senter, tenda, terpal, karpet, makan pagi, siang, sore, malem, dijamin komplit.',
+              desc: order!.bantuan!.desc,
             ),
             SizedBox(height: 20,),
             DetailTitleDesc(
               title: 'Location',
-              desc: 'Jl. Cemara 2, Poris Indah Blok H 40, Tangerang, Banten',
+              desc: order!.bantuan!.location.split('|')[1],
             ),
             SizedBox(height: 24,),
           ],
@@ -486,37 +505,51 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
       );
     }
 
-    return Scaffold(
-      backgroundColor: white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            HeaderContent(),
-            Expanded(
-              child: ListView(
-                children: [
-                  ImageAndTitle(),
-                  Marginner(
-                    margin: EdgeInsets.symmetric(
-                      vertical: 24
+    Widget MainContent() {
+      return Scaffold(
+        backgroundColor: white,
+        body: SafeArea(
+          child: Column(
+            children: [
+              HeaderContent(),
+              Expanded(
+                child: ListView(
+                  children: [
+                    ImageAndTitle(),
+                    Marginner(
+                      margin: EdgeInsets.symmetric(
+                        vertical: 24
+                      ),
+                      child: Line()
                     ),
-                    child: Line()
-                  ),
-                  BantuanDetails(),
-                  OwnerItem(
-                    ownerImage: 'assets/dummies/owner.png',
-                    title: 'Budi Setianto',
-                    subTitle: 'Helper Kamu',
-                    onPressed: (){},
-                  ),
-                  RenderPayType(),
-                  BottomButton()
-                ],
-              ),
-            )
-          ],
+                    BantuanDetails(),
+                    OwnerItem(
+                      ownerImage: 'assets/dummies/owner.png',
+                      title: 'Budi Setianto',
+                      subTitle: 'Helper Kamu',
+                      onPressed: (){},
+                    ),
+                    RenderPayType(),
+                    BottomButton()
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
+
+    Widget LoadingContent() {
+      return Scaffold(
+        body: Container(
+          child: LoadingCustom(
+            title: 'Loading . . .',
+          ),
+        ),
+      );
+    }
+
+    return order == null ? LoadingContent() : MainContent();
   }
 }

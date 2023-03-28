@@ -29,8 +29,6 @@ class BantuanOrderViewModel {
       bantuanId: bantuanId
     );
 
-    print(response);
-
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
       return [];
@@ -46,5 +44,84 @@ class BantuanOrderViewModel {
 
     var bantuanResponse = GetBantuanOrderRequestResponse.fromJson(response);
     return bantuanResponse.bantuanOrders;
+  }
+
+  Future<bool> acceptOrder({
+    required int orderId
+  }) async {
+    var response = await bantuanOrderService.acceptOrder(
+      token: token,
+      orderId: orderId
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Accept Order Failed', context);
+      if (response.data != null) {
+        if (response.data.containsKey('message')) {
+          showGLobalAlert('danger', response.data['message'], context);
+        }
+      }
+      return false;
+    }
+
+    showGLobalAlert('success', 'Accept Order Success', context);
+    return true;
+  }
+
+  Future<bool> denyOrder({
+    required int orderId
+  }) async {
+    var response = await bantuanOrderService.denyOrder(
+      token: token,
+      orderId: orderId
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Deny Order Failed', context);
+      if (response.data != null) {
+        if (response.data.containsKey('message')) {
+          showGLobalAlert('danger', response.data['message'], context);
+        }
+      }
+      return false;
+    }
+
+    showGLobalAlert('success', 'Deny Order Success', context);
+    return true;
+  }
+
+  Future<BantuanOrderModel?> getDetailOrderByBantuanId({
+    required int bantuanId
+  }) async {
+    var response = await bantuanOrderService.getDetailOrderByBantuanId(
+      token: token,
+      bantuanId: bantuanId
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return null;
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Get Bantuans Order Detail Data Failed', context);
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      return null;
+    }
+
+    var bantuanResponse = BantuanOrderModel.fromJson(response.data[0]);
+    return bantuanResponse;
   }
 }

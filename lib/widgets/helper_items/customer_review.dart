@@ -39,8 +39,9 @@ class CustomerReview extends StatelessWidget {
           ImageCustom(
             height: 36,
             width: 36,
-            image: AssetImage(image),
             borderRadius: BorderRadius.circular(50),
+            network: true,
+            nwUrl: image,
           ),
           SizedBox(width: 12,),
           Expanded(

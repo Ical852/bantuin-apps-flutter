@@ -1,4 +1,5 @@
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/models/bantuan_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/image_custom.dart';
@@ -6,20 +7,20 @@ import 'package:bantuin/widgets/location_tag.dart';
 import 'package:flutter/material.dart';
 
 class NewItem extends StatelessWidget {
-  String image, title, desc, location;
-  int price;
+  BantuanModel bantuan;
   Function() onPress;
   bool noButton;
 
   NewItem({
-    required this.image,
-    required this.title,
-    required this.desc,
-    required this.location,
-    required this.price,
+    required this.bantuan,
     required this.onPress,
     this.noButton = false
   });
+
+  String getLocation() {
+    return bantuan.location.split('|')[1];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,26 +45,27 @@ class NewItem extends StatelessWidget {
           ImageCustom(
             width: 118,
             height: 118,
-            image: AssetImage(image),
             fit: BoxFit.cover,
             borderRadius: BorderRadius.circular(12),
+            network: true,
+            nwUrl: bantuan.image,
           ),
           SizedBox(width: 16,),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LocationTag(location: location),
+                LocationTag(location: getLocation()),
                 SizedBox(height: 7,),
                 Text(
-                  title,
+                  bantuan.title,
                   style: regularBlackSemibold,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 7,),
                 Text(
-                  desc,
+                  bantuan.desc,
                   style: xSmallGrayRegular,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -73,7 +75,7 @@ class NewItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      formatter(price),
+                      formatter(bantuan.price),
                       style: regularPrimarySemibold
                     ),
                     noButton ? SizedBox() : Container(

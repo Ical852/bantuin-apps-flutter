@@ -12,18 +12,6 @@ class NotificationItem extends StatelessWidget {
     required this.notif
   });
 
-  Map<String, int> getDate() {
-    var split = notif.createdAt.split(notif.createdAt[10]);
-    var date = split[0];
-    var format = date.split("-");
-
-    return {
-      "year": int.parse(date[0]),
-      "month": int.parse(date[1]),
-      "day": int.parse(date[2])
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -72,7 +60,7 @@ class NotificationItem extends StatelessWidget {
             ),
             SizedBox(width: 16,),
             Text(
-              getDayMonth(getDate()['year'], getDate()['month'], getDate()['day']),
+              getDayMonth(getDate(notif)['year'], getDate(notif)['month'], getDate(notif)['day']),
               style: xSmallGrayLight,
             )
           ],

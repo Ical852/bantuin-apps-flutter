@@ -1,4 +1,5 @@
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/models/transaction_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/info_items/status_tag.dart';
@@ -6,17 +7,29 @@ import 'package:flutter/material.dart';
 
 class TransactionItem extends StatelessWidget {
 
-  String title;
-  int price;
-  List<int> date;
-  bool failed;
+  TransactionModel transaction;
 
   TransactionItem({
-    required this.title,
-    required this.price,
-    required this.date,
-    this.failed = false
+    required this.transaction,
   });
+
+  String trxType() {
+    return transaction.transactionType == 'topup' ? 'Top Up Bantuin Money' : 'Create Bantuan';
+  }
+
+  String payMethod() {
+    var payMethods = transaction.paymentMethod;
+
+    return payMethods == 'midtrans' ? 'Midtrans' : payMethods == 'cash' ? 'Cash on Delivery' : 'Bantuin Money';
+  }
+
+  String generateTitle() {
+    return trxType() + " - " + payMethod();
+  }
+
+  bool getStatus() {
+    return transaction.status != 'success';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,24 +60,24 @@ class TransactionItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    generateTitle(),
                     style: regularBlackSemibold,
                   ),
                   SizedBox(height: 11,),
                   Text(
-                    formatter(price),
+                    formatter(transaction.grossAmount),
                     style: mediumBlackSemibold,
                   ),
                   SizedBox(height: 11,),
                   StatusTag(
-                    failed: failed,
+                    failed: getStatus(),
                   )
                 ],
               ),
             ),
             SizedBox(width: 16,),
             Text(
-              getDayMonth(date[0], date[1], date[2]),
+              getDayMonth(getDate(transaction)['year'], getDate(transaction)['month'], getDate(transaction)['day']),
               style: xSmallGrayLight,
             )
           ],

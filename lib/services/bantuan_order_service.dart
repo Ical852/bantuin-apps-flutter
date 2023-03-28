@@ -31,4 +31,66 @@ class BantuanOrderService {
     var decoded = jsonDecode(response.body);
     return ResponseModel.fromJson(decoded);
   }
+
+  Future<ResponseModel?> acceptOrder({
+    required int orderId,
+    required String token
+  }) async {
+    var url = "$baseUrl/order/accept";
+    var body = jsonEncode({
+      "order_id": orderId
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+      body: body
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> denyOrder({
+    required int orderId,
+    required String token
+  }) async {
+    var url = "$baseUrl/order/deny";
+    var body = jsonEncode({
+      "order_id": orderId
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+      body: body
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> getDetailOrderByBantuanId({
+    required int bantuanId,
+    required String token
+  }) async {
+    var url = "$baseUrl/order?bantuan_id=$bantuanId&status=process";
+    var response = await http.get(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
 }

@@ -1,8 +1,10 @@
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/transaction_view_model.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/img_text_btn/img_text_desc_minibtn.dart';
 import 'package:bantuin/widgets/info_items/transaction_item.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:flutter/material.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -11,7 +13,31 @@ class TransactionsPage extends StatefulWidget {
 }
 
 class _TransactionsPageState extends State<TransactionsPage> {
-  var empty = false;
+  late var trxVm = TransactionViewModel(context);
+
+  var trxData = [];
+  var loading = false;
+  void toggleLoading(value) {
+    this.setState(() {
+      loading = value;
+    });
+  }
+
+  void getTrxData() async {
+    toggleLoading(true);
+    var result = await trxVm.getTransactions();
+    toggleLoading(false);
+
+    this.setState(() {
+      trxData = result;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getTrxData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,26 +73,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
               style: mediumBlackSemibold,
             ),
             SizedBox(height: 16,),
-            TransactionItem(
-              title: 'Top Up Bantuin Money - Midtrans',
-              price: 275000,
-              date: [2023, 05, 20],
-              failed: true,
-            ),
-            TransactionItem(
-              title: 'Bayar Helper - Midtrans',
-              price: 575000,
-              date: [2023, 05, 22],
-            ),
-            TransactionItem(
-              title: 'Bayar Helper - Bantuin Money',
-              price: 375000,
-              date: [2023, 05, 25],
-            ),
-            TransactionItem(
-              title: 'Bayar Helper - Cash on Delivery',
-              price: 10375000,
-              date: [2023, 05, 28],
+            Column(
+              children: trxData.map((trx) {
+                return TransactionItem(transaction: trx);
+              }).toList(),
             ),
             SizedBox(height: 120,)
           ],
@@ -74,8 +84,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
       );
     }
 
+    Widget LoadingContent() {
+      return Container(
+        child: LoadingCustom(title: 'Getting Transaction Data . . .'),
+      );
+    }
+
     Widget RenderContent() {
-      return empty ? EmptyContent() : ExistContent();
+      return loading ? LoadingContent() : trxData.length > 0 ? ExistContent() : EmptyContent();
     }
 
     return Scaffold(

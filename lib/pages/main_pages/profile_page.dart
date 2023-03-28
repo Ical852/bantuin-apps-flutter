@@ -6,8 +6,10 @@ import 'package:bantuin/models/user_model.dart';
 import 'package:bantuin/pages/helper_pages/helper_dashboard.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/helper_view_model.dart';
 import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/img_text_btn/img_desc_btn.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:bantuin/widgets/modals/image_picker_modal.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/image_custom.dart';
@@ -25,12 +27,20 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late var userVm = UserViewModel(context);
+  late var helperVm = HelperViewModel(context);
   late UserModel user = userVm.getUserData();
 
   var choosePickImage = false;
   void toggleChoose(value) {
     this.setState(() {
       choosePickImage = value;
+    });
+  }
+
+  var loading = false;
+  void toggleLoading(value) {
+    this.setState(() {
+      loading = value;
     });
   }
 
@@ -50,6 +60,17 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     } catch (e) {
       showGLobalAlert('danger', 'Terjadi Kesalahan, Coba Lagi Beberapa Saat', context);
+    }
+  }
+
+  void requestToBeHelper() async {
+    Navigator.pop(context);
+    toggleLoading(true);
+    var result = await helperVm.requestToBeHelper();
+    toggleLoading(false);
+
+    if (result) {
+      Navigator.pushNamedAndRemoveUntil(context, '/request-success', (route) => false);
     }
   }
 
@@ -176,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     SizedBox(height: 4,),
                     Text(
-                      user.helper != null ? 'Customer & Helper' : 'Customer',
+                      user.helper != null && user.helper?.status == 'active' ? 'Customer & Helper' : 'Customer',
                       style: regularWhiteRegular
                     ),
                   ],
@@ -223,9 +244,14 @@ class _ProfilePageState extends State<ProfilePage> {
             ImgDescBtn(
               image: 'assets/illustrations/il_obhelp.png',
               title: 'Daftar',
-              desc: 'Request ke admin untuk mendaftar menjadi helper?',
+              desc: user.helper?.status == 'pending' ? 'Permintann Kamu Sedang Di Proses, Tunggu Hingga Admin Mengonfirmasi Permintaan Kamu' : 'Request ke admin untuk mendaftar menjadi helper?',
               onPress: () {
-                Navigator.pushNamed(context, '/request-success');
+                if (user.helper?.status == 'pending') {
+                  Navigator.pop(context);
+                  showGLobalAlert('danger', 'Permintaan Sedang Di Proses', context);
+                } else {
+                  requestToBeHelper();
+                }
               },
             )
           ],
@@ -265,7 +291,7 @@ class _ProfilePageState extends State<ProfilePage> {
               width: 20,
               height: 21,
               onPress: (){
-                if (user.helper == null) {
+                if (user.helper == null || user.helper?.status == 'pending') {
                   showDrawer(context, Platform.isIOS ? 418 : 398, RequestHelperDrawer());
                 } else {
                   Navigator.push(
@@ -319,6 +345,16 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
+    Widget LoadingContent() {
+      return Container(
+        color: black.withOpacity(0.5),
+        child: LoadingCustom(
+          title: "Requesting . . .",
+          isWhite: true,
+        ),
+      );
+    }
+
     return Stack(
       children: [
         SingleChildScrollView(
@@ -331,6 +367,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         ChooseImagePicker(),
+        loading ? LoadingContent() : SizedBox()
       ],
     );
   }

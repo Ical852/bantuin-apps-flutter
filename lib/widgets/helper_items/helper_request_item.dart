@@ -51,7 +51,7 @@ class HelperRequestItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50),
                   fit: BoxFit.cover,
                   network: true,
-                  nwUrl: order.helper.user.image,
+                  nwUrl: order.helper!.user!.image,
                 ),
                 SizedBox(width: 12,),
                 Expanded(
@@ -59,7 +59,7 @@ class HelperRequestItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        order.helper.user.fullName,
+                        order.helper!.user!.fullName,
                         style: mediumBlackSemibold,
                       ),
                       Text(

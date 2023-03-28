@@ -49,12 +49,6 @@ class _MyBantuanPageState extends State<MyBantuanPage> {
     getMyBantuanData();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    getMyBantuanData();
-  }
-
   void onSearch(value) {
     var newData = [...bantuanData];
     var filter = newData.where((bantuan) => 

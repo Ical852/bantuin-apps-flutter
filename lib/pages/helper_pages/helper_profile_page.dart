@@ -1,11 +1,16 @@
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/models/helper_model.dart';
+import 'package:bantuin/models/helper_rate_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/bantuan_order_view_model.dart';
+import 'package:bantuin/view_models/helper_view_model.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/helper_items/customer_review.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/img_text_btn/img_desc_btn.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:bantuin/widgets/main_items/new_item.dart';
 import 'package:bantuin/widgets/marginner.dart';
 import 'package:bantuin/widgets/toggler/double_btn_toggler.dart';
@@ -14,9 +19,16 @@ import 'package:flutter/material.dart';
 class HelperProfilePage extends StatefulWidget {
   @override
   State<HelperProfilePage> createState() => _HelperProfilePageState();
+
+  int orderId;
+  HelperModel helper;
+  HelperProfilePage(this.helper, this.orderId);
 }
 
 class _HelperProfilePageState extends State<HelperProfilePage> {
+  late var helperVm = HelperViewModel(context);
+  late var orderVm = BantuanOrderViewModel(context);
+
   var currentToggle = 'left';
   void toggleToggler(toggle) {
     this.setState(() {
@@ -24,8 +36,53 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
     });
   }
 
-  var emptyRecords = false;
-  var emptyReviews = false;
+  List<HelperRateModel> data = [];
+  var loading = false;
+  void toggleLoading(value) {
+    this.setState(() {
+      loading = value;
+    });
+  }
+
+  var accepting = false;
+  void toggleAccepting(value) {
+    this.setState(() {
+      accepting = value;
+    });
+  }
+
+  var totalRecords = 0;
+  var totalRate = 0.0;
+  var status = 'Active';
+
+  void getAllRecords() async {
+    toggleLoading(true);
+    var result = await helperVm.getAllRecords(helperId: this.widget.helper.id);
+    toggleLoading(false);
+
+    this.setState(() {
+      data = result;
+      totalRecords = result.length;
+      totalRate = double.parse(result.map((m) => m.rating).reduce((a, b) => a + b).toString());
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getAllRecords();
+  }
+
+  void acceptHelper() async {
+    Navigator.pop(context);
+    toggleAccepting(true);
+    var result = await orderVm.acceptOrder(orderId: this.widget.orderId);
+    toggleAccepting(false);
+
+    if (result) {
+      Navigator.pushNamedAndRemoveUntil(context, '/my-bantuan-accept-success', (route) => false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +105,10 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
         child: ImageCustom(
           height: double.infinity,
           width: double.infinity,
-          image: AssetImage('assets/dummies/user1.png'),
           margin: EdgeInsets.all(8),
-          borderRadius: BorderRadius.circular(14)
+          borderRadius: BorderRadius.circular(14),
+          network: true,
+          nwUrl: this.widget.helper.user!.image,
         ),
       );
     }
@@ -60,7 +118,7 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
         child: Column(
           children: [
             Text(
-              'James Curt',
+              this.widget.helper.user!.fullName,
               style: baseBlackSemibold,
             ),
             Text(
@@ -102,7 +160,7 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
           children: [
             ContainerTag([
               Text(
-                "312",
+                totalRecords.toString(),
                 style: smallGrayRegular,
               ),
               ImageCustom(
@@ -115,14 +173,14 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
             SizedBox(width: 16,),
             ContainerTag([
               Text(
-                "Active",
+                status,
                 style: smallGrayRegular,
               ),
             ]),
             SizedBox(width: 16,),
             ContainerTag([
               Text(
-                "4.8",
+                totalRate.toString(),
                 style: smallGrayRegular,
               ),
               ImageCustom(
@@ -176,32 +234,14 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
         ),
         child: Column(
           children: [
-            NewItem(
-              image: 'assets/dummies/dummy4.png',
-              title: 'Bantu Push Rank',
-              desc: 'Bantu gua push rank sampe mytical glory',
-              location: 'Bekasi, Indonesia',
-              price: 370000,
-              onPress: () {},
-              noButton: true,
-            ),
-            NewItem(
-              image: 'assets/dummies/dummy5.png',
-              title: 'Bantu Steam Mobil',
-              desc: 'Bantu cuci mobil di steam gua, 20k / mobil',
-              location: 'Bekasi, Indonesia',
-              price: 580000,
-              onPress: () {},
-              noButton: true,
-            ),
-            NewItem(
-              image: 'assets/dummies/dummy6.png',
-              title: 'Bantu Cor Atap',
-              desc: 'bantu cor atap rumah gua, beres 300k sung gas',
-              location: 'Bekasi, Indonesia',
-              price: 300000,
-              onPress: () {},
-              noButton: true,
+            Column(
+              children: data.map((record) {
+                return NewItem(
+                  bantuan: record.bantuan!,
+                  onPress: () {},
+                  noButton: true,
+                );
+              }).toList(),
             ),
             SizedBox(height: 120,)
           ],
@@ -209,8 +249,19 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
       );
     }
 
+    Widget LoadingRecord() {
+      return Container(
+        margin: EdgeInsets.only(
+          top: 64
+        ),
+        child: LoadingCustom(
+          title: 'Getting Records Data',
+        ),
+      );
+    }
+
     Widget RenderInnerRecordContent() {
-      return emptyRecords ? EmptyRecord() : ExistRecord();
+      return loading ? LoadingRecord() : data.length > 0 ? ExistRecord() : EmptyRecord();
     }
 
     Widget RecordContent() {
@@ -253,23 +304,15 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomerReview(
-              image: 'assets/dummies/user2.png',
-              name: 'Rosalie Emily',
-              desc: 'One of the best courses that i have ever finished, this course is very recommended for who like to learn how to convert wireframe to real visual design. Amazing !!!',
-              rate: 5,
-            ),
-            CustomerReview(
-              image: 'assets/dummies/user3.png',
-              name: 'Anna Joeson',
-              desc: 'One of the best courses that i have ever finished, this course is very recommended for who like to learn how to convert wireframe to real visual design. Amazing !!!',
-              rate: 4,
-            ),
-            CustomerReview(
-              image: 'assets/dummies/user4.png',
-              name: 'Rosalie Emily',
-              desc: 'One of the best courses that i have ever finished, this course is very recommended for who like to learn how to convert wireframe to real visual design. Amazing !!!',
-              rate: 3,
+            Column(
+              children: data.map((review) {
+                return CustomerReview(
+                  image: review.user!.image,
+                  name: review.user!.fullName,
+                  desc: review.message,
+                  rate: review.rating,
+                );
+              }).toList(),
             ),
             SizedBox(height: 120,)
           ],
@@ -277,8 +320,19 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
       );
     }
 
+    Widget LoadingReview() {
+      return Container(
+        margin: EdgeInsets.only(
+          top: 64
+        ),
+        child: LoadingCustom(
+          title: 'Getting Reviews Data',
+        ),
+      );
+    }
+
     Widget RenderInnerReviewContent() {
-      return emptyReviews ? EmptyReview() : ExistReview();
+      return loading ? LoadingReview() : data.length > 0 ? ExistReview() : EmptyReview();
     }
 
     Widget ReviewsContent() {
@@ -357,7 +411,7 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
               title: 'Terima Request',
               desc: 'Kamu yakin untuk menerima request dari Helper James Curt ?',
               onPress: () {
-                Navigator.pushNamed(context, '/my-bantuan-accept-success');
+                acceptHelper();
               },
             )
           ],
@@ -365,6 +419,16 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
       );
     }
     
+    Widget LoadingContent() {
+      return Container(
+        color: black.withOpacity(0.5),
+        child: LoadingCustom(
+          title: 'Accepting . . .',
+          isWhite: true,
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: grey7,
       body: SafeArea(
@@ -403,7 +467,8 @@ class _HelperProfilePageState extends State<HelperProfilePage> {
                   },
                 ),
               ),
-            )
+            ),
+            accepting ? LoadingContent() : SizedBox()
           ],
         ),
       ),

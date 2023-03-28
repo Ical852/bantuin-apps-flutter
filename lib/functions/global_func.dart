@@ -15,6 +15,18 @@ Future<SharedPreferences> prefs() async {
   return await SharedPreferences.getInstance();
 }
 
+Map<String, int> getDate(data) {
+  var split = data.createdAt.split(data.createdAt[10]);
+  var date = split[0];
+  var format = date.split("-");
+
+  return {
+    "year": int.parse(date[0]),
+    "month": int.parse(date[1]),
+    "day": int.parse(date[2])
+  };
+}
+
 void setStringPref(key, value) async {
   var pref = await prefs();
   pref.setString(key, value);
