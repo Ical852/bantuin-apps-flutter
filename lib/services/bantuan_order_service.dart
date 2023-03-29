@@ -78,12 +78,57 @@ class BantuanOrderService {
 
   Future<ResponseModel?> getDetailOrderByBantuanId({
     required int bantuanId,
-    required String token
+    required String token, status = 'process'
   }) async {
-    var url = "$baseUrl/order?bantuan_id=$bantuanId&status=process";
+    var url = "$baseUrl/order?bantuan_id=$bantuanId&status=$status";
     var response = await http.get(
       Uri.parse(url),
       headers: tokenedHeader(token),
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> completeOrder({
+    required int orderId,
+    required String token
+  }) async {
+    var url = "$baseUrl/order/done";
+    var body = jsonEncode({
+      "order_id": orderId
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+      body: body
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> cancelOrder({
+    required int orderId,
+    required String token, reason
+  }) async {
+    var url = "$baseUrl/order/cancel";
+    var body = jsonEncode({
+      "order_id": orderId,
+      "reason": reason,
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+      body: body
     );
 
     if (response.body.isEmpty) {

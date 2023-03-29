@@ -101,11 +101,13 @@ class BantuanOrderViewModel {
   }
 
   Future<BantuanOrderModel?> getDetailOrderByBantuanId({
-    required int bantuanId
+    required int bantuanId,
+    String? status
   }) async {
     var response = await bantuanOrderService.getDetailOrderByBantuanId(
       token: token,
-      bantuanId: bantuanId
+      bantuanId: bantuanId,
+      status: status
     );
 
     if (response == null) {
@@ -123,5 +125,61 @@ class BantuanOrderViewModel {
 
     var bantuanResponse = BantuanOrderModel.fromJson(response.data[0]);
     return bantuanResponse;
+  }
+
+  Future<bool> completeOrder({
+    required int orderId
+  }) async {
+    var response = await bantuanOrderService.completeOrder(
+      token: token,
+      orderId: orderId
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Complete Order Failed', context);
+      if (response.data != null) {
+        if (response.data.containsKey('message')) {
+          showGLobalAlert('danger', response.data['message'], context);
+        }
+      }
+      return false;
+    }
+
+    showGLobalAlert('success', 'Complete Order Success', context);
+    return true;
+  }
+
+  Future<bool> cancelOrder({
+    required int orderId,
+    required String reason
+  }) async {
+    var response = await bantuanOrderService.cancelOrder(
+      token: token,
+      orderId: orderId,
+      reason: reason
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Cancel Order Failed', context);
+      if (response.data != null) {
+        if (response.data.containsKey('message')) {
+          showGLobalAlert('danger', response.data['message'], context);
+        }
+      }
+      return false;
+    }
+
+    showGLobalAlert('success', 'Cancel Order Success', context);
+    return true;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/models/bantuan_model.dart';
 import 'package:bantuin/models/bantuan_order_model.dart';
@@ -36,7 +38,8 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
   BantuanOrderModel? order = null;
   late var boVm = BantuanOrderViewModel(context);
   void getOrderDetailData() async {
-    var result = await boVm.getDetailOrderByBantuanId(bantuanId: this.widget.bantuan.id);
+    String status = this.widget.bantuan.status == 'done' ? 'done' : 'process';
+    var result = await boVm.getDetailOrderByBantuanId(bantuanId: this.widget.bantuan.id, status: status);
 
     if (result != null) {
       this.setState(() {
@@ -99,6 +102,46 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
     });
   }
 
+  var loading = false;
+  var loadingTitle = 'Completing Order . . .';
+  void toggleLoading(value, title) {
+    this.setState(() {
+      loading = value;
+      loadingTitle = title;
+    });
+  }
+
+  void onCancel() async {
+    Navigator.pop(context);
+    
+    toggleLoading(true, 'Cancelling Order . . .');
+    var result = await boVm.cancelOrder(
+      orderId: order!.id,
+      reason: '${selected.join(', ')}, $currentReason'
+    );
+    toggleLoading(false, 'Cancelling Order . . .');
+
+    if (result) {
+      setPage(context, 'profile');
+      Navigator.pushNamed(context, '/main');
+      Timer(Duration(milliseconds: 500), () {
+        Navigator.pushNamed(context, '/my-bantuan');
+      });
+    }
+  }
+
+  void onComplete() async {
+    Navigator.pop(context);
+
+    toggleLoading(true, 'Completing Order . . .');
+    var result = await boVm.completeOrder(orderId: order!.id);
+    toggleLoading(false, 'Completing Order . . .');
+
+    if (result) {
+      Navigator.pushNamed(context, "/my-bantuan-done");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget HeaderContent() {
@@ -147,8 +190,8 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
           bottom: 32
         ),
         child: BantuanMoneyProfile(
-          name: 'Budi Setianto',
-          phone: '089674839221',
+          name: order!.bantuan!.user!.fullName,
+          phone: order!.bantuan!.user!.phoneNumber,
           price: 0,
           noMain: true,
           plus: order!.bantuan!.price,
@@ -326,9 +369,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                   child: MainButtonCustom(
                     title: 'Batalkan',
                     onPressed: (){
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      showGLobalAlert('success', "Berhasil membatalkan bantuan", context);
+                      onCancel();
                     },
                     type: 'danger',
                     disabled: selected.length < 1 && currentReason == "",
@@ -437,7 +478,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                   child: MainButtonCustom(
                     title: 'Selesai',
                     onPressed: (){
-                      Navigator.pushNamed(context, "/my-bantuan-done");
+                      onComplete();
                     },
                     disabled: rating == 0,
                   ),
@@ -505,35 +546,52 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
       );
     }
 
+    Widget Processing() {
+      return Container(
+        color: black.withOpacity(0.5),
+        child: LoadingCustom(
+          title: loadingTitle,
+          isWhite: true,
+        ),
+      );
+    }
+
     Widget MainContent() {
       return Scaffold(
         backgroundColor: white,
         body: SafeArea(
-          child: Column(
+          child: Stack(
             children: [
-              HeaderContent(),
-              Expanded(
-                child: ListView(
-                  children: [
-                    ImageAndTitle(),
-                    Marginner(
-                      margin: EdgeInsets.symmetric(
-                        vertical: 24
-                      ),
-                      child: Line()
+              Column(
+                children: [
+                  HeaderContent(),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        ImageAndTitle(),
+                        Marginner(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 24
+                          ),
+                          child: Line()
+                        ),
+                        BantuanDetails(),
+                        OwnerItem(
+                          ownerImage: '',
+                          title: order!.helper!.user!.fullName,
+                          subTitle: 'Helper Kamu',
+                          network: true,
+                          nwUrl: order!.helper!.user!.image,
+                          onPressed: (){},
+                        ),
+                        RenderPayType(),
+                        order!.status == 'done' ? SizedBox() : BottomButton()
+                      ],
                     ),
-                    BantuanDetails(),
-                    OwnerItem(
-                      ownerImage: 'assets/dummies/owner.png',
-                      title: 'Budi Setianto',
-                      subTitle: 'Helper Kamu',
-                      onPressed: (){},
-                    ),
-                    RenderPayType(),
-                    BottomButton()
-                  ],
-                ),
-              )
+                  )
+                ],
+              ),
+              loading ? Processing() : SizedBox()
             ],
           ),
         ),

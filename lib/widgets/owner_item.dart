@@ -7,12 +7,16 @@ import 'package:flutter/material.dart';
 class OwnerItem extends StatelessWidget {
   String ownerImage, title, subTitle;
   Function() onPressed;
+  bool network;
+  String? nwUrl;
 
   OwnerItem({
     required this.ownerImage,
     required this.title,
     required this.subTitle,
-    required this.onPressed
+    required this.onPressed,
+    this.network = false,
+    this.nwUrl
   });
 
   @override
@@ -36,6 +40,8 @@ class OwnerItem extends StatelessWidget {
             image: AssetImage(ownerImage),
             fit: BoxFit.cover,
             borderRadius: BorderRadius.circular(50),
+            network: network,
+            nwUrl: nwUrl,
           ),
           SizedBox(width: 12,),
           Expanded(

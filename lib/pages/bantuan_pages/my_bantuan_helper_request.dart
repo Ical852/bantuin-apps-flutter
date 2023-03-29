@@ -41,7 +41,6 @@ class _MyBantuanHelperRequestPageState extends State<MyBantuanHelperRequestPage>
     toggleLoading(false, 'Denying . . .');
 
     if (result) {
-      showGLobalAlert('success', 'Berhasil menolak bantuan', context);
       setPage(context, 'profile');
       Navigator.pushNamed(context, '/main');
       Timer(Duration(milliseconds: 500), () {

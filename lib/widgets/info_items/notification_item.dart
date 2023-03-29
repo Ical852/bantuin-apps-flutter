@@ -47,6 +47,8 @@ class NotificationItem extends StatelessWidget {
                   Text(
                     notif.title,
                     style: regularBlackSemibold,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4,),
                   Text(

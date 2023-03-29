@@ -329,7 +329,9 @@ class _ProfilePageState extends State<ProfilePage> {
               desc: 'Jika anda butuh bantuan',
               width: 24,
               height: 24,
-              onPress: (){},
+              onPress: (){
+                showGLobalAlert('success', 'Sedang dalam proses pengembangan', context);
+              },
             ),
             ProfileItem(
               icon: 'assets/icons/ic_settings.png',
@@ -337,7 +339,9 @@ class _ProfilePageState extends State<ProfilePage> {
               desc: 'Pengaturan aplikasi',
               width: 20,
               height: 20,
-              onPress: (){},
+              onPress: (){
+                showGLobalAlert('success', 'Sedang dalam proses pengembangan', context);
+              },
             ),
             SizedBox(height: 150,)
           ],
