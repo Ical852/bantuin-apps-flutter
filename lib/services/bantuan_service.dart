@@ -90,4 +90,20 @@ class BantuanService {
     var decoded = jsonDecode(response.body);
     return ResponseModel.fromJson(decoded);
   }
+
+  Future<ResponseModel?> getExpensiveBantuan({
+    required String token
+  }) async {
+    var url = "$baseUrl/bantuan?price=high";
+    var response = await http.get(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+    );
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
 }

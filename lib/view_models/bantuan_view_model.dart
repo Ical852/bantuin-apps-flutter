@@ -5,6 +5,7 @@ import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/models/bantuan_category_model.dart';
 import 'package:bantuin/models/bantuan_model.dart';
 import 'package:bantuin/models/bantuans/get_bantuan_by_user_response_model.dart';
+import 'package:bantuin/models/bantuans/get_bantuan_response_model.dart';
 import 'package:bantuin/models/bantuans/get_category_response_model.dart';
 import 'package:bantuin/models/transaction_model.dart';
 import 'package:bantuin/models/user_model.dart';
@@ -162,9 +163,31 @@ class BantuanViewModel {
       return "";
     }
 
-    this.userVm.fetch();
+    await this.userVm.fetch();
     var transactionResponse = TransactionModel.fromJson(payResponse.data['transaction']);
 
     return transactionResponse.paymentUrl;
+  }
+
+  Future<bool> getExpensiveBantuan() async {
+    var response = await bantuanService.getExpensiveBantuan(
+      token: token
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Get Bantuans Data Failed', context);
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      return false;
+    }
+
+    var bantuanResponse = GetBantuanResponseModel.fromJson(response);
+    return true;
   }
 }

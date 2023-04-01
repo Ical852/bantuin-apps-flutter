@@ -83,7 +83,7 @@ class _CreateSummaryPageState extends State<CreateSummaryPage> {
       image: this.widget.pickedImage.path,
       title: this.widget.title,
       desc: this.widget.desc,
-      location: "${(this.widget.locationLatLng).toString()}|${this.widget.location}",
+      location: "${(this.widget.locationLatLng.longitude).toString()},${(this.widget.locationLatLng.latitude).toString()}|${this.widget.location}",
       payType: getPayType()
     );
     toggleLoading(false);
