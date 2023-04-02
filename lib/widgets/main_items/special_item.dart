@@ -1,4 +1,5 @@
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/models/bantuan_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/category_tag.dart';
@@ -7,18 +8,17 @@ import 'package:bantuin/widgets/location_tag.dart';
 import 'package:flutter/material.dart';
 
 class SpecialItem extends StatelessWidget {
-  String image, title, category, location;
-  int price;
+  BantuanModel bantuan;
   Function() onPress;
 
   SpecialItem({
-    required this.image,
-    required this.title,
-    required this.category,
-    required this.location,
-    required this.price,
-    required this.onPress
+    required this.onPress,
+    required this.bantuan
   });
+
+  String getLocation() {
+    return bantuan.location.split('|')[1];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +50,10 @@ class SpecialItem extends StatelessWidget {
             ImageCustom(
               height: 150,
               width: 188,
-              image: AssetImage(image),
               fit: BoxFit.cover,
               borderRadius: BorderRadius.circular(12),
+              network: true,
+              nwUrl: bantuan.image,
               child: Container(
                 margin: EdgeInsets.only(
                   right: 10,
@@ -61,23 +62,23 @@ class SpecialItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    CategoryTag(title: category)
+                    CategoryTag(title: bantuan.bantuanCategory!.name)
                   ],
                 ),
               ),
             ),
             SizedBox(height: 12,),
             Text(
-              title,
+              bantuan.title,
               style: regularBlackSemibold,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 4,),
-            LocationTag(location: location),
+            LocationTag(location: getLocation()),
             Spacer(),
             Text(
-              formatter(price),
+              formatter(bantuan.price),
               style: regularPrimarySemibold
             )
           ],

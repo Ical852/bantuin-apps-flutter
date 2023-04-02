@@ -106,4 +106,52 @@ class BantuanService {
     var decoded = jsonDecode(response.body);
     return ResponseModel.fromJson(decoded);
   }
+
+  Future<ResponseModel?> getNewBantuan({
+    required String token
+  }) async {
+    var url = "$baseUrl/bantuan?date=new";
+    var response = await http.get(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+    );
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> getSpecialBantuan({
+    required String token
+  }) async {
+    var url = "$baseUrl/bantuan?category_id=3";
+    var response = await http.get(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+    );
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
+
+  Future<ResponseModel?> getOldBantuan({
+    required String token
+  }) async {
+    var url = "$baseUrl/bantuan?date=old";
+    var response = await http.get(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+    );
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
 }

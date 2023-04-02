@@ -1,6 +1,10 @@
+import 'package:bantuin/models/bantuan_model.dart';
+import 'package:bantuin/pages/detail_pages/bantuan_detail_pages.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/bantuan_view_model.dart';
 import 'package:bantuin/view_models/user_view_model.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/main_items/special_item.dart';
@@ -14,8 +18,50 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
+  late var bantuanVm = BantuanViewModel(context);
   late var userVm = UserViewModel(context);
   late var user = userVm.getUserData();
+
+  List<BantuanModel> specials = [];
+  var spcLoading = false;
+  void toggleSpcLoading(value) {
+    this.setState(() {
+      spcLoading = value;
+    });
+  }
+  void getSpcBantuan() async {
+    toggleSpcLoading(true);
+    var result = await bantuanVm.getSpecialBantuan();
+    toggleSpcLoading(false);
+
+    this.setState(() {
+      specials = result;
+    });
+  }
+
+  List<BantuanModel> weeklies = [];
+  var weeklyLoading = false;
+  void toggleWeekliesLoading(value) {
+    this.setState(() {
+      weeklyLoading = value;
+    });
+  }
+  void getWeeklyBantuan() async {
+    toggleWeekliesLoading(true);
+    var result = await bantuanVm.getOldBantuan();
+    toggleWeekliesLoading(false);
+
+    this.setState(() {
+      weeklies = result;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getSpcBantuan();
+    getWeeklyBantuan();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,48 +180,115 @@ class _ExplorePageState extends State<ExplorePage> {
       );
     }
     
+    Widget ExploreEmpty() {
+      return Container(
+        margin: EdgeInsets.only(
+          top: 16,
+          bottom: 20,
+          right: 16
+        ),
+        height: 270,
+        width: double.infinity,
+        child: Center(
+          child: Column(
+            children: [
+              ImageCustom(
+                image: AssetImage('assets/illustrations/il_empty_bantuan.png'),
+                width: double.infinity,
+                height: 270,
+                fit: BoxFit.cover,
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget ExistSpecial() {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(width: 24,),
+            Row(
+              children: specials.map((bantuan) {
+                return SpecialItem(
+                  bantuan: bantuan,
+                  onPress: (){
+                    Navigator.push(
+                      context, MaterialPageRoute(
+                        builder: (context) => BantuanDetailPage(bantuan)
+                      )
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+            SizedBox(width: 8,),
+          ],
+        ),
+      );
+    }
+
+    Widget LoadingExplore() {
+      return Container(
+        margin: EdgeInsets.only(
+          top: 16,
+          bottom: 20,
+          right: 16
+        ),
+        height: 270,
+        width: double.infinity,
+        child: Center(
+          child: LoadingCustom(
+            title: '',
+          ),
+        ),
+      );
+    }
+
+    Widget RenderSpecialContent() {
+      return spcLoading ? LoadingExplore() : specials.length > 0 ? ExistSpecial() : ExploreEmpty();
+    }
+
     Widget SpecialSection() {
       return Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ExploreTitleDesc('Spesial Bersih - Bersih', 'Khusus untuk kamu yang hobi bersih - bersih'),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  SizedBox(width: 24,),
-                  SpecialItem(
-                    image: 'assets/dummies/dummy7.png',
-                    title: 'Bersihin Kosan Putri',
-                    category: 'Clean',
-                    location: 'Jakarta, Indonesia',
-                    price: 1800000,
-                    onPress: (){},
-                  ),
-                  SpecialItem(
-                    image: 'assets/dummies/dummy8.png',
-                    title: 'Sapu Halaman Komplek',
-                    category: 'Clean',
-                    location: 'Bogor, Indonesia',
-                    price: 2500000,
-                    onPress: (){},
-                  ),
-                  SpecialItem(
-                    image: 'assets/dummies/dummy9.png',
-                    title: 'Bersihin Kolam Renang',
-                    category: 'Clean',
-                    location: 'Bandung, Indonesia',
-                    price: 1750000,
-                    onPress: (){},
-                  ),
-                  SizedBox(width: 8,),
-                ],
-              ),
-            )
+            RenderSpecialContent()
           ],
         ),
       );
+    }
+
+    Widget ExistWeekly() {
+      return Container(
+        margin: EdgeInsets.only(
+          top: 16,
+          left: 24,
+          right: 24
+        ),
+        child: Column(
+          children: weeklies.map((bantuan) {
+            return WeeklyItem(
+              bantuan: bantuan,
+              onPress: (){
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => BantuanDetailPage(bantuan)
+                  )
+                );
+              },
+            );
+          }).toList(),
+        ),
+      );
+    }
+
+    Widget RenderWeeklyContent() {
+      return weeklyLoading ? LoadingExplore() : weeklies.length > 0 ? ExistWeekly() : ExploreEmpty();
     }
 
     Widget WeeklySection() {
@@ -184,41 +297,7 @@ class _ExplorePageState extends State<ExplorePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ExploreTitleDesc('Bantuan 1 Minggu Terakhir', 'Temukan bantuan terbaru, customer butuh kamu!'),
-            Container(
-              margin: EdgeInsets.only(
-                top: 16,
-                left: 24,
-                right: 24
-              ),
-              child: Column(
-                children: [
-                  // WeeklyItem(
-                  //   image: 'assets/dummies/dummy10.png',
-                  //   title: 'Bersihin Interior Dalem',
-                  //   desc: 'Ada kosan di bekasi, butuh bantuan bersihin dalem sampe selesai',
-                  //   location: 'Bekasi, Indonesia',
-                  //   price: 2125000,
-                  //   onPress: (){},
-                  // ),
-                  // WeeklyItem(
-                  //   image: 'assets/dummies/dummy11.png',
-                  //   title: 'Bersihin Kolam Renang',
-                  //   desc: 'Kolam renang gua ijo, kotor, butuh bantuan bersihin, 1,5k lepas',
-                  //   location: 'Bogor, Indonesia',
-                  //   price: 1500000,
-                  //   onPress: (){},
-                  // ),
-                  // WeeklyItem(
-                  //   image: 'assets/dummies/dummy12.png',
-                  //   title: 'Cuci Motor Gue',
-                  //   desc: 'Motor lama mo di repain, tapi butuh bantu buat di cuci',
-                  //   location: 'Jakarta, Indonesia',
-                  //   price: 1725000,
-                  //   onPress: (){},
-                  // ),
-                ],
-              ),
-            )
+            RenderWeeklyContent()
           ],
         ),
       );

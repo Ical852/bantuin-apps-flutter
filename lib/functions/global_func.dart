@@ -1,9 +1,13 @@
 import 'dart:ffi';
 
 import 'package:bantuin/shared/constants.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 String formatter(int number) {
   var formatted = intl.NumberFormat.decimalPattern().format(number);
@@ -95,6 +99,20 @@ String getMonthName(month) {
 String getDayMonth(year, month, day) {
   DateTime newDate = DateTime(year, month, day);
   return newDate.day.toString() + " " + getMonthName(newDate.month);
+}
+
+void goToGoogleMaps(currentLocation) async {
+  var current = currentLocation;
+  LocationSettings locationSettings = LocationSettings(
+    accuracy: LocationAccuracy.high,
+    distanceFilter: 100
+  );
+  Geolocator.getPositionStream(locationSettings: locationSettings)
+    .listen((Position position) {
+      current = LatLng(position.latitude, position.longitude);
+    });
+  String googleUrl = "https://www.google.com/maps/search/?api=1&query=${current.latitude},${current.longitude}";
+  await canLaunchUrlString(googleUrl) ? await launchUrlString(googleUrl) : throw 'Error';
 }
 
 void showGLobalAlert(type, text, context) {

@@ -1,7 +1,11 @@
+import 'package:bantuin/models/bantuan_model.dart';
 import 'package:bantuin/pages/detail_pages/bantuan_detail_pages.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/bantuan_view_model.dart';
 import 'package:bantuin/view_models/user_view_model.dart';
+import 'package:bantuin/widgets/image_custom.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money.dart';
 import 'package:bantuin/widgets/buttons/mini_icon_button_custom.dart';
 import 'package:bantuin/widgets/main_items/expensive_item.dart';
@@ -18,8 +22,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late var bantuanVm = BantuanViewModel(context);
   late var userVm = UserViewModel(context);
   late var user = userVm.getUserData();
+
+  List<BantuanModel> exps = [];
+  var expLoading = false;
+  void toggleExpLoading(value) {
+    this.setState(() {
+      expLoading = value;
+    });
+  }
+  void getExpBantuan() async {
+    toggleExpLoading(true);
+    var result = await bantuanVm.getExpensiveBantuan();
+    toggleExpLoading(false);
+
+    this.setState(() {
+      exps = result;
+    });
+  }
+
+  List<BantuanModel> news = [];
+  var newLoading = false;
+  void toggleNewLoading(value) {
+    this.setState(() {
+      newLoading = value;
+    });
+  }
+  void getNewBantuan() async {
+    toggleExpLoading(true);
+    var result = await bantuanVm.getNewBantuan();
+    toggleExpLoading(false);
+
+    this.setState(() {
+      news = result;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getExpBantuan();
+    getNewBantuan();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,53 +159,160 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
+    Widget EmptyExpensive() {
+      return Container(
+        margin: EdgeInsets.only(
+          right: 24,
+          top: 16,
+          bottom: 20
+        ),
+        width: double.infinity,
+        height: 350,
+        child: Center(
+          child: Column(
+            children: [
+              ImageCustom(
+                image: AssetImage('assets/illustrations/il_empty_bantuan.png'),
+                width: double.infinity,
+                height: 350,
+                fit: BoxFit.cover,
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget ExistExpensive() {
+      return Container(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              SizedBox(width: 24,),
+              Row(
+                children: exps.map((bantuan) {
+                  return ExpensiveItem(
+                    bantuan: bantuan,
+                    onPress: (){
+                      Navigator.push(
+                        context, MaterialPageRoute(
+                          builder: (context) => BantuanDetailPage(bantuan)
+                        )
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget LoadingExpensive() {
+      return Container(
+        margin: EdgeInsets.only(
+          right: 24,
+          top: 16,
+          bottom: 20
+        ),
+        width: double.infinity,
+        height: 350,
+        child: Center(
+          child: LoadingCustom(
+            title: '',
+          ),
+        ),
+      );
+    }
+
+    Widget RenderExpensiveContent() {
+      return expLoading ? LoadingExpensive() : exps.length > 0 ? ExistExpensive() : EmptyExpensive();
+    }
+
     Widget ExpensiveSection() {
       return Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HomeTitleDesc('Bantuan Temahal', 'Temukan bantuan termahal dan dapatkan uangmu'),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  SizedBox(width: 24,),
-                  ExpensiveItem(
-                    image: 'assets/dummies/dummy1.png',
-                    title: 'Keamanan Camping',
-                    category: 'Game',
-                    location: 'Bekasi, Indonesia',
-                    price: 6000000,
-                    onPress: (){
-                      Navigator.push(
-                        context, MaterialPageRoute(
-                          builder: (context) => BantuanDetailPage()
-                        )
-                      );
-                    },
-                  ),
-                  ExpensiveItem(
-                    image: 'assets/dummies/dummy2.png',
-                    title: 'Bantu Rapihin Rumah',
-                    category: 'Kebersihan',
-                    location: 'Bogor, Indonesia',
-                    price: 1250000,
-                    onPress: (){},
-                  ),
-                  ExpensiveItem(
-                    image: 'assets/dummies/dummy3.png',
-                    title: 'Bantu Desain Web',
-                    category: 'Gawe',
-                    location: 'Tangerang, Indonesia',
-                    price: 1250000,
-                    onPress: (){},
-                  ),
-                ],
-              ),
-            )
+            RenderExpensiveContent()
           ],
         ),
       );
+    }
+
+    Widget ExistNew() {
+      return Container(
+        child: Container(
+          margin: EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 16
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: news.map((bantuan) {
+              return NewItem(
+                bantuan: bantuan,
+                onPress: (){
+                  Navigator.push(
+                    context, MaterialPageRoute(
+                      builder: (context) => BantuanDetailPage(bantuan)
+                    )
+                  );
+                },
+              );
+            }).toList(),
+          ),
+        ),
+      );
+    }
+
+    Widget EmptyNew() {
+      return Container(
+        margin: EdgeInsets.only(
+          right: 24,
+          top: 16,
+          bottom: 20
+        ),
+        width: double.infinity,
+        height: 350,
+        child: Center(
+          child: Column(
+            children: [
+              ImageCustom(
+                image: AssetImage('assets/illustrations/il_empty_bantuan.png'),
+                width: double.infinity,
+                height: 350,
+                fit: BoxFit.cover,
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget LoadingNew() {
+      return Container(
+        margin: EdgeInsets.only(
+          right: 24,
+          top: 16,
+          bottom: 20
+        ),
+        width: double.infinity,
+        height: 350,
+        child: Center(
+          child: LoadingCustom(
+            title: '',
+          ),
+        ),
+      ); 
+    }
+
+    Widget RenderNewSection() {
+      return newLoading ? LoadingNew() : news.length > 0 ? ExistNew() : EmptyNew();
     }
 
     Widget NewSection() {
@@ -168,42 +321,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HomeTitleDesc('Bantuan Terbaru', 'Temukan bantuan terbaru, customer butuh kamu!'),
-            Container(
-              margin: EdgeInsets.only(
-                left: 24,
-                right: 24,
-                top: 16
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // NewItem(
-                  //   image: 'assets/dummies/dummy4.png',
-                  //   title: 'Bantu Push Rank',
-                  //   desc: 'Bantu gua push rank sampe mytical glory',
-                  //   location: 'Bekasi, Indonesia',
-                  //   price: 370000,
-                  //   onPress: (){},
-                  // ),
-                  // NewItem(
-                  //   image: 'assets/dummies/dummy5.png',
-                  //   title: 'Bantu Steam Mobil',
-                  //   desc: 'Bantu cuci mobil di steam gua, 20k / mobil',
-                  //   location: 'Bekasi, Indonesia',
-                  //   price: 580000,
-                  //   onPress: (){},
-                  // ),
-                  // NewItem(
-                  //   image: 'assets/dummies/dummy6.png',
-                  //   title: 'Bantu Cor Atap',
-                  //   desc: 'bantu cor atap rumah gua, beres 300k sung gas',
-                  //   location: 'Bekasi, Indonesia',
-                  //   price: 300000,
-                  //   onPress: (){},
-                  // ),
-                ],
-              ),
-            )
+            RenderNewSection()
           ],
         ),
       );

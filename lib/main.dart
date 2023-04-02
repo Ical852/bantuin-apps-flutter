@@ -182,7 +182,6 @@ class MyApp extends StatelessWidget {
     
           // Top Up Pages
           "/bantuan-search":(context) => BantuanSerachPage(),
-          "/bantuan-detail": (context) => BantuanDetailPage(),
           // Top Up Pages
     
           // Info Pages

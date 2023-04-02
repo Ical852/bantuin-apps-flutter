@@ -51,7 +51,11 @@ class ImageCustom extends StatelessWidget {
         placeholder: (context, url) => CircularProgressIndicator(
           color: green1,
         ),
-        errorWidget: (context, url, error) => Icon(Icons.error),
+        errorWidget: (context, url, error) => Container(
+          width: width,
+          height: height,
+          child: Icon(Icons.error),
+        ),
       );
     }
     

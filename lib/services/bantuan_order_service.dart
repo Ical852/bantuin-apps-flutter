@@ -138,4 +138,29 @@ class BantuanOrderService {
     var decoded = jsonDecode(response.body);
     return ResponseModel.fromJson(decoded);
   }
+
+  Future<ResponseModel?> createOrder({
+    required int userId, bantuanId, helperId,
+    required String token
+  }) async {
+    var url = "$baseUrl/order";
+    var body = jsonEncode({
+      "user_id": userId,
+      "bantuan_id": bantuanId,
+      "helper_id": helperId,
+      "status": "pending",
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+      body: body
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
 }

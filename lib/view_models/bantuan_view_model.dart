@@ -169,14 +169,14 @@ class BantuanViewModel {
     return transactionResponse.paymentUrl;
   }
 
-  Future<bool> getExpensiveBantuan() async {
+  Future<List<BantuanModel>> getExpensiveBantuan() async {
     var response = await bantuanService.getExpensiveBantuan(
       token: token
     );
 
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
-      return false;
+      return [];
     }
 
     if (response.meta.code != 200) {
@@ -184,10 +184,76 @@ class BantuanViewModel {
       if (response.meta.message is String) {
         showGLobalAlert('danger', response.meta.message, context);
       }
-      return false;
+      return [];
     }
 
     var bantuanResponse = GetBantuanResponseModel.fromJson(response);
-    return true;
+    return bantuanResponse.bantuans;
+  }
+
+  Future<List<BantuanModel>> getNewBantuan() async {
+    var response = await bantuanService.getNewBantuan(
+      token: token
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return [];
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Get Bantuans Data Failed', context);
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      return [];
+    }
+
+    var bantuanResponse = GetBantuanResponseModel.fromJson(response);
+    return bantuanResponse.bantuans;
+  }
+
+  Future<List<BantuanModel>> getSpecialBantuan() async {
+    var response = await bantuanService.getSpecialBantuan(
+      token: token
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return [];
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Get Bantuans Data Failed', context);
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      return [];
+    }
+
+    var bantuanResponse = GetBantuanResponseModel.fromJson(response);
+    return bantuanResponse.bantuans;
+  }
+
+  Future<List<BantuanModel>> getOldBantuan() async {
+    var response = await bantuanService.getOldBantuan(
+      token: token
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return [];
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Get Bantuans Data Failed', context);
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      return [];
+    }
+
+    var bantuanResponse = GetBantuanResponseModel.fromJson(response);
+    return bantuanResponse.bantuans;
   }
 }

@@ -19,9 +19,13 @@ class LocationTag extends StatelessWidget {
             image: AssetImage('assets/icons/ic_location.png'),
           ),
           SizedBox(width: 6,),
-          Text(
-            location,
-            style: small != null ? xSmallGrayRegular : smallGrayRegular
+          Expanded(
+            child: Text(
+              location,
+              style: small != null ? xSmallGrayRegular : smallGrayRegular,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           )
         ],
       ),

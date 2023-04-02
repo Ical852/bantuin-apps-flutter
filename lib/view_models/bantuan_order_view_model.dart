@@ -182,4 +182,33 @@ class BantuanOrderViewModel {
     showGLobalAlert('success', 'Cancel Order Success', context);
     return true;
   }
+
+  Future<bool> createOrder({
+    required int userId, bantuanId, helperId,
+  }) async {
+    var response = await bantuanOrderService.createOrder(
+      token: token,
+      userId: userId,
+      bantuanId: bantuanId,
+      helperId: helperId
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Request Help Failed', context);
+      if (response.data != null) {
+        if (response.data.containsKey('message')) {
+          showGLobalAlert('danger', response.data['message'], context);
+        }
+      }
+      return false;
+    }
+
+    showGLobalAlert('success', 'Request Help Success', context);
+    return true;
+  }
 }
