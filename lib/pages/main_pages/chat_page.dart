@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:bantuin/models/chat_model.dart';
 import 'package:bantuin/pages/chat_pages/detail_chat_page.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/chat_view_model.dart';
+import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/chat_items/chat_item.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/toggler/double_btn_toggler.dart';
@@ -17,8 +21,36 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  late var chatVm = ChatViewModel(context);
+  late var userVm = UserViewModel(context);
+  late var user = userVm.getUserData();
 
   var current = 'left';
+  List<ChatModel> helperChats = [];
+  List<ChatModel> customerChats = [];
+
+  void getHelperChats() async {
+    var result = await chatVm.getChatFromHelper();
+    this.setState(() {
+      helperChats = result;
+    });
+  }
+
+  void getCustomerChats() async {
+    if (user.helper != null && user.helper?.status == 'active') {
+      var result = await chatVm.getChatFromCustomer();
+      this.setState(() {
+        customerChats = result;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getHelperChats();
+    getCustomerChats();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +181,33 @@ class _ChatPageState extends State<ChatPage> {
       );
     }
 
+    Widget HelperChatEmpty() {
+      return Container();
+    }
+
+    Widget HelperChatExist() {
+      return Column(
+        children: helperChats.map((data) {
+          return ChatItem(
+            onPress: (){
+              print(data.totalUnreaded);
+            },
+            image: '',
+            network: true,
+            nwUrl: data.helper!.user!.image,
+            name: data.helper!.user!.fullName,
+            text: data.lastChat ?? 'Tap to start chat with ' + data.helper!.user!.fullName,
+            time: data.lastHour ?? '',
+            notif: data.totalUnreaded ?? 0,
+          );
+        }).toList(),
+      );
+    }
+
+    Widget RenderHelperChats() {
+      return helperChats.length > 0 ? HelperChatExist() : HelperChatEmpty();
+    }
+
     Widget HelperChats() {
       return Container(
         margin: EdgeInsets.only(
@@ -156,54 +215,7 @@ class _ChatPageState extends State<ChatPage> {
           left: 24,
           right: 24
         ),
-        child: Column(
-          children: [
-            ChatItem(
-              onPress: (){
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => DetailChatPage()
-                  )
-                );
-              },
-              image: 'assets/dummies/user1.png',
-              name: 'James Curt',
-              text: 'I saw it clearly and might be go...',
-              time: '12.30',
-            ),
-            ChatItem(
-              onPress: (){},
-              image: 'assets/dummies/user2.png',
-              name: 'Rosalie Emily',
-              text: 'Did you know how to get the...',
-              time: '7:30',
-              notif: 2,
-            ),
-            ChatItem(
-              onPress: (){},
-              image: 'assets/dummies/user3.png',
-              name: 'Anna Joeson',
-              text: 'Wanna hang out or something?...',
-              time: '21:30',
-            ),
-            ChatItem(
-              onPress: (){},
-              image: 'assets/dummies/user4.png',
-              name: 'Justin Anderson',
-              text: 'Nobody’s gonna know until we...',
-              time: '4:30',
-              notif: 5,
-            ),
-            ChatItem(
-              onPress: (){},
-              image: 'assets/dummies/user5.png',
-              name: 'Angela Claire',
-              text: 'Why don’t you come to my hou...',
-              time: '11:25',
-              notif: 3,
-            ),
-          ],
-        ),
+        child: RenderHelperChats()
       );
     }
 
@@ -211,8 +223,21 @@ class _ChatPageState extends State<ChatPage> {
       return Container(
         margin: EdgeInsets.only(top: 24, left: 24, right: 24),
         child: Column(
-          children: [],
-        ),
+          children: customerChats.map((data) {
+            return ChatItem(
+              onPress: (){
+                print(data.totalUnreaded);
+              },
+              image: '',
+              network: true,
+              nwUrl: data.user!.image,
+              name: data.user!.fullName,
+              text: data.lastChat ?? 'Tap to start chat with ' + data.helper!.user!.fullName,
+              time: data.lastHour ?? '',
+              notif: data.totalUnreaded ?? 0,
+            );
+          }).toList(),
+        )
       );
     }
 
@@ -225,7 +250,7 @@ class _ChatPageState extends State<ChatPage> {
         HeaderContent(),
         SearchBar(),
         Title(),
-        Toggler(),
+        user.helper != null && user.helper?.status == 'active' ? Toggler() : SizedBox(),
         RenderChats(),
         SizedBox(height: 150,)
       ],

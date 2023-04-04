@@ -11,6 +11,7 @@ import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/menu_item.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -189,6 +190,31 @@ class _MainPageState extends State<MainPage> {
               title: 'Check Token',
               onPressed: () {
                 print(userVm.getToken());
+              },
+            ),
+            SizedBox(height: 12,),
+            MainButtonCustom(
+              title: 'Check Chat',
+              onPressed: () async {
+                // FirebaseFirestore.instance
+                //     .collection('icalios_icalandro')
+                //     .orderBy("date")
+                //     .limit(1)
+                //     .get()
+                //     .then((querySnapshot) {
+                //       var time = DateTime.fromMillisecondsSinceEpoch(querySnapshot.docs.first.data()['date'].seconds * 1000);
+                //       print(time.hour);
+                //       print(time.minute);
+                //     }
+                // );
+                // await FirebaseFirestore.instance
+                //     .collection('2_1')
+                //     .where('userId', isEqualTo: '1')
+                //     .where('isRead', isEqualTo: false)
+                //     .get()
+                //     .then((value) {
+                //   print(value.size);
+                // });
               },
             )
           ],

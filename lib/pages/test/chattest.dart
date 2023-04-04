@@ -166,7 +166,8 @@ class _ChatTestPageState extends State<ChatTestPage> {
                           'groupId': 'icalios_icalandro',
                           'userId': userId,
                           'date': DateTime.now(),
-                          'message': textinput.text.toString()
+                          'message': textinput.text.toString(),
+                          'isRead': false
                         })
                         .then((value) => print('Berhasil'))
                         .catchError((error) => print('failed' + error));

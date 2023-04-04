@@ -8,6 +8,8 @@ class ChatItem extends StatelessWidget {
   String image, name, text, time;
   int notif;
   Function() onPress;
+  bool network;
+  String? nwUrl;
 
   ChatItem({
     required this.image,
@@ -15,7 +17,9 @@ class ChatItem extends StatelessWidget {
     required this.text,
     required this.time,
     this.notif = 0,
-    required this.onPress
+    required this.onPress,
+    this.network = false,
+    this.nwUrl
   });
 
   @override
@@ -38,6 +42,8 @@ class ChatItem extends StatelessWidget {
                     image: AssetImage(image),
                     fit: BoxFit.cover,
                     borderRadius: BorderRadius.circular(50),
+                    network: network,
+                    nwUrl: nwUrl,
                   ),
                   SizedBox(width: 12,),
                   Expanded(
