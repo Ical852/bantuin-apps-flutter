@@ -182,7 +182,27 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     Widget HelperChatEmpty() {
-      return Container();
+      return Container(
+        margin: EdgeInsets.only(
+          right: 24,
+          top: 16,
+          bottom: 20
+        ),
+        width: double.infinity,
+        height: 350,
+        child: Center(
+          child: Column(
+            children: [
+              ImageCustom(
+                image: AssetImage('assets/illustrations/il_empty_bantuan.png'),
+                width: double.infinity,
+                height: 350,
+                fit: BoxFit.cover,
+              )
+            ],
+          ),
+        ),
+      );
     }
 
     Widget HelperChatExist() {
@@ -219,25 +239,57 @@ class _ChatPageState extends State<ChatPage> {
       );
     }
 
+    Widget CustomerChatEmpty() {
+      return Container(
+        margin: EdgeInsets.only(
+          right: 24,
+          top: 16,
+          bottom: 20
+        ),
+        width: double.infinity,
+        height: 350,
+        child: Center(
+          child: Column(
+            children: [
+              ImageCustom(
+                image: AssetImage('assets/illustrations/il_empty_bantuan.png'),
+                width: double.infinity,
+                height: 350,
+                fit: BoxFit.cover,
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget CustomerChatExist() {
+      return Column(
+        children: customerChats.map((data) {
+          return ChatItem(
+            onPress: (){
+              print(data.totalUnreaded);
+            },
+            image: '',
+            network: true,
+            nwUrl: data.user!.image,
+            name: data.user!.fullName,
+            text: data.lastChat ?? 'Tap to start chat with ' + data.helper!.user!.fullName,
+            time: data.lastHour ?? '',
+            notif: data.totalUnreaded ?? 0,
+          );
+        }).toList(),
+      );
+    }
+
+    Widget RenderCustomerChats() {
+      return customerChats.length > 0 ? CustomerChatExist() : CustomerChatEmpty();
+    }
+
     Widget CustomerChats() {
       return Container(
         margin: EdgeInsets.only(top: 24, left: 24, right: 24),
-        child: Column(
-          children: customerChats.map((data) {
-            return ChatItem(
-              onPress: (){
-                print(data.totalUnreaded);
-              },
-              image: '',
-              network: true,
-              nwUrl: data.user!.image,
-              name: data.user!.fullName,
-              text: data.lastChat ?? 'Tap to start chat with ' + data.helper!.user!.fullName,
-              time: data.lastHour ?? '',
-              notif: data.totalUnreaded ?? 0,
-            );
-          }).toList(),
-        )
+        child: RenderCustomerChats()
       );
     }
 
