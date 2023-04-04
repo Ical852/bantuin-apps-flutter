@@ -256,4 +256,29 @@ class BantuanViewModel {
     var bantuanResponse = GetBantuanResponseModel.fromJson(response);
     return bantuanResponse.bantuans;
   }
+
+  Future<List<BantuanModel>> getSearchBantuan({
+    required String search
+  }) async {
+    var response = await bantuanService.getSearchBantuan(
+      token: token,
+      search: search
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return [];
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Search Bantuans Failed', context);
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      return [];
+    }
+
+    var bantuanResponse = GetBantuanResponseModel.fromJson(response);
+    return bantuanResponse.bantuans;
+  }
 }

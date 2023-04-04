@@ -154,4 +154,20 @@ class BantuanService {
     var decoded = jsonDecode(response.body);
     return ResponseModel.fromJson(decoded);
   }
+
+  Future<ResponseModel?> getSearchBantuan({
+    required String token, search
+  }) async {
+    var url = "$baseUrl/bantuan?title=$search&desc=$search&location=$search";
+    var response = await http.get(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+    );
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
 }

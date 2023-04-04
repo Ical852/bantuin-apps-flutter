@@ -1,9 +1,17 @@
+import 'package:bantuin/models/bantuan_model.dart';
+import 'package:bantuin/pages/detail_pages/bantuan_detail_pages.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/main_items/grid_item.dart';
 import 'package:bantuin/widgets/marginner.dart';
 import 'package:flutter/material.dart';
 
 class SearchedMode extends StatelessWidget {
+
+  List<BantuanModel> bantuans;
+  SearchedMode({
+    required this.bantuans
+  });
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,50 +43,15 @@ class SearchedMode extends StatelessWidget {
               crossAxisSpacing: 12,
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              children: [
-                GridItem(
-                  image: 'assets/dummies/dummy13.png',
-                  title: 'Mengajar Kursus Flutter Untuk Anak SD',
-                  location: 'Jakarta, Indonesia',
-                  price: 257000,
-                  onPress: (){},
-                ),
-                GridItem(
-                  image: 'assets/dummies/dummy14.png',
-                  title: 'Mengajar Desain Untuk Anak SMA',
-                  location: 'Tangerang, Indonesia',
-                  price: 357000,
-                  onPress: (){},
-                ),
-                GridItem(
-                  image: 'assets/dummies/dummy15.png',
-                  title: 'Menjadi Tour Guide Turis Di Bekasi',
-                  location: 'Bekasi, Indonesia',
-                  price: 157000,
-                  onPress: (){},
-                ),
-                GridItem(
-                  image: 'assets/dummies/dummy16.png',
-                  title: 'Menjadi Guru Sejarah di DGGCourse',
-                  location: 'Bogor, Indonesia',
-                  price: 427000,
-                  onPress: (){},
-                ),
-                GridItem(
-                  image: 'assets/dummies/dummy17.png',
-                  title: 'Bantu Saya Mengajar Via Zoom',
-                  location: 'Depok, Indonesia',
-                  price: 355000,
-                  onPress: (){},
-                ),
-                GridItem(
-                  image: 'assets/dummies/dummy18.png',
-                  title: 'Mengajarkan Homeless Bahasa Inggris',
-                  location: 'Tangerang, Indonesia',
-                  price: 325000,
-                  onPress: (){},
-                ),
-              ],
+              children: bantuans.map((bantuan) {
+                return GridItem(onPress: (){
+                  Navigator.push(
+                    context, MaterialPageRoute(
+                      builder: (context) => BantuanDetailPage(bantuan)
+                    )
+                  );
+                }, bantuan: bantuan);
+              }).toList(),
             ),
           )
         ],

@@ -1,11 +1,16 @@
 import 'package:bantuin/functions/global_func.dart';
+import 'package:bantuin/models/bantuan_model.dart';
+import 'package:bantuin/models/search_history_model.dart';
 import 'package:bantuin/pages/bantuan_search/modes/search_mode.dart';
 import 'package:bantuin/pages/bantuan_search/modes/searched_mode.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/bantuan_view_model.dart';
+import 'package:bantuin/view_models/search_history_view_model.dart';
 import 'package:bantuin/widgets/buttons/mini_button_icon_custom.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:bantuin/widgets/modals/dialog_modal.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +20,21 @@ class BantuanSerachPage extends StatefulWidget {
 }
 
 class _BantuanSerachPageState extends State<BantuanSerachPage> {
+  late var shVm = SearchHistoryViewModel(context);
+  late var bantuanVm = BantuanViewModel(context);
+  var loading = false;
+  void toggleLoading(value) {
+    this.setState(() {
+      loading = value;
+    });
+  }
+
+  List<BantuanModel> bantuans = [];
+
   var submitted = false;
-  var choosedText = "";
+  SearchHistoryModel? choosedSearch = null;
   TextEditingController searchController = TextEditingController(text: "");
+  String searchText = "";
   void toggleSubmitted(value) {
     this.setState(() {
       submitted = value;
@@ -25,20 +42,43 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
   }
   void onSubmitted(submittedText) {
     if (submittedText != "") {
+      onCreateHistory(submittedText);
+      onSearchBantuan(submittedText);
       toggleSubmitted(true);
     } else {
       toggleSubmitted(false);
     }
   }
+
+  void onCreateHistory(text) async {
+    toggleLoading(true);
+    var result = await shVm.createHistory(searchText: text);
+    toggleLoading(false);
+
+    if (result != null) {
+      histories.add(result);
+    }
+  }
+  void onSearchBantuan(text) async {
+    toggleLoading(true);
+    var result = await bantuanVm.getSearchBantuan(search: text);
+    toggleLoading(false);
+
+    this.setState(() {
+      bantuans = result;
+    });
+  }
   
   var mostSearched = [
     'Cleaning', 'Push Rank', 'Desain', 'Sapu Halaman', 'Ngeronda'
   ];
-  var histories = [
-    'Bantu Buat Website', 'Bantu Buat Mobile', 'Bantu Bersihin Kolam'
-  ];
-  void onChoose(choosed) {
-    searchController.text = choosed;
+  List<SearchHistoryModel> histories = [];
+  void onChoose(choosed) async {
+    this.setState(() {
+      searchController.text = choosed;
+      searchText = choosed;
+    });
+    onSearchBantuan(choosed);
     toggleSubmitted(true);
   }
 
@@ -50,15 +90,23 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
   }
   void onLongPress(choosed) {
     this.setState(() {
-      choosedText = choosed;
+      choosedSearch = choosed;
     });
     toggleShowLongPressDialog(true);
   }
-  void onLongPressDelete() {
-    this.setState(() {
-      histories = histories.where((val) => val != choosedText).toList();
-      showLongPressedDialog = false;
-    });
+  void onLongPressDelete() async {
+    toggleLoading(true);
+    var result = await shVm.deleteHistory(
+      id: choosedSearch!.id
+    );
+    toggleLoading(false);
+
+    if (result) {
+      this.setState(() {
+        histories = histories.where((val) => val.searchText != choosedSearch!.searchText).toList();
+        showLongPressedDialog = false;
+      });
+    }
   }
 
   var showDeleteConfirm = false;
@@ -70,12 +118,31 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
   void onDeleteHistory() {
     toggleDeleteConfirm(true);
   }
-  void onDeleteConfirmed() {
+  void onDeleteConfirmed() async {
+    toggleLoading(true);
+    var result = await shVm.clearHistories();
+    toggleLoading(false);
+
+    if (result) {
+      this.setState(() {
+        histories = [];
+        showDeleteConfirm = false;
+      });
+    }
+  }
+
+  void getAllHistories() async {
+    toggleLoading(true);
+    var result = await shVm.getSearchHistories();
+    toggleLoading(false);
     this.setState(() {
-      histories = [];
-      showDeleteConfirm = false;
+      histories = result;
     });
-    showGLobalAlert('success', 'Berhasil Menghapus Riwayat Pencarian', context);
+  }
+  @override
+  void initState() {
+    super.initState();
+    getAllHistories();
   }
 
   @override
@@ -101,6 +168,11 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
                 onFieldSubmitted: onSubmitted,
                 autofocus: true,
                 controller: searchController,
+                onChanged: (value) {
+                  this.setState(() {
+                    searchText = value;
+                  });
+                },
                 style: regularBlackRegular,
               ),
             ),
@@ -160,7 +232,7 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
 
     Widget RenderContent() {
       return submitted ? 
-      SearchedMode()
+      SearchedMode(bantuans: bantuans,)
       : 
       SearchMode(mostSearched, histories, onChoose, onDeleteHistory, onLongPress);
     }
@@ -237,7 +309,7 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
                   ),
                   SizedBox(height: 8,),
                   Text(
-                    "Hapus Riwayat " + choosedText + " ?",
+                    "Hapus Riwayat " + choosedSearch!.searchText + " ?",
                     style: poppinsText.copyWith(
                       fontSize: 13,
                       fontWeight: regular,
@@ -279,7 +351,14 @@ class _BantuanSerachPageState extends State<BantuanSerachPage> {
             ],
           ),
           DeleteConfirmDialog(),
-          LongPressDialog()
+          LongPressDialog(),
+          loading ? Container(
+            color: black.withOpacity(0.5),
+            child: LoadingCustom(
+              title: 'Loading . . .',
+              isWhite: true,
+            ),
+          ) : SizedBox()
         ],
       ),
     );

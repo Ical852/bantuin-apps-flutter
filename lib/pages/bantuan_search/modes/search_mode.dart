@@ -1,3 +1,4 @@
+import 'package:bantuin/models/search_history_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/image_custom.dart';
@@ -8,8 +9,10 @@ import 'package:flutter/material.dart';
 
 class SearchMode extends StatelessWidget {
 
-  List<String> mostSearched, histories;
-  Function(String) onChoose, onLongPress;
+  List<String> mostSearched;
+  List<SearchHistoryModel> histories;
+  Function(String) onChoose;
+  Function(SearchHistoryModel) onLongPress;
   Function() onDelete; 
   SearchMode(this.mostSearched, this.histories, this.onChoose, this.onDelete, this.onLongPress);
   @override
@@ -47,14 +50,14 @@ class SearchMode extends StatelessWidget {
     Widget HistoriesContent() {
       return Container(
         child: Column(
-          children: histories.map((value) {
+          children: histories.map((search) {
             return SearchHistoryItem(
-              title: value,
+              title: search.searchText,
               onPress: (){
-                onChoose(value);
+                onChoose(search.searchText);
               },
               onLongPress: (){
-                onLongPress(value);
+                onLongPress(search);
               },
             );
           }).toList(),
