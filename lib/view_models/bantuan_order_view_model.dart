@@ -1,5 +1,6 @@
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/models/bantuan_order_model.dart';
+import 'package:bantuin/models/bantuan_orders/get_bantuan_order_helper_model.dart';
 import 'package:bantuin/models/bantuan_orders/get_bantuan_order_request_response.dart';
 import 'package:bantuin/models/user_model.dart';
 import 'package:bantuin/services/bantuan_order_service.dart';
@@ -210,5 +211,32 @@ class BantuanOrderViewModel {
 
     showGLobalAlert('success', 'Request Help Success', context);
     return true;
+  }
+
+  Future<List<BantuanOrderModel>> getHelperOrderByStatus({
+    required int helperId,
+    required String status
+  }) async {
+    var response = await bantuanOrderService.getHelperOrderByStatus(
+      token: token,
+      helperId: helperId,
+      status: status
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return [];
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Get Helper Order Data Failed', context);
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      return [];
+    }
+
+    var orderResponse = GetBantuanOrderHelperResponseModel.fromJson(response);
+    return orderResponse.orders;
   }
 }

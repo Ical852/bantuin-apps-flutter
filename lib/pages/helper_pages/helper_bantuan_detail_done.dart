@@ -1,5 +1,8 @@
+import 'package:bantuin/models/bantuan_order_model.dart';
+import 'package:bantuin/pages/detail_pages/detail_map_page.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/detail_page_items/price_start_item.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/image_custom.dart';
@@ -11,16 +14,33 @@ import 'package:bantuin/widgets/money_contents/midtrans_pay.dart';
 import 'package:bantuin/widgets/owner_item.dart';
 import 'package:bantuin/widgets/title_descs/detail_title_desc.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 class HelperBantuanDetailDonePage extends StatefulWidget {
   @override
   State<HelperBantuanDetailDonePage> createState() => _HelperBantuanDetailDonePageState();
+
+  BantuanOrderModel order;
+  HelperBantuanDetailDonePage(this.order);
 }
 
 class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePage> {
   @override
-  var payType = 'bmoney';
+
+  late var payType = this.widget.order.bantuan!.payType;
+
+  String getLocation() {
+    return this.widget.order.bantuan!.location.split('|')[1];
+  }
+
+  LatLng getLatLong() {
+    var latLngString = this.widget.order.bantuan!.location.split('|')[0];
+    var latLngSplit = latLngString.split(',');
+    var lat = double.parse(latLngSplit[0]);
+    var long = double.parse(latLngSplit[1]);
+    return LatLng(lat, long);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +62,7 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
           bottom: 32
         ),
         child: CashOnDelivery(
-          price: 6000000,
+          price: this.widget.order.bantuan!.price,
           detail: true,
         ),
       );
@@ -56,7 +76,7 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
         ),
         child: MidtransPay(
           detail: true,
-          total: 6000000,
+          total: this.widget.order.bantuan!.price,
         ),
       );
     }
@@ -70,11 +90,11 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
           bottom: 32
         ),
         child: BantuanMoneyProfile(
-          name: 'Budi Setianto',
-          phone: '089674839221',
+          name: this.widget.order.bantuan!.user!.fullName,
+          phone: this.widget.order.bantuan!.user!.phoneNumber,
           price: 0,
           noMain: true,
-          plus: 6000000,
+          plus: this.widget.order.bantuan!.price,
           title: 'Helper akan mendapatkan',
         ),
       );
@@ -93,12 +113,13 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
           ImageCustom(
             height: 227,
             width: double.infinity,
-            image: AssetImage('assets/dummies/dummy1.png'),
             margin: EdgeInsets.symmetric(
               horizontal: 24
             ),
             fit: BoxFit.cover,
             borderRadius: BorderRadius.circular(12),
+            network: true,
+            nwUrl: this.widget.order.bantuan!.image,
           ),
           SizedBox(height: 24,),
           Marginner(
@@ -106,7 +127,7 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
               horizontal: 24  
             ),
             child: Text(
-              'Jadi Keamanan Camping Hutan Mangroove',
+              this.widget.order.bantuan!.title,
               style: baseBlackSemibold,
             ),
           ),
@@ -123,19 +144,30 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PriceStartItem(
-              price: 6000000,
+              price: this.widget.order.bantuan!.price,
             ),
             SizedBox(height: 20,),
             DetailTitleDesc(
               title: 'Description',
-              desc: 'Jadi kemanan camping gua ngejaga malam pagi siang dan sore, 18 jam, fasilitas tersedia semua, senter, tenda, terpal, karpet, makan pagi, siang, sore, malem, dijamin komplit.',
+              desc: this.widget.order.bantuan!.desc,
             ),
             SizedBox(height: 20,),
             DetailTitleDesc(
               title: 'Location',
-              desc: 'Jl. Cemara 2, Poris Indah Blok H 40, Tangerang, Banten',
+              desc: getLocation(),
             ),
-            SizedBox(height: 24,),
+            SizedBox(height: 8,),
+            RawButtonCustom(
+              height: 40,
+              onPress: (){
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => DetailMapPage(this.widget.order.bantuan!.user!, getLatLong()),
+                  )
+                );
+              },
+              title: 'Check',
+            ),
           ],
         ),
       );
@@ -159,11 +191,10 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
                   ),
                   BantuanDetails(),
                   Marginner(
-                    margin: EdgeInsets.symmetric(
-                      vertical: 24
-                    ),
+                    margin: EdgeInsets.only(top: 24),
                     child: Line()
-                  ),RenderPayType(),
+                  ),
+                  RenderPayType(),
                 ],
               ),
             )

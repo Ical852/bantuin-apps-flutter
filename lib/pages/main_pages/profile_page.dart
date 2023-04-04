@@ -253,6 +253,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   requestToBeHelper();
                 }
               },
+              noBtn: user.helper?.status == 'pending' ? true : false,
             )
           ],
         ),

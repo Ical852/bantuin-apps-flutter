@@ -163,4 +163,22 @@ class BantuanOrderService {
     var decoded = jsonDecode(response.body);
     return ResponseModel.fromJson(decoded);
   }
+
+  Future<ResponseModel?> getHelperOrderByStatus({
+    required int helperId,
+    required String token, status
+  }) async {
+    var url = "$baseUrl/order?helper_id=$helperId&status=$status";
+    var response = await http.get(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
 }

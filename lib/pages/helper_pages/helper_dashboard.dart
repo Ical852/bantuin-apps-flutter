@@ -1,11 +1,18 @@
+import 'package:bantuin/models/bantuan_model.dart';
+import 'package:bantuin/models/bantuan_order_model.dart';
+import 'package:bantuin/models/helper_rate_model.dart';
 import 'package:bantuin/pages/helper_pages/helper_bantuan_detail_done.dart';
 import 'package:bantuin/pages/helper_pages/helper_bantuan_detail_on_going.dart';
 import 'package:bantuin/shared/constants.dart';
+import 'package:bantuin/view_models/bantuan_order_view_model.dart';
+import 'package:bantuin/view_models/helper_view_model.dart';
+import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/helper_items/helper_insight.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/img_text_btn/img_text_desc_minibtn.dart';
 import 'package:bantuin/widgets/line.dart';
+import 'package:bantuin/widgets/loading_custom.dart';
 import 'package:bantuin/widgets/main_items/weekly_item.dart';
 import 'package:bantuin/widgets/marginner.dart';
 import 'package:bantuin/widgets/money_contents/bantuan_money_profile.dart';
@@ -19,6 +26,33 @@ class HelperDashboardPage extends StatefulWidget {
 }
 
 class _HelperDashboardPageState extends State<HelperDashboardPage> {
+  var loading = false;
+  void toggleLoading(value) {
+    this.setState(() {
+      loading = value;
+    });
+  }
+
+  late var userVm = UserViewModel(context);
+  late var user = userVm.getUserData();
+  late var helperVm = HelperViewModel(context);
+  late var orderVm = BantuanOrderViewModel(context);
+
+  List<HelperRateModel> data = [];
+  var totalRecords = 0;
+  var totalRate = 0.0;
+  void getAllRecords() async {
+    toggleLoading(true);
+    var result = await helperVm.getAllRecords(helperId: user.helper!.id);
+    toggleLoading(false);
+
+    this.setState(() {
+      data = result;
+      totalRecords = result.length;
+      totalRate = double.parse(result.map((m) => m.rating).reduce((a, b) => a + b).toString());
+    });
+  }
+
   var currentToggle = "left";
   void toggleToggler(value) {
     this.setState(() {
@@ -26,8 +60,42 @@ class _HelperDashboardPageState extends State<HelperDashboardPage> {
     });
   }
 
-  var leftEmpty = false;
-  var rightEmpty = false;
+  List<BantuanOrderModel> onGoingData = [];
+  List<BantuanOrderModel> doneData = [];
+
+  void getOnGoingData() async {
+    toggleLoading(true);
+    var result = await orderVm.getHelperOrderByStatus(
+      helperId: user.helper!.id,
+      status: 'process'
+    );
+    toggleLoading(false);
+
+    this.setState(() {
+      onGoingData = result;
+    });
+  }
+
+  void getDoneData() async {
+    toggleLoading(true);
+    var result = await orderVm.getHelperOrderByStatus(
+      helperId: user.helper!.id,
+      status: 'done'
+    );
+    toggleLoading(false);
+
+    this.setState(() {
+      doneData = result;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getOnGoingData();
+    getDoneData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +103,9 @@ class _HelperDashboardPageState extends State<HelperDashboardPage> {
       return Marginner(
         margin: EdgeInsets.symmetric(horizontal: 24),
         child: BantuanMoneyProfile(
-          name: 'Shalahuddin Ahmad Aziz',
-          phone: '089674839221',
-          price: 9200301,
+          name: user.fullName,
+          phone: user.phoneNumber,
+          price: user.balance,
         ),
       );
     }
@@ -55,9 +123,9 @@ class _HelperDashboardPageState extends State<HelperDashboardPage> {
               height: 16,
             ),
             HelperInsight(
-              money: 15500000,
-              totalHelp: 314,
-              rate: 4.8,
+              money: user.helper!.helperBalance,
+              totalHelp: totalRecords,
+              rate: totalRate,
               onMoney: () {},
               onHelp: () {},
               onRate: () {},
@@ -92,7 +160,8 @@ class _HelperDashboardPageState extends State<HelperDashboardPage> {
           width: 270,
           btnTitle: 'Ke Home',
           onPressed: (){
-            Navigator.pushNamed(context, "/main");
+            setPage(context, 'home');
+            Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
           },
         ),
       );
@@ -106,61 +175,26 @@ class _HelperDashboardPageState extends State<HelperDashboardPage> {
           right: 24
         ),
         child: Column(
-          children: [
-            // WeeklyItem(
-            //   image: 'assets/dummies/dummy10.png',
-            //   title: 'Bersihin Interior Dalem', 
-            //   desc:
-            //       'Ada kosan di bekasi, butuh bantuan bersihin dalem sampe selesai',
-            //   location: 'Bekasi, Indonesia',
-            //   price: 2125000,
-            //   onPress: () {
-            //     Navigator.push(
-            //       context, MaterialPageRoute(
-            //         builder: (context) => HelperBantuanDetailOnGoingPage(),
-            //       )
-            //     );
-            //   },
-            //   isHelper: true,
-            // ),
-            // WeeklyItem(
-            //   image: 'assets/dummies/dummy11.png',
-            //   title: 'Bersihin Kolam Renang',
-            //   desc:
-            //       'Kolam renang gua ijo, kotor, butuh bantuan bersihin, 1,5k lepas',
-            //   location: 'Bogor, Indonesia',
-            //   price: 1500000,
-            //   onPress: () {
-            //     Navigator.push(
-            //       context, MaterialPageRoute(
-            //         builder: (context) => HelperBantuanDetailOnGoingPage(),
-            //       )
-            //     );
-            //   },
-            //   isHelper: true,
-            // ),
-            // WeeklyItem(
-            //   image: 'assets/dummies/dummy12.png',
-            //   title: 'Cuci Motor Gue',
-            //   desc: 'Motor lama mo di repain, tapi butuh bantu buat di cuci',
-            //   location: 'Jakarta, Indonesia',
-            //   price: 1725000,
-            //   onPress: () {
-            //     Navigator.push(
-            //       context, MaterialPageRoute(
-            //         builder: (context) => HelperBantuanDetailOnGoingPage(),
-            //       )
-            //     );
-            //   },
-            //   isHelper: true,
-            // ),
-          ],
+          children: onGoingData.map((order) {
+            return WeeklyItem(
+              bantuan: order.bantuan!,
+              onPress: () {
+                print(order.status);
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => HelperBantuanDetailOnGoingPage(order),
+                  )
+                );
+              },
+              isHelper: true,
+            );
+          }).toList(),
         ),
       );
     }
 
     Widget LeftContentRender() {
-      return leftEmpty ? LeftEmpty() : LeftExist();
+      return onGoingData.length > 0 ? LeftExist() : LeftEmpty();
     }
 
     Widget RightEmpty() {
@@ -175,7 +209,8 @@ class _HelperDashboardPageState extends State<HelperDashboardPage> {
           width: 280,
           btnTitle: 'Ke Home',
           onPressed: (){
-            Navigator.pushNamed(context, "/main");
+            setPage(context, 'home');
+            Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
           },
         ),
       );
@@ -189,105 +224,84 @@ class _HelperDashboardPageState extends State<HelperDashboardPage> {
           right: 24
         ),
         child: Column(
-          children: [
-            // WeeklyItem(
-            //   image: 'assets/dummies/dummy11.png',
-            //   title: 'Bersihin Kolam Renang',
-            //   desc:
-            //       'Kolam renang gua ijo, kotor, butuh bantuan bersihin, 1,5k lepas',
-            //   location: 'Bogor, Indonesia',
-            //   price: 1500000,
-            //   onPress: () {
-            //     Navigator.push(
-            //       context, MaterialPageRoute(
-            //         builder: (context) => HelperBantuanDetailDonePage(),
-            //       )
-            //     );
-            //   },
-            //   isHelper: true,
-            // ),
-            // WeeklyItem(
-            //   image: 'assets/dummies/dummy12.png',
-            //   title: 'Cuci Motor Gue',
-            //   desc: 'Motor lama mo di repain, tapi butuh bantu buat di cuci',
-            //   location: 'Jakarta, Indonesia',
-            //   price: 1725000,
-            //   onPress: () {
-            //     Navigator.push(
-            //       context, MaterialPageRoute(
-            //         builder: (context) => HelperBantuanDetailDonePage(),
-            //       )
-            //     );
-            //   },
-            //   isHelper: true,
-            // ),
-            // WeeklyItem(
-            //   image: 'assets/dummies/dummy10.png',
-            //   title: 'Bersihin Interior Dalem', 
-            //   desc:
-            //       'Ada kosan di bekasi, butuh bantuan bersihin dalem sampe selesai',
-            //   location: 'Bekasi, Indonesia',
-            //   price: 2125000,
-            //   onPress: () {
-            //     Navigator.push(
-            //       context, MaterialPageRoute(
-            //         builder: (context) => HelperBantuanDetailDonePage(),
-            //       )
-            //     );
-            //   },
-            //   isHelper: true,
-            // ),
-          ],
+          children: doneData.map((order) {
+            return WeeklyItem(
+              bantuan: order.bantuan!,
+              onPress: () {
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => HelperBantuanDetailDonePage(order),
+                  )
+                );
+              },
+              isHelper: true,
+            );
+          }).toList(),
         ),
       );
     }
 
     Widget RightContentRender() {
-      return rightEmpty ? RightEmpty() : RightExist();
+      return doneData.length > 0 ? RightExist() : RightEmpty();
     }
 
     Widget ToggledContentRender() {
       return currentToggle == 'left' ? LeftContentRender() : RightContentRender();
     }
 
+    Widget LoadingContent() {
+      return Container(
+        color: black.withOpacity(0.5),
+        child: LoadingCustom(
+          title: 'Loading . . .',
+          isWhite: true,
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: white,
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            MainHeader(
-              title: 'Dashboard Helper',
-              onBack: (){
-                Navigator.pop(context);
-              },
-              rightContent: ImageCustom(
-                width: 17,
-                height: 20,
-                image: AssetImage('assets/icons/ic_notif_chat.png'),
-              ),
-              onRightPress: () {
-                Navigator.pushNamed(context, '/notifications');
-              },
-            ),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.only(
-                  top: 12
+            Column(
+              children: [
+                MainHeader(
+                  title: 'Dashboard Helper',
+                  onBack: (){
+                    Navigator.pop(context);
+                  },
+                  rightContent: ImageCustom(
+                    width: 17,
+                    height: 20,
+                    image: AssetImage('assets/icons/ic_notif_chat.png'),
+                  ),
+                  onRightPress: () {
+                    Navigator.pushNamed(context, '/notifications');
+                  },
                 ),
-                children: [
-                  HelperBM(),
-                  SizedBox(height: 32,),
-                  Line(),
-                  SizedBox(height: 24,),
-                  HelperInsightContent(),
-                  ContentToggler(),
-                  ToggledContentRender(),
-                  SizedBox(height: 120,)
-                ],
-              ),
-            )
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.only(
+                      top: 12
+                    ),
+                    children: [
+                      HelperBM(),
+                      SizedBox(height: 32,),
+                      Line(),
+                      SizedBox(height: 24,),
+                      HelperInsightContent(),
+                      ContentToggler(),
+                      ToggledContentRender(),
+                      SizedBox(height: 120,)
+                    ],
+                  ),
+                )
+              ],
+            ),
+            loading ? LoadingContent() : SizedBox()
           ],
-        ),
+        )
       ),
     );
   }

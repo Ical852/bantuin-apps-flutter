@@ -1,3 +1,4 @@
+import 'package:bantuin/models/bantuan_order_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/widgets/detail_page_items/price_start_item.dart';
@@ -15,10 +16,17 @@ import 'package:flutter/material.dart';
 class HelperBantuanDetailOnGoingPage extends StatefulWidget {
   @override
   State<HelperBantuanDetailOnGoingPage> createState() => _HelperBantuanDetailOnGoingPageState();
+
+  BantuanOrderModel order;
+  HelperBantuanDetailOnGoingPage(this.order);
 }
 
 class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGoingPage> {
-  var payType = 'bmoney';
+  late var payType = this.widget.order.bantuan!.payType;
+
+  String getLocation() {
+    return this.widget.order.bantuan!.location.split('|')[1];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +48,7 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
           bottom: 32
         ),
         child: CashOnDelivery(
-          price: 6000000,
+          price: this.widget.order.bantuan!.price,
           detail: true,
         ),
       );
@@ -54,7 +62,7 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
         ),
         child: MidtransPay(
           detail: true,
-          total: 6000000,
+          total: this.widget.order.bantuan!.price,
         ),
       );
     }
@@ -68,11 +76,11 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
           bottom: 32
         ),
         child: BantuanMoneyProfile(
-          name: 'Budi Setianto',
-          phone: '089674839221',
+          name: this.widget.order.bantuan!.user!.fullName,
+          phone: this.widget.order.bantuan!.user!.phoneNumber,
           price: 0,
           noMain: true,
-          plus: 6000000,
+          plus: this.widget.order.bantuan!.price,
           title: 'Helper akan mendapatkan',
         ),
       );
@@ -91,12 +99,13 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
           ImageCustom(
             height: 227,
             width: double.infinity,
-            image: AssetImage('assets/dummies/dummy1.png'),
             margin: EdgeInsets.symmetric(
               horizontal: 24
             ),
             fit: BoxFit.cover,
             borderRadius: BorderRadius.circular(12),
+            network: true,
+            nwUrl: this.widget.order.bantuan!.image,
           ),
           SizedBox(height: 24,),
           Marginner(
@@ -104,7 +113,7 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
               horizontal: 24  
             ),
             child: Text(
-              'Jadi Keamanan Camping Hutan Mangroove',
+              this.widget.order.bantuan!.title,
               style: baseBlackSemibold,
             ),
           ),
@@ -121,17 +130,17 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PriceStartItem(
-              price: 6000000,
+              price: this.widget.order.bantuan!.price,
             ),
             SizedBox(height: 20,),
             DetailTitleDesc(
               title: 'Description',
-              desc: 'Jadi kemanan camping gua ngejaga malam pagi siang dan sore, 18 jam, fasilitas tersedia semua, senter, tenda, terpal, karpet, makan pagi, siang, sore, malem, dijamin komplit.',
+              desc: this.widget.order.bantuan!.desc,
             ),
             SizedBox(height: 20,),
             DetailTitleDesc(
               title: 'Location',
-              desc: 'Jl. Cemara 2, Poris Indah Blok H 40, Tangerang, Banten',
+              desc: getLocation(),
             ),
             SizedBox(height: 24,),
           ],
@@ -157,10 +166,12 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
                   ),
                   BantuanDetails(),
                   OwnerItem(
-                    ownerImage: 'assets/dummies/owner.png',
-                    title: 'Budi Setianto',
+                    ownerImage: '',
+                    title: this.widget.order.bantuan!.user!.fullName,
                     subTitle: 'Butuh Bantuan',
                     onPressed: (){},
+                    network: true,
+                    nwUrl: this.widget.order.bantuan!.user!.image,
                   ),
                   RenderPayType(),
                 ],

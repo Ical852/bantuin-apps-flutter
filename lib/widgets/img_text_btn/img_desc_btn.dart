@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class ImgDescBtn extends StatelessWidget {
 
   String image, desc, title, type;
+  bool noBtn;
   Function() onPress;
 
   ImgDescBtn({
@@ -13,7 +14,8 @@ class ImgDescBtn extends StatelessWidget {
     required this.desc,
     required this.title,
     required this.onPress,
-    this.type = 'primary'
+    this.type = 'primary',
+    this.noBtn = false
   });
   
   @override
@@ -34,7 +36,7 @@ class ImgDescBtn extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 20,),
-          MainButtonCustom(
+          noBtn ? SizedBox() : MainButtonCustom(
             title: title,
             onPressed: onPress,
             type: type,
