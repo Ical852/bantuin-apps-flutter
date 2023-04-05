@@ -11,6 +11,7 @@ import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/chat_items/chat_item.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/toggler/double_btn_toggler.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
@@ -30,14 +31,14 @@ class _ChatPageState extends State<ChatPage> {
   List<ChatModel> helperChats = [];
   List<ChatModel> customerChats = [];
 
-  void getHelperChats() async {
+  Future getHelperChats() async {
     var result = await chatVm.getChatFromHelper();
     this.setState(() {
       helperChats = result;
     });
   }
 
-  void getCustomerChats() async {
+  Future getCustomerChats() async {
     if (user.helper != null && user.helper?.status == 'active') {
       var result = await chatVm.getChatFromCustomer();
       this.setState(() {
@@ -209,6 +210,11 @@ class _ChatPageState extends State<ChatPage> {
     Widget HelperChatExist() {
       return Column(
         children: helperChats.map((data) {
+          CollectionReference reference = FirebaseFirestore.instance.collection('${user.id}_${data.helperId}');
+          reference.snapshots().listen((snapshot) async {
+            await getHelperChats();
+          });
+
           return ChatItem(
             onPress: (){
               Navigator.push(
@@ -271,6 +277,11 @@ class _ChatPageState extends State<ChatPage> {
     Widget CustomerChatExist() {
       return Column(
         children: customerChats.map((data) {
+          CollectionReference reference = FirebaseFirestore.instance.collection('${data.user!.id}_${user.helper!.id}');
+          reference.snapshots().listen((snapshot) async {
+            await getHelperChats();
+          });
+
           return ChatItem(
             onPress: (){
               Navigator.push(
