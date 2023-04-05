@@ -7,13 +7,16 @@ import 'package:flutter/material.dart';
 class ChatBubbleOther extends StatelessWidget {
 
   String message, image;
-  bool noPadding;
+  bool noPadding, network;
   Function()? onLongPress;
+  String? nwUrl;
   ChatBubbleOther({
     required this.message,
     required this.image,
     this.noPadding = false,
-    this.onLongPress
+    this.onLongPress,
+    this.network = false,
+    this.nwUrl
   });
 
   @override
@@ -37,6 +40,8 @@ class ChatBubbleOther extends StatelessWidget {
               margin: EdgeInsets.only(
                 right: 12
               ),
+              network: network,
+              nwUrl: nwUrl,
             ),
             Container(
               constraints: BoxConstraints(
