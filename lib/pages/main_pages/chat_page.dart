@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/models/chat_model.dart';
 import 'package:bantuin/pages/chat_pages/detail_chat_page.dart';
 import 'package:bantuin/pages/chat_pages/detail_chat_page_helper.dart';
@@ -210,10 +211,16 @@ class _ChatPageState extends State<ChatPage> {
     Widget HelperChatExist() {
       return Column(
         children: helperChats.map((data) {
-          CollectionReference reference = FirebaseFirestore.instance.collection('${user.id}_${data.helperId}');
-          reference.snapshots().listen((snapshot) async {
-            await getHelperChats();
-          });
+          // CollectionReference reference = FirebaseFirestore.instance.collection('${user.id}_${data.helperId}');
+          // reference.snapshots().listen((snapshot) async {
+          //   print('listen');
+          //   try {
+          //     await getHelperChats();
+          //   } catch (e) {
+          //     showGLobalAlert('danger', 'Terjadi Kesalahan, Kembali Ke Home', context);
+          //     setPage(context, 'home');
+          //   }
+          // });
 
           return ChatItem(
             onPress: (){
@@ -277,10 +284,10 @@ class _ChatPageState extends State<ChatPage> {
     Widget CustomerChatExist() {
       return Column(
         children: customerChats.map((data) {
-          CollectionReference reference = FirebaseFirestore.instance.collection('${data.user!.id}_${user.helper!.id}');
-          reference.snapshots().listen((snapshot) async {
-            await getCustomerChats();
-          });
+          // CollectionReference reference = FirebaseFirestore.instance.collection('${data.user!.id}_${user.helper!.id}');
+          // reference.snapshots().listen((snapshot) async {
+          //   await getCustomerChats();
+          // });
 
           return ChatItem(
             onPress: (){

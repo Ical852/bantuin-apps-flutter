@@ -30,7 +30,8 @@ class _DetailChatPageState extends State<DetailChatPage> {
 
   late CollectionReference chat = FirebaseFirestore.instance.collection(this.widget.groupId);
   late Stream<QuerySnapshot> chatStream = FirebaseFirestore.instance.collection(this.widget.groupId).orderBy('date').snapshots();
-
+  final ScrollController _controller = ScrollController();
+  
   TextEditingController chatController = TextEditingController(text: "");
   var currentValue = "";
 
@@ -88,7 +89,17 @@ class _DetailChatPageState extends State<DetailChatPage> {
                     return Text("loading");
                   }
 
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (_controller.hasClients) {
+                      _controller
+                          .jumpTo(_controller.position.maxScrollExtent);
+                    } else {
+                      setState(() => null);
+                    }
+                  });
+
                   return ListView(
+                    controller: _controller,
                     padding: EdgeInsets.only(
                       left: 24,
                       right: 24,
