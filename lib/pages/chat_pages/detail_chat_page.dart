@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bantuin/models/user_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/chat_view_model.dart';
 import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/chat_items/chat_bubble_me.dart';
@@ -24,6 +25,7 @@ class DetailChatPage extends StatefulWidget {
 
 class _DetailChatPageState extends State<DetailChatPage> {
   late var userVm = UserViewModel(context);
+  late var chatVm = ChatViewModel(context);
   late var user = userVm.getUserData();
 
   late CollectionReference chat = FirebaseFirestore.instance.collection(this.widget.groupId);
@@ -34,6 +36,16 @@ class _DetailChatPageState extends State<DetailChatPage> {
 
   bool isStick(key, from, stream) {
     return key != stream.length -1 && stream[key + 1]['userId'] == from;
+  }
+
+  void readHelperResentChat() async {
+    await chatVm.customerReadHelper(groupId: this.widget.groupId, helperId: this.widget.groupId.split('_')[1]);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    readHelperResentChat();
   }
 
   @override

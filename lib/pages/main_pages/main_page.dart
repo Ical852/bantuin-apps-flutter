@@ -215,6 +215,19 @@ class _MainPageState extends State<MainPage> {
                 //     .then((value) {
                 //   print(value.size);
                 // });
+                FirebaseFirestore.instance
+                    .collection('2_1')
+                    .where('userId', isEqualTo: '1')
+                    .get()
+                    .then((value) async {
+                  print(value.docs.map((doc) {
+                    print(doc.id);
+                    FirebaseFirestore.instance
+                        .collection('2_1')
+                        .doc(doc.id.toString())
+                        .update({'isRead': true});
+                  }));
+                });
               },
             )
           ],

@@ -24,7 +24,7 @@ class ChatViewModel {
     this.context = context;
   }
 
-  void customerReadHelper({
+  Future customerReadHelper({
     required String groupId,
     required String helperId,
   }) async {
@@ -40,7 +40,7 @@ class ChatViewModel {
       });
   }
 
-  void helperReadCustomer({
+  Future helperReadCustomer({
     required String groupId,
     required String userId,
   }) async {
