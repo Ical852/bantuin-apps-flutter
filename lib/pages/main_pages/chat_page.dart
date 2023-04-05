@@ -279,7 +279,7 @@ class _ChatPageState extends State<ChatPage> {
         children: customerChats.map((data) {
           CollectionReference reference = FirebaseFirestore.instance.collection('${data.user!.id}_${user.helper!.id}');
           reference.snapshots().listen((snapshot) async {
-            await getHelperChats();
+            await getCustomerChats();
           });
 
           return ChatItem(
