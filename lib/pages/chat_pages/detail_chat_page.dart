@@ -148,7 +148,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
               });
 
               await chat.add({
-                'groupId': '${user.id}_${this.widget.helper.helper!.id}',
+                'groupId': '${user.id}_${this.widget.helper.id}',
                 'userId': user.id.toString(),
                 'date': DateTime.now(),
                 'message': chatText,
