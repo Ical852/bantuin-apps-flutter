@@ -114,7 +114,6 @@ class _DetailChatPageHelperState extends State<DetailChatPageHelper> {
                     children: snapshot.data!.docs.asMap().entries.map((element) {
                       var document = element.value;
                       var key = element.key;
-                      readCustomerResentChat();
 
                       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                       return GetCHatBubble(data, key, snapshot.data!.docs);
