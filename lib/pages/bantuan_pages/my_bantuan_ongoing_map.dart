@@ -75,9 +75,6 @@ class _MyBantuanOnGoingMapPageState extends State<MyBantuanOnGoingMapPage> {
       if (updating == false) {
         timer.cancel();
       }
-      print('Current ' + currentLocation.toString());
-      print('Helper ' + helperLocation.toString());
-      print('Target' +  this.widget.location.toString());
 
       var collection = FirebaseFirestore.instance.collection('location_${this.widget.helper.id}');
       var check = await collection.get();
@@ -88,9 +85,12 @@ class _MyBantuanOnGoingMapPageState extends State<MyBantuanOnGoingMapPage> {
         print(splitted);
         this.setState(() {
           helperLocation = LatLng(double.parse(splitted[1]), double.parse(splitted[0]));
+          coordinates = [LatLng(double.parse(splitted[1]), double.parse(splitted[0])), this.widget.location];
         });
       }
-      print('updated');
+      print('Current ' + currentLocation.toString());
+      print('Helper ' + helperLocation.toString());
+      print('Target' +  this.widget.location.toString());
       getCurrentLocation();
     });
     

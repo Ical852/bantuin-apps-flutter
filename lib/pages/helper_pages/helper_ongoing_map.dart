@@ -74,6 +74,7 @@ class _HelperOnGoingMapPageState extends State<HelperOnGoingMapPage> {
         timer.cancel();
       }
       print('updated');
+      print(this.widget.location);
       getCurrentLocation();
     });
   }

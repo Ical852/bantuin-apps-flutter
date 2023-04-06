@@ -17,13 +17,19 @@ class PaymentKeyValue extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            keyVal,
-            style: regularGrayRegular,
+          Expanded(
+            child: Text(
+              keyVal,
+              style: regularGrayRegular,
+              maxLines: 1,
+            ),
           ),
+          SizedBox(width: 12,),
           Text(
             value,
             style: regularBlackSemibold,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           )
         ],
       ),

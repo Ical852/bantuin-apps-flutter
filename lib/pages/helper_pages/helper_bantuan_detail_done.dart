@@ -39,7 +39,7 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
     var latLngSplit = latLngString.split(',');
     var lat = double.parse(latLngSplit[0]);
     var long = double.parse(latLngSplit[1]);
-    return LatLng(lat, long);
+    return LatLng(long, lat);
   }
 
   @override
