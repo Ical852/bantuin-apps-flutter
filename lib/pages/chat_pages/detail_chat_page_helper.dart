@@ -163,8 +163,6 @@ class _DetailChatPageHelperState extends State<DetailChatPageHelper> {
                 deviceId: this.widget.customer.userDevice!.deviceId,
                 userId: user.helper!.id
               );
-              
-              this.chatController.text = '';
             },
             onChanged: (value) {
               this.setState(() {
