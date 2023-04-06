@@ -30,6 +30,7 @@ class UserViewModel {
   }
 
   void setUserData(UserModel userData) {
+    setStringPref('userid', userData.id.toString());
     setStringPref('user', jsonEncode(userData.toJson()));
     context.read<UserCubit>().setUserData(userData);
   }

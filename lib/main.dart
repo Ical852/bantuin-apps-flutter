@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bantuin/cubit/base_url_cubit.dart';
 import 'package:bantuin/cubit/my_bantuan_cubit.dart';
 import 'package:bantuin/cubit/on_chat_page_cubit.dart';
@@ -5,6 +7,7 @@ import 'package:bantuin/cubit/page_cubit.dart';
 import 'package:bantuin/cubit/token_cubit.dart';
 import 'package:bantuin/cubit/user_cubit.dart';
 import 'package:bantuin/cubit/user_id_chat_cubit.dart';
+import 'package:bantuin/functions/global_func.dart';
 
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
@@ -59,12 +62,15 @@ import 'package:bantuin/pages/help_upload/create_help.dart';
 import 'package:bantuin/pages/help_upload/create_success_page.dart';
 import 'package:bantuin/pages/help_upload/processing_page.dart';
 import 'package:bantuin/view_models/push_chat_view_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
 import 'notification_service.dart';
@@ -78,7 +84,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
@@ -134,6 +139,26 @@ void main() async {
       alert: true, badge: true, sound: true);
 
   runApp(MyApp());
+
+  Timer.periodic(Duration(seconds: 3), (timer) async {
+    var prefs = await SharedPreferences.getInstance();
+    var status = prefs.get('isLoggedIn');
+    if (status != null) {
+      var userId = prefs.get('userid');
+      if (userId != null) {
+        var collection = FirebaseFirestore.instance.collection('location_${userId}');
+        var check = await collection.get();
+        if (check.docs.length > 0) {
+          var docId = check.docs[0].id;
+          LatLng location = await getCurrentLocation();
+          collection.doc(docId).update({'location': '${location.longitude.toString()}|${location.latitude.toString()}'});
+        } else {
+          LatLng location = await getCurrentLocation();
+          collection.add({'location': '${location.longitude.toString()}|${location.latitude.toString()}'});
+        }
+      }
+    }
+  });
 }
 
 class NavigationService {

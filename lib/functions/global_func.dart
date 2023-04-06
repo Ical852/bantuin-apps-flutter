@@ -15,6 +15,27 @@ String formatter(int number) {
   return 'IDR. ' + formatted.replaceAll(',', '.');
 }
 
+Future getCurrentLocation() async {
+  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return Future.error("Location Unable");
+  }
+  LocationPermission permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return Future.error("Location permissions are denied");
+    }
+  }
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+        "Location permissions are permanently denied, we cannot continue your request");
+  }
+  var geo = await Geolocator.getCurrentPosition();
+  var locationLatLng = LatLng(geo.latitude, geo.longitude);
+  return locationLatLng;
+}
+
 Future<SharedPreferences> prefs() async {
   return await SharedPreferences.getInstance();
 }

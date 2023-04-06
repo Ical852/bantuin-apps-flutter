@@ -1,6 +1,8 @@
 import 'package:bantuin/models/bantuan_order_model.dart';
+import 'package:bantuin/pages/helper_pages/helper_ongoing_map.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/detail_page_items/price_start_item.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/image_custom.dart';
@@ -12,6 +14,7 @@ import 'package:bantuin/widgets/money_contents/midtrans_pay.dart';
 import 'package:bantuin/widgets/owner_item.dart';
 import 'package:bantuin/widgets/title_descs/detail_title_desc.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HelperBantuanDetailOnGoingPage extends StatefulWidget {
   @override
@@ -26,6 +29,14 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
 
   String getLocation() {
     return this.widget.order.bantuan!.location.split('|')[1];
+  }
+
+  LatLng getLatLong() {
+    var latLngString = this.widget.order.bantuan!.location.split('|')[0];
+    var latLngSplit = latLngString.split(',');
+    var lat = double.parse(latLngSplit[0]);
+    var long = double.parse(latLngSplit[1]);
+    return LatLng(lat, long);
   }
 
   @override
@@ -141,6 +152,18 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
             DetailTitleDesc(
               title: 'Location',
               desc: getLocation(),
+            ),
+            SizedBox(height: 8,),
+            RawButtonCustom(
+              height: 40,
+              onPress: (){
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => HelperOnGoingMapPage(this.widget.order.bantuan!.user!, getLatLong()),
+                  )
+                );
+              },
+              title: 'Check',
             ),
             SizedBox(height: 24,),
           ],

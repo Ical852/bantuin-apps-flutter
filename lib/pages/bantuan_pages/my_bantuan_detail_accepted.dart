@@ -4,11 +4,13 @@ import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/models/bantuan_model.dart';
 import 'package:bantuin/models/bantuan_order_model.dart';
 import 'package:bantuin/pages/bantuan_pages/my_bantuan_helper_request.dart';
+import 'package:bantuin/pages/bantuan_pages/my_bantuan_ongoing_map.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/view_models/bantuan_order_view_model.dart';
 import 'package:bantuin/widgets/buttons/detail_button_custom.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
+import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/cancel_item.dart';
 import 'package:bantuin/widgets/chat_items/chat_btn.dart';
 import 'package:bantuin/widgets/detail_page_items/price_start_item.dart';
@@ -25,6 +27,7 @@ import 'package:bantuin/widgets/owner_item.dart';
 import 'package:bantuin/widgets/rate_items/rate_control.dart';
 import 'package:bantuin/widgets/title_descs/detail_title_desc.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MyBantuanDetailAcceptedPage extends StatefulWidget {
   @override
@@ -142,6 +145,18 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
     }
   }
 
+  String getLocation() {
+    return this.widget.bantuan.location.split('|')[1];
+  }
+
+  LatLng getLatLong() {
+    var latLngString = this.widget.bantuan!.location.split('|')[0];
+    var latLngSplit = latLngString.split(',');
+    var lat = double.parse(latLngSplit[0]);
+    var long = double.parse(latLngSplit[1]);
+    return LatLng(long, lat);
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget HeaderContent() {
@@ -255,6 +270,18 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
             DetailTitleDesc(
               title: 'Location',
               desc: order!.bantuan!.location.split('|')[1],
+            ),
+            SizedBox(height: 8,),
+            RawButtonCustom(
+              height: 40,
+              onPress: (){
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => MyBantuanOnGoingMapPage(order!.helper!.user!, getLatLong()),
+                  )
+                );
+              },
+              title: 'Check',
             ),
             SizedBox(height: 24,),
           ],
