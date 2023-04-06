@@ -140,7 +140,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
           child: ChatInput(
             controller: chatController,
             isActive: currentValue != "",
-            hint: 'Beri pesan ke James Curt',
+            hint: 'Beri pesan',
             onPressed: () async {
               var chatText = chatController.text.toString();
               this.chatController.text = '';
