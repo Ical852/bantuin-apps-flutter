@@ -14,7 +14,7 @@ class SearchedMode extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
       child: ListView(
         shrinkWrap: true,
         padding: EdgeInsets.only(
