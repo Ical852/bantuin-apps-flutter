@@ -4,6 +4,7 @@ import 'package:bantuin/models/user_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/view_models/chat_view_model.dart';
+import 'package:bantuin/view_models/push_chat_view_model.dart';
 import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/chat_items/chat_bubble_me.dart';
@@ -26,10 +27,12 @@ class DetailChatPageHelper extends StatefulWidget {
 class _DetailChatPageHelperState extends State<DetailChatPageHelper> {
   late var userVm = UserViewModel(context);
   late var chatVm = ChatViewModel(context);
+  late var pushChatVm = PushChatViewModel(context);
   late var user = userVm.getUserData();
 
   late CollectionReference chat = FirebaseFirestore.instance.collection(this.widget.groupId);
   late Stream<QuerySnapshot> chatStream = FirebaseFirestore.instance.collection(this.widget.groupId).orderBy('date').snapshots();
+  final ScrollController _controller = ScrollController();
 
   TextEditingController chatController = TextEditingController(text: "");
   var currentValue = "";
@@ -46,6 +49,8 @@ class _DetailChatPageHelperState extends State<DetailChatPageHelper> {
   void initState() {
     super.initState();
     readCustomerResentChat();
+    pushChatVm.setOnChatPageState(true);
+    pushChatVm.setCurrentUserIdChat(this.widget.customer.id);
   }
 
   @override
@@ -74,6 +79,7 @@ class _DetailChatPageHelperState extends State<DetailChatPageHelper> {
               title: this.widget.customer.fullName,
               onBack: (){
                 Navigator.pop(context);
+                pushChatVm.setOnChatPageState(false);
               },
             ),
             Expanded(
@@ -88,7 +94,17 @@ class _DetailChatPageHelperState extends State<DetailChatPageHelper> {
                     return Text("loading");
                   }
 
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (_controller.hasClients) {
+                      _controller
+                          .jumpTo(_controller.position.maxScrollExtent);
+                    } else {
+                      setState(() => null);
+                    }
+                  });
+
                   return ListView(
+                    controller: _controller,
                     padding: EdgeInsets.only(
                       left: 24,
                       right: 24,
@@ -134,6 +150,13 @@ class _DetailChatPageHelperState extends State<DetailChatPageHelper> {
               })
               .then((value) => print('Berhasil'))
               .catchError((error) => print('failed' + error));
+
+              await pushChatVm.pushChatNotif(
+                title: user.fullName,
+                message: chatController.text.toString(),
+                deviceId: this.widget.customer.userDevice!.deviceId,
+                userId: user.helper!.id
+              );
               
               this.chatController.text = '';
             },

@@ -39,6 +39,22 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  Future refreshHelperChats() async {
+    var newData = await helperChats.map((data) async {
+      var groupId = '${user.id}_${data.helperId}';
+      await data.setLastChat(groupId);
+      await data.setTotalUnreaded(groupId, data.helperId.toString());
+      return data;
+    }).toList();
+
+    var newFutureData = Future.wait(newData);
+    var newChats = await newFutureData;
+
+    this.setState(() {
+      helperChats = newChats;
+    });
+  }
+
   Future getCustomerChats() async {
     if (user.helper != null && user.helper?.status == 'active') {
       var result = await chatVm.getChatFromCustomer();
@@ -46,6 +62,22 @@ class _ChatPageState extends State<ChatPage> {
         customerChats = result;
       });
     }
+  }
+
+  Future refreshCustomerChats() async {
+    var newData = await customerChats.map((data) async {
+      var groupId = '${data.userId}_${user.helper!.id}';
+      await data.setLastChat(groupId);
+      await data.setTotalUnreaded(groupId, data.user!.id.toString());
+      return data;
+    }).toList();
+
+    var newFutureData = Future.wait(newData);
+    var newChats = await newFutureData;
+
+    this.setState(() {
+      customerChats = newChats;
+    });
   }
 
   @override
@@ -211,16 +243,10 @@ class _ChatPageState extends State<ChatPage> {
     Widget HelperChatExist() {
       return Column(
         children: helperChats.map((data) {
-          // CollectionReference reference = FirebaseFirestore.instance.collection('${user.id}_${data.helperId}');
-          // reference.snapshots().listen((snapshot) async {
-          //   print('listen');
-          //   try {
-          //     await getHelperChats();
-          //   } catch (e) {
-          //     showGLobalAlert('danger', 'Terjadi Kesalahan, Kembali Ke Home', context);
-          //     setPage(context, 'home');
-          //   }
-          // });
+          CollectionReference reference = FirebaseFirestore.instance.collection('${user.id}_${data.helperId}');
+          reference.snapshots().listen((snapshot) async {
+            await refreshHelperChats();
+          });
 
           return ChatItem(
             onPress: (){
@@ -284,10 +310,10 @@ class _ChatPageState extends State<ChatPage> {
     Widget CustomerChatExist() {
       return Column(
         children: customerChats.map((data) {
-          // CollectionReference reference = FirebaseFirestore.instance.collection('${data.user!.id}_${user.helper!.id}');
-          // reference.snapshots().listen((snapshot) async {
-          //   await getCustomerChats();
-          // });
+          CollectionReference reference = FirebaseFirestore.instance.collection('${data.user!.id}_${user.helper!.id}');
+          reference.snapshots().listen((snapshot) async {
+            await refreshCustomerChats();
+          });
 
           return ChatItem(
             onPress: (){

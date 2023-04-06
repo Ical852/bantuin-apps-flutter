@@ -1,8 +1,10 @@
 import 'package:bantuin/cubit/base_url_cubit.dart';
 import 'package:bantuin/cubit/my_bantuan_cubit.dart';
+import 'package:bantuin/cubit/on_chat_page_cubit.dart';
 import 'package:bantuin/cubit/page_cubit.dart';
 import 'package:bantuin/cubit/token_cubit.dart';
 import 'package:bantuin/cubit/user_cubit.dart';
+import 'package:bantuin/cubit/user_id_chat_cubit.dart';
 
 import 'package:bantuin/pages/test/chattest.dart';
 import 'package:bantuin/pages/test/maptest.dart';
@@ -56,6 +58,7 @@ import 'package:bantuin/pages/bantuan_pages/my_bantuan_done.dart';
 import 'package:bantuin/pages/help_upload/create_help.dart';
 import 'package:bantuin/pages/help_upload/create_success_page.dart';
 import 'package:bantuin/pages/help_upload/processing_page.dart';
+import 'package:bantuin/view_models/push_chat_view_model.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +78,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
@@ -95,9 +99,11 @@ void main() async {
   print('User granted permission: ${settings.authorizationStatus}');
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    var pushChatVm = PushChatViewModel(NavigationService.navigatorKey.currentContext!);
     print('Got a message whilst in the foreground!');
     var data = message.data;
-    print('Message data: ${data['type']}');
+    print('Message data: ${data['chat']}');
+    print('Message data: ${data['userid']}');
 
     if (message.notification != null) {
       print(
@@ -105,13 +111,33 @@ void main() async {
       print(
           'Message also contained a notification: ${message.notification!.title.toString()}');
     }
-    NotificationService.showNotification(message);
+
+    if (data['chat'] != null) {
+      if (data['chat'] == 'yes') {
+        if (pushChatVm.getOnChatPageState()) {
+          if (pushChatVm.getCurrentUserIdChat() == int.parse(data['userid'])) {
+          } else {
+            NotificationService.showNotification(message);
+          }
+        } else {
+          NotificationService.showNotification(message);
+        }
+      } else {
+        NotificationService.showNotification(message);
+      }
+    } else {
+      NotificationService.showNotification(message);
+    }
   });
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, badge: true, sound: true);
 
   runApp(MyApp());
+}
+
+class NavigationService {
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }
 
 class MyApp extends StatelessWidget {
@@ -126,8 +152,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => TokenCubit()),
         BlocProvider(create: (context) => MyBantuanCubit()),
         BlocProvider(create: (context) => PageCubit()),
+        BlocProvider(create: (context) => OnChatPageCubit()),
+        BlocProvider(create: (context) => UserIdChatCubit()),
       ],
       child: MaterialApp(
+        navigatorKey: NavigationService.navigatorKey,
         debugShowCheckedModeBanner: false,
         routes: {
           // Test 3rd Party

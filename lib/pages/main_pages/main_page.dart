@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bantuin/cubit/page_cubit.dart';
+import 'package:bantuin/get_fcm.dart';
 import 'package:bantuin/pages/main_pages/chat_page.dart';
 import 'package:bantuin/pages/main_pages/explore_page.dart';
 import 'package:bantuin/pages/main_pages/home_page.dart';
@@ -215,19 +216,26 @@ class _MainPageState extends State<MainPage> {
                 //     .then((value) {
                 //   print(value.size);
                 // });
-                FirebaseFirestore.instance
-                    .collection('2_1')
-                    .where('userId', isEqualTo: '1')
-                    .get()
-                    .then((value) async {
-                  print(value.docs.map((doc) {
-                    print(doc.id);
-                    FirebaseFirestore.instance
-                        .collection('2_1')
-                        .doc(doc.id.toString())
-                        .update({'isRead': true});
-                  }));
-                });
+                // FirebaseFirestore.instance
+                //     .collection('2_1')
+                //     .where('userId', isEqualTo: '1')
+                //     .get()
+                //     .then((value) async {
+                //   print(value.docs.map((doc) {
+                //     print(doc.id);
+                //     FirebaseFirestore.instance
+                //         .collection('2_1')
+                //         .doc(doc.id.toString())
+                //         .update({'isRead': true});
+                //   }));
+                // });
+              },
+            ),
+            SizedBox(height: 12,),
+            MainButtonCustom(
+              title: 'Check Device Id',
+              onPressed: () async {
+                print(await getFcmToken());
               },
             )
           ],

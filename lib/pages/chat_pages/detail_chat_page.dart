@@ -4,6 +4,7 @@ import 'package:bantuin/models/user_model.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/view_models/chat_view_model.dart';
+import 'package:bantuin/view_models/push_chat_view_model.dart';
 import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/chat_items/chat_bubble_me.dart';
@@ -26,6 +27,7 @@ class DetailChatPage extends StatefulWidget {
 class _DetailChatPageState extends State<DetailChatPage> {
   late var userVm = UserViewModel(context);
   late var chatVm = ChatViewModel(context);
+  late var pushChatVm = PushChatViewModel(context);
   late var user = userVm.getUserData();
 
   late CollectionReference chat = FirebaseFirestore.instance.collection(this.widget.groupId);
@@ -47,6 +49,8 @@ class _DetailChatPageState extends State<DetailChatPage> {
   void initState() {
     super.initState();
     readHelperResentChat();
+    pushChatVm.setOnChatPageState(true);
+    pushChatVm.setCurrentUserIdChat(int.parse(this.widget.groupId.split('_')[1]));
   }
 
   @override
@@ -75,6 +79,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
               title: this.widget.helper.fullName,
               onBack: (){
                 Navigator.pop(context);
+                pushChatVm.setOnChatPageState(false);
               },
             ),
             Expanded(
@@ -137,7 +142,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
             hint: 'Beri pesan ke James Curt',
             onPressed: () async {
               await chat.add({
-                'groupId': '${user.id}_${this.widget.helper.id}',
+                'groupId': '${user.id}_${this.widget.helper.helper!.id}',
                 'userId': user.id.toString(),
                 'date': DateTime.now(),
                 'message': chatController.text.toString(),
@@ -145,6 +150,13 @@ class _DetailChatPageState extends State<DetailChatPage> {
               })
               .then((value) => print('Berhasil'))
               .catchError((error) => print('failed' + error));
+
+              await pushChatVm.pushChatNotif(
+                title: user.fullName,
+                message: chatController.text.toString(),
+                deviceId: this.widget.helper.userDevice!.deviceId,
+                userId: user.id
+              );
               
               this.chatController.text = '';
             },
