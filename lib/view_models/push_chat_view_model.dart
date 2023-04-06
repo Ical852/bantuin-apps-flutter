@@ -40,7 +40,8 @@ class PushChatViewModel {
   Future pushChatNotif({
     required String title,
     required String message,
-    required String deviceId, userId,
+    required String deviceId,
+    required int userId,
   }) async {
     await pushChatService.pushChatNotif(
       title: title,

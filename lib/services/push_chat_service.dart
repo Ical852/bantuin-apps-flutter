@@ -17,7 +17,7 @@ class PushChatService {
     required String title,
     required String message,
     required String deviceId,
-    required String userId,
+    required int userId,
     required String token,
   }) async {
     var url = "$baseUrl/notif/push";

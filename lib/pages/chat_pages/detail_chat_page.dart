@@ -141,11 +141,17 @@ class _DetailChatPageState extends State<DetailChatPage> {
             isActive: currentValue != "",
             hint: 'Beri pesan ke James Curt',
             onPressed: () async {
+              var chatText = chatController.text.toString();
+              this.chatController.text = '';
+              this.setState(() {
+                currentValue = '';
+              });
+
               await chat.add({
                 'groupId': '${user.id}_${this.widget.helper.helper!.id}',
                 'userId': user.id.toString(),
                 'date': DateTime.now(),
-                'message': chatController.text.toString(),
+                'message': chatText,
                 'isRead': false
               })
               .then((value) => print('Berhasil'))
@@ -153,12 +159,11 @@ class _DetailChatPageState extends State<DetailChatPage> {
 
               await pushChatVm.pushChatNotif(
                 title: user.fullName,
-                message: chatController.text.toString(),
+                message: chatText,
                 deviceId: this.widget.helper.userDevice!.deviceId,
                 userId: user.id
               );
               
-              this.chatController.text = '';
             },
             onChanged: (value) {
               this.setState(() {
