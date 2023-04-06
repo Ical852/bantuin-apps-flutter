@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:bantuin/cubit/page_cubit.dart';
+import 'package:bantuin/cubit/user_cubit.dart';
 import 'package:bantuin/get_fcm.dart';
+import 'package:bantuin/models/user_model.dart';
+import 'package:bantuin/pages/helper_pages/helper_dashboard.dart';
 import 'package:bantuin/pages/main_pages/chat_page.dart';
 import 'package:bantuin/pages/main_pages/explore_page.dart';
 import 'package:bantuin/pages/main_pages/home_page.dart';
@@ -12,6 +15,7 @@ import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/image_custom.dart';
 import 'package:bantuin/widgets/menu_item.dart';
+import 'package:bantuin/widgets/nav_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +44,10 @@ class _MainPageState extends State<MainPage> {
 
   void openDrawer() {
     globalKey.currentState?.openDrawer();
+  }
+
+  void closeDrawer() {
+    globalKey.currentState?.closeDrawer();
   }
 
   var navHidden = false;
@@ -173,73 +181,123 @@ class _MainPageState extends State<MainPage> {
     }
 
     Widget DrawerContent() {
-      return Container(
-        margin: EdgeInsets.only(
-          top: 24
-        ),
-        child: ListView(
-          padding: EdgeInsets.all(24),
-          children: [
-            MainButtonCustom(
-              title: 'Logout',
-              onPressed: (){
-                logout();
-              },
+      return BlocBuilder<UserCubit, UserModel>(
+        builder: (context, state) {
+          return Container(
+            child: ListView(
+              padding: EdgeInsets.all(0),
+              children: [
+                Container(
+                  padding: EdgeInsets.only(
+                    top: safeAreaPadding(context) + 12,
+                    left: 12,
+                    right: 12,
+                    bottom: 24
+                  ),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [green2, green1],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter
+                    )
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: white,
+                          borderRadius: BorderRadius.circular(50)
+                        ),
+                        child: ImageCustom(
+                          margin: EdgeInsets.all(2),
+                          height: 50,
+                          width: 50,
+                          network: true,
+                          nwUrl: user.image,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                      SizedBox(height: 12,),
+                      Text(
+                        user.fullName,
+                        style: baseWhiteSemibold,
+                      ),
+                      Text(
+                        user.helper != null && user.helper?.status == 'active' ? 'Customer & Helper' : 'Customer',
+                        style: regularWhiteRegular,
+                      ),
+                      Text(
+                        user.email,
+                        style: regularWhiteLight,
+                      )
+                    ],
+                  ),
+                ),
+                NavItem(
+                  icon: Icons.person,
+                  title: 'My Profile',
+                  onPress: (){
+                    setPage(context, 'profile');
+                    closeDrawer();
+                  },
+                ),
+                NavItem(
+                  icon: Icons.handshake,
+                  title: 'My Bantuan',
+                  onPress: (){
+                    setPage(context, 'profile');
+                    closeDrawer();
+                    Navigator.pushNamed(context, '/my-bantuan');
+                  },
+                ),
+                user.helper != null && user.helper?.status == 'active' ?
+                NavItem(
+                  icon: Icons.dashboard,
+                  title: 'Dashboard Helper',
+                  onPress: (){
+                    closeDrawer();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HelperDashboardPage()
+                      )
+                    );
+                  },
+                )
+                :SizedBox(),
+                NavItem(
+                  icon: Icons.monetization_on,
+                  title: 'Top Up',
+                  onPress: (){
+                    closeDrawer();
+                    Navigator.pushNamed(context, '/top-up');
+                  },
+                ),
+                NavItem(
+                  icon: Icons.search,
+                  title: 'Cari Bantuan',
+                  onPress: (){
+                    closeDrawer();
+                    Navigator.pushNamed(context, '/bantuan-search');
+                  },
+                ),
+                NavItem(
+                  icon: Icons.logout,
+                  title: 'Logout',
+                  onPress: (){
+                    closeDrawer();
+                    logout();
+                  },
+                ),
+              ],
             ),
-            SizedBox(height: 12,),
-            MainButtonCustom(
-              title: 'Check Token',
-              onPressed: () {
-                print(userVm.getToken());
-              },
-            ),
-            SizedBox(height: 12,),
-            MainButtonCustom(
-              title: 'Check Chat',
-              onPressed: () async {
-                // FirebaseFirestore.instance
-                //     .collection('icalios_icalandro')
-                //     .orderBy("date")
-                //     .limit(1)
-                //     .get()
-                //     .then((querySnapshot) {
-                //       var time = DateTime.fromMillisecondsSinceEpoch(querySnapshot.docs.first.data()['date'].seconds * 1000);
-                //       print(time.hour);
-                //       print(time.minute);
-                //     }
-                // );
-                // await FirebaseFirestore.instance
-                //     .collection('2_1')
-                //     .where('userId', isEqualTo: '1')
-                //     .where('isRead', isEqualTo: false)
-                //     .get()
-                //     .then((value) {
-                //   print(value.size);
-                // });
-                // FirebaseFirestore.instance
-                //     .collection('2_1')
-                //     .where('userId', isEqualTo: '1')
-                //     .get()
-                //     .then((value) async {
-                //   print(value.docs.map((doc) {
-                //     print(doc.id);
-                //     FirebaseFirestore.instance
-                //         .collection('2_1')
-                //         .doc(doc.id.toString())
-                //         .update({'isRead': true});
-                //   }));
-                // });
-              },
-            ),
-            SizedBox(height: 12,),
-            MainButtonCustom(
-              title: 'Check Device Id',
-              onPressed: () async {
-                print(await getFcmToken());
-              },
-            )
-          ],
-        ),
+          );
+        },
       );
     }
 
