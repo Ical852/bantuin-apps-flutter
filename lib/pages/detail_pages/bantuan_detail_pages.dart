@@ -1,9 +1,11 @@
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/models/bantuan_model.dart';
+import 'package:bantuin/pages/chat_pages/detail_chat_page_helper.dart';
 import 'package:bantuin/pages/detail_pages/detail_map_page.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/view_models/bantuan_order_view_model.dart';
+import 'package:bantuin/view_models/chat_view_model.dart';
 import 'package:bantuin/view_models/helper_view_model.dart';
 import 'package:bantuin/view_models/user_view_model.dart';
 import 'package:bantuin/widgets/buttons/detail_button_custom.dart';
@@ -37,6 +39,7 @@ class _BantuanDetailPageState extends State<BantuanDetailPage> {
   late var userVm = UserViewModel(context);
   late var helperVm = HelperViewModel(context);
   late var boVm = BantuanOrderViewModel(context);
+  late var chatVm = ChatViewModel(context);
   late var user = userVm.getUserData();
 
   var loading = false;
@@ -86,8 +89,50 @@ class _BantuanDetailPageState extends State<BantuanDetailPage> {
     }
   }
 
+  void goToChat() async {
+    var result = await chatVm.createChat(
+      userId: this.widget.bantuan.userId,
+      helperId: user.helper!.id
+    );
+
+    if (result) {
+      Navigator.push(
+        context, MaterialPageRoute(
+          builder: (context) => DetailChatPageHelper('${this.widget.bantuan.userId}_${user.helper!.id}', this.widget.bantuan.user!)
+        )
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget RequestHelperContent() {
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: 24),
+        child: ListView(
+          children: [
+            SizedBox(
+              height: 24,
+            ),
+            ImgDescBtn(
+              image: 'assets/illustrations/il_obhelp.png',
+              title: 'Request',
+              desc: user.helper?.status == 'pending' ? 'Permintann Kamu Sedang Di Proses, Tunggu Hingga Admin Mengonfirmasi Permintaan Kamu Untuk Menjadi Helper' : 'Request ke admin untuk mendaftar menjadi helper?',
+              onPress: () {
+                if (user.helper == null || user.helper?.status == 'pending') {
+                  Navigator.pop(context);
+                  showGLobalAlert('danger', 'Permintaan Sedang Di Proses', context);
+                } else {
+                  requestToBeHelper();
+                }
+              },
+              noBtn: user.helper?.status == 'pending' ? true : false,
+            )
+          ],
+        ),
+      );
+    }
+
     Widget CODPayType() {
       return Container(
         margin: EdgeInsets.only(
@@ -195,36 +240,19 @@ class _BantuanDetailPageState extends State<BantuanDetailPage> {
             RawButtonCustom(
               height: 40,
               onPress: (){
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => DetailMapPage(this.widget.bantuan.user!, getLatLong()),
-                  )
-                );
+                if (user.helper == null || user.helper?.status == 'pending') {
+                  showDrawer(context, 398, RequestHelperContent());
+                } else {
+                  Navigator.push(
+                    context, MaterialPageRoute(
+                      builder: (context) => DetailMapPage(this.widget.bantuan.user!, getLatLong()),
+                    )
+                  );
+                }
               },
               title: 'Check',
             ),
             SizedBox(height: 24,),
-          ],
-        ),
-      );
-    }
-
-    Widget RequestHelperContent() {
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: 24),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 24,
-            ),
-            ImgDescBtn(
-              image: 'assets/illustrations/il_obhelp.png',
-              title: 'Daftar',
-              desc: 'Request ke admin untuk mendaftar menjadi helper?',
-              onPress: () {
-                requestToBeHelper();
-              },
-            )
           ],
         ),
       );
@@ -269,6 +297,11 @@ class _BantuanDetailPageState extends State<BantuanDetailPage> {
           children: [
             ChatBtn(
               onPressed: (){
+                if (user.helper == null || user.helper?.status == 'pending') {
+                  showDrawer(context, 398, RequestHelperContent());
+                } else {
+                  goToChat();
+                }
               },
               isDetail: true,
             ),
@@ -328,7 +361,13 @@ class _BantuanDetailPageState extends State<BantuanDetailPage> {
                         subTitle: 'Butuh Bantuan',
                         network: true,
                         nwUrl: this.widget.bantuan.user!.image,
-                        onPressed: (){},
+                        onPressed: (){
+                          if (user.helper == null || user.helper?.status == 'pending') {
+                            showDrawer(context, 398, RequestHelperContent());
+                          } else {
+                            goToChat();
+                          }
+                        },
                       ),
                       RenderPayType(),
                       BottomButton()

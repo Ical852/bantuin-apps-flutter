@@ -188,17 +188,23 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     Text(
                       user.fullName,
-                      style: mediumWhiteSemibold
+                      style: mediumWhiteSemibold,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 4,),
                     Text(
                       user.email,
-                      style: regularWhiteRegular
+                      style: regularWhiteRegular,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 4,),
                     Text(
                       user.helper != null && user.helper?.status == 'active' ? 'Customer & Helper' : 'Customer',
-                      style: regularWhiteRegular
+                      style: regularWhiteRegular,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -243,10 +249,10 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ImgDescBtn(
               image: 'assets/illustrations/il_obhelp.png',
-              title: 'Daftar',
-              desc: user.helper?.status == 'pending' ? 'Permintann Kamu Sedang Di Proses, Tunggu Hingga Admin Mengonfirmasi Permintaan Kamu' : 'Request ke admin untuk mendaftar menjadi helper?',
+              title: 'Request',
+              desc: user.helper?.status == 'pending' ? 'Permintaan Kamu Sedang Di Proses, Tunggu Hingga Admin Mengonfirmasi Permintaan Kamu Untuk Menjadi Helper' : 'Request ke admin untuk mendaftar menjadi helper?',
               onPress: () {
-                if (user.helper?.status == 'pending') {
+                if (user.helper == null || user.helper?.status == 'pending') {
                   Navigator.pop(context);
                   showGLobalAlert('danger', 'Permintaan Sedang Di Proses', context);
                 } else {

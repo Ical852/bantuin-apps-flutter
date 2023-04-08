@@ -122,4 +122,29 @@ class ChatViewModel {
 
     return newChats;
   }
+
+  Future<bool> createChat({
+    required int userId, helperId
+  }) async {
+    var response = await chatService.createChat(
+      token: token,
+      userId: userId,
+      helperId: helperId
+    );
+
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Start to Chat Failed', context);
+      if (response.meta.message is String) {
+        showGLobalAlert('danger', response.meta.message, context);
+      }
+      return false;
+    }
+
+    return true;
+  }
 }

@@ -14,49 +14,45 @@ class SearchedMode extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
-        shrinkWrap: true,
-        padding: EdgeInsets.only(
-          top: 24
-        ),
-        children: [
-          Marginner(
-            margin: EdgeInsets.symmetric(
-              horizontal: 24
-            ),
-            child: Text(
-              'Pencarian paling relevan',
-              style: regularBlackSemibold,
-            ),
-          ),
-          Expanded(
-            child: GridView.count(
-              padding: EdgeInsets.only(
-                left: 24,
-                right: 24,
-                top: 16,
-                bottom: 32
-              ),
-              crossAxisCount: 2,
-              childAspectRatio: 157/205,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              children: bantuans.map((bantuan) {
-                return GridItem(onPress: (){
-                  Navigator.push(
-                    context, MaterialPageRoute(
-                      builder: (context) => BantuanDetailPage(bantuan)
-                    )
-                  );
-                }, bantuan: bantuan);
-              }).toList(),
-            ),
-          )
-        ],
+    return ListView(
+      shrinkWrap: true,
+      padding: EdgeInsets.only(
+        top: 24
       ),
+      children: [
+        Marginner(
+          margin: EdgeInsets.symmetric(
+            horizontal: 24
+          ),
+          child: Text(
+            'Pencarian paling relevan',
+            style: regularBlackSemibold,
+          ),
+        ),
+        GridView.count(
+          padding: EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 16,
+            bottom: 32
+          ),
+          crossAxisCount: 2,
+          childAspectRatio: 157/205,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          children: bantuans.map((bantuan) {
+            return GridItem(onPress: (){
+              Navigator.push(
+                context, MaterialPageRoute(
+                  builder: (context) => BantuanDetailPage(bantuan)
+                )
+              );
+            }, bantuan: bantuan);
+          }).toList(),
+        )
+      ],
     );
   }
 }

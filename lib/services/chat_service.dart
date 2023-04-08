@@ -48,4 +48,27 @@ class ChatService {
     var decoded = jsonDecode(response.body);
     return ResponseModel.fromJson(decoded);
   }
+
+  Future<ResponseModel?> createChat({
+    required int userId, helperId,
+    required String token
+  }) async {
+    var url = "$baseUrl/chat";
+    var body = jsonEncode({
+      "user_id": userId,
+      "helper_id": helperId
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+      body: body
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    return ResponseModel.fromJson(decoded);
+  }
 }

@@ -62,11 +62,15 @@ class TransactionItem extends StatelessWidget {
                   Text(
                     generateTitle(),
                     style: regularBlackSemibold,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 11,),
                   Text(
                     formatter(transaction.grossAmount),
                     style: mediumBlackSemibold,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 11,),
                   StatusTag(
