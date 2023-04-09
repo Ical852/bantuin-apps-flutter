@@ -60,4 +60,36 @@ class HelperService {
     
     return ResponseModel.fromJson(decoded);
   }
+
+  Future<ResponseModel?> giveRateToHelper({
+    required int userId, bantuanId, helperId, rating,
+    required String token, message
+  }) async {
+    var url = "$baseUrl/helper/rate";
+    var body = jsonEncode({
+      'user_id': userId,
+      'bantuan_id': bantuanId,
+      'helper_id': helperId,
+      'rating': rating,
+      'message': message,
+    });
+    var response = await http.post(
+      Uri.parse(url),
+      headers: tokenedHeader(token),
+      body: body
+    );
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
+    return ResponseModel.fromJson(decoded);
+  }
 }

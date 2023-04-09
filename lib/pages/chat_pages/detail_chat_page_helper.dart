@@ -41,7 +41,7 @@ class _DetailChatPageHelperState extends State<DetailChatPageHelper> {
     return key != stream.length -1 && stream[key + 1]['userId'] == from;
   }
 
-  void readCustomerResentChat() async {
+  Future readCustomerResentChat() async {
     await chatVm.helperReadCustomer(groupId: this.widget.groupId, userId: this.widget.customer.id.toString());
   }
 
@@ -77,7 +77,8 @@ class _DetailChatPageHelperState extends State<DetailChatPageHelper> {
           children: [
             MainHeader(
               title: this.widget.customer.fullName,
-              onBack: (){
+              onBack: () async {
+                await readCustomerResentChat();
                 Navigator.pop(context);
                 pushChatVm.setOnChatPageState(false);
               },

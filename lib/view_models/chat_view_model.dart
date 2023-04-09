@@ -28,12 +28,12 @@ class ChatViewModel {
     required String groupId,
     required String helperId,
   }) async {
-    FirebaseFirestore.instance.collection(groupId)
+    await FirebaseFirestore.instance.collection(groupId)
       .where('userId', isEqualTo: helperId)
       .get().then((value) async {
-        print(value.docs.map((doc) {
+        print(value.docs.map((doc) async {
           print(doc.id);
-          FirebaseFirestore.instance.collection(groupId).doc(doc.id.toString()).update({
+          await FirebaseFirestore.instance.collection(groupId).doc(doc.id.toString()).update({
             'isRead': true
           });
         }));
@@ -44,12 +44,12 @@ class ChatViewModel {
     required String groupId,
     required String userId,
   }) async {
-    FirebaseFirestore.instance.collection(groupId)
+    await FirebaseFirestore.instance.collection(groupId)
       .where('userId', isEqualTo: userId)
       .get().then((value) async {
-        print(value.docs.map((doc) {
+        print(value.docs.map((doc) async {
           print(doc.id);
-          FirebaseFirestore.instance.collection(groupId).doc(doc.id.toString()).update({
+          await FirebaseFirestore.instance.collection(groupId).doc(doc.id.toString()).update({
             'isRead': true
           });
         }));

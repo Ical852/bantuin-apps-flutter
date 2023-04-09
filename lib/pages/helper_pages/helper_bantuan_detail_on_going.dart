@@ -1,7 +1,10 @@
 import 'package:bantuin/models/bantuan_order_model.dart';
+import 'package:bantuin/models/user_model.dart';
+import 'package:bantuin/pages/chat_pages/detail_chat_page_helper.dart';
 import 'package:bantuin/pages/helper_pages/helper_ongoing_map.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/chat_view_model.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/detail_page_items/price_start_item.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
@@ -26,6 +29,7 @@ class HelperBantuanDetailOnGoingPage extends StatefulWidget {
 
 class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGoingPage> {
   late var payType = this.widget.order.bantuan!.payType;
+  late var chatVm = ChatViewModel(context);
 
   String getLocation() {
     return this.widget.order.bantuan!.location.split('|')[1];
@@ -37,6 +41,21 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
     var lat = double.parse(latLngSplit[0]);
     var long = double.parse(latLngSplit[1]);
     return LatLng(long, lat);
+  }
+
+  void goToChat(int userId, int helperId, UserModel helper) async {
+    var result = await chatVm.createChat(
+      userId: userId,
+      helperId: helperId
+    );
+
+    if (result) {
+      Navigator.push(
+        context, MaterialPageRoute(
+          builder: (context) => DetailChatPageHelper('${userId}_${helperId}', helper)
+        )
+      );
+    }
   }
 
   @override
@@ -192,7 +211,9 @@ class _HelperBantuanDetailOnGoingPageState extends State<HelperBantuanDetailOnGo
                     ownerImage: '',
                     title: this.widget.order.bantuan!.user!.fullName,
                     subTitle: 'Butuh Bantuan',
-                    onPressed: (){},
+                    onPressed: (){
+                      goToChat(this.widget.order.userId, this.widget.order.helperId, this.widget.order.bantuan!.user!);
+                    },
                     network: true,
                     nwUrl: this.widget.order.bantuan!.user!.image,
                   ),

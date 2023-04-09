@@ -75,4 +75,40 @@ class HelperViewModel {
     var rateResponse = GetAllHelperRateResponseModel.fromJson(response);
     return rateResponse.rates;
   }
+
+  Future<bool> giveRateToHelper({
+    required int userId, bantuanId, helperId, rating,
+    required String message
+  }) async {
+    var response = await helperService.giveRateToHelper(
+      token: token,
+      userId: userId,
+      bantuanId: bantuanId,
+      helperId: helperId,
+      rating: rating,
+      message: message
+    );
+    if (response == null) {
+      showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
+      return false;
+    }
+
+    if (response.meta.code != 200) {
+      showGLobalAlert('danger', 'Give Rate to Helper Failed', context);
+      if (response.data != null) {
+        if (response.data.containsKey('message')) {
+          showGLobalAlert('danger', response.data['message'], context);
+        }
+      }
+      return false;
+    }
+
+    showGLobalAlert('success', "Give Rate to Helper Success", context);
+    return true;
+  }
 }

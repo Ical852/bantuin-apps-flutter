@@ -1,7 +1,10 @@
 import 'package:bantuin/models/bantuan_order_model.dart';
+import 'package:bantuin/models/user_model.dart';
+import 'package:bantuin/pages/chat_pages/detail_chat_page_helper.dart';
 import 'package:bantuin/pages/detail_pages/detail_map_page.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
+import 'package:bantuin/view_models/chat_view_model.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
 import 'package:bantuin/widgets/detail_page_items/price_start_item.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
@@ -29,6 +32,7 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
   @override
 
   late var payType = this.widget.order.bantuan!.payType;
+  late var chatVm = ChatViewModel(context);
 
   String getLocation() {
     return this.widget.order.bantuan!.location.split('|')[1];
@@ -40,6 +44,21 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
     var lat = double.parse(latLngSplit[0]);
     var long = double.parse(latLngSplit[1]);
     return LatLng(long, lat);
+  }
+
+  void goToChat(int userId, int helperId, UserModel helper) async {
+    var result = await chatVm.createChat(
+      userId: userId,
+      helperId: helperId
+    );
+
+    if (result) {
+      Navigator.push(
+        context, MaterialPageRoute(
+          builder: (context) => DetailChatPageHelper('${userId}_${helperId}', helper)
+        )
+      );
+    }
   }
 
   @override
@@ -155,18 +174,6 @@ class _HelperBantuanDetailDonePageState extends State<HelperBantuanDetailDonePag
             DetailTitleDesc(
               title: 'Location',
               desc: getLocation(),
-            ),
-            SizedBox(height: 8,),
-            RawButtonCustom(
-              height: 40,
-              onPress: (){
-                Navigator.push(
-                  context, MaterialPageRoute(
-                    builder: (context) => DetailMapPage(this.widget.order.bantuan!.user!, getLatLong()),
-                  )
-                );
-              },
-              title: 'Check',
             ),
           ],
         ),

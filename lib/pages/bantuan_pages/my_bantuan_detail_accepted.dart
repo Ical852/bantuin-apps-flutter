@@ -11,6 +11,7 @@ import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/view_models/bantuan_order_view_model.dart';
 import 'package:bantuin/view_models/chat_view_model.dart';
+import 'package:bantuin/view_models/helper_view_model.dart';
 import 'package:bantuin/widgets/buttons/detail_button_custom.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
@@ -44,6 +45,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
   BantuanOrderModel? order = null;
   late var boVm = BantuanOrderViewModel(context);
   late var chatVm = ChatViewModel(context);
+  late var helperVm = HelperViewModel(context);
 
   void getOrderDetailData() async {
     String status = this.widget.bantuan.status == 'done' ? 'done' : 'process';
@@ -164,10 +166,17 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
 
   void onComplete() async {
     Navigator.pop(context);
-    var reason = '${completSel.join(', ')}, $currentReason';
+    var message = '${completSel.join(', ')}, $currentReason';
 
     toggleLoading(true, 'Completing Order . . .');
     var result = await boVm.completeOrder(orderId: order!.id);
+    await helperVm.giveRateToHelper(
+      userId: order!.userId,
+      bantuanId: order!.bantuanId,
+      helperId: order!.helperId,
+      rating: rating,
+      message: message
+    );
     toggleLoading(false, 'Completing Order . . .');
 
     if (result) {
@@ -521,6 +530,11 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                     }).toList()
                   ),
                 ),
+                Text(
+                  'Bilang terima kasih yuk ke helper',
+                  style: regularBlackRegular,
+                  textAlign: TextAlign.center,
+                ),
                 Container(
                   margin: EdgeInsets.only(
                     left: 24,
@@ -537,7 +551,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                     maxLines: 5,
                     style: mediumBlackRegular,
                     decoration: InputDecoration (
-                      hintText: 'Masukkan Alasan',
+                      hintText: 'Masukkan Ulasan',
                       hintStyle: mediumPrimaryRegular.copyWith(
                         color: green3
                       ),
@@ -572,7 +586,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                     onPressed: (){
                       onComplete();
                     },
-                    disabled: rating == 0 && completSel.length < 1 || reasonController.text.toString() == '',
+                    disabled: rating == 0 || completSel.length < 1 || reasonController.text.toString() == '',
                   ),
                 ),
                 SizedBox(height: 240,)
