@@ -66,6 +66,11 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
     'Diluar Perkiraan', 'Kurang Uang', 'Tidak Sesuai', 'Helper Cabul'
   ];
   var selected = [];
+  var completes = [
+    'Helper Ramah', 'Helper Baik', 'Tepat Waktu', 'Handal', 'No Tipu Tipu',
+    'Sesuai Perkiraan', 'Kerja Cepat', 'Sesuai Keinginan', 'Helper Berwawasan'
+  ];
+  var completSel = [];
   TextEditingController reasonController = TextEditingController(text: "");
   var currentReason = "";
 
@@ -96,9 +101,28 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
       });
     }
   }
-
+  void selectCompReason(reason, Function(void Function()) setState) {
+    if (completSel.contains(reason)) {
+      this.setState(() {
+        completSel.remove(reason);
+      });
+      setState(() {
+        completSel.remove(reason);
+      });
+    } else {
+      this.setState(() {
+        completSel.add(reason);
+      });
+      setState(() {
+        completSel.add(reason);
+      });
+    }
+  }
   bool isContain(reason) {
     return selected.contains(reason);
+  }
+  bool isCompContain(reason) {
+    return completSel.contains(reason);
   }
 
   void onChange(reason, setState) {
@@ -140,6 +164,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
 
   void onComplete() async {
     Navigator.pop(context);
+    var reason = '${completSel.join(', ')}, $currentReason';
 
     toggleLoading(true, 'Completing Order . . .');
     var result = await boVm.completeOrder(orderId: order!.id);
@@ -476,6 +501,26 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                   style: regularBlackRegular,
                   textAlign: TextAlign.center,
                 ),
+                SizedBox(height: 24,),
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 24
+                  ),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 12,
+                    children: completes.map((data) {
+                      return CancelItem(
+                        text: data,
+                        onPressed: (){
+                          selectCompReason(data, setState);
+                        },
+                        selected: isCompContain(data),
+                      );
+                    }).toList()
+                  ),
+                ),
                 Container(
                   margin: EdgeInsets.only(
                     left: 24,
@@ -525,13 +570,9 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                   child: MainButtonCustom(
                     title: 'Selesai',
                     onPressed: (){
-                      if (reasonController.text.toString() == '') {
-                        showGLobalAlert('danger', 'Beri Ulasan Dong', context);
-                      } else {
-                        onComplete();
-                      }
+                      onComplete();
                     },
-                    disabled: rating == 0,
+                    disabled: rating == 0 && completSel.length < 1 || reasonController.text.toString() == '',
                   ),
                 ),
                 SizedBox(height: 240,)
