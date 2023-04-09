@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/models/bantuan_order_model.dart';
+import 'package:bantuin/models/user_model.dart';
+import 'package:bantuin/pages/chat_pages/detail_chat_page.dart';
 import 'package:bantuin/pages/helper_pages/helper_profile_page.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/view_models/bantuan_order_view_model.dart';
+import 'package:bantuin/view_models/chat_view_model.dart';
 import 'package:bantuin/widgets/headers/main_header.dart';
 import 'package:bantuin/widgets/helper_items/helper_request_item.dart';
 import 'package:bantuin/widgets/img_text_btn/img_desc_btn.dart';
@@ -23,6 +26,7 @@ class MyBantuanHelperRequestPage extends StatefulWidget {
 
 class _MyBantuanHelperRequestPageState extends State<MyBantuanHelperRequestPage> {
   late var orderVm = BantuanOrderViewModel(context);
+  late var chatVm = ChatViewModel(context);
 
   var loading = false;
   var loadingTitle = 'Accepting . . .';
@@ -58,6 +62,21 @@ class _MyBantuanHelperRequestPageState extends State<MyBantuanHelperRequestPage>
 
     if (result) {
       Navigator.pushNamed(context, '/my-bantuan-accept-success');
+    }
+  }
+
+  void goToChat(int userId, int helperId, UserModel helper) async {
+    var result = await chatVm.createChat(
+      userId: userId,
+      helperId: helperId
+    );
+
+    if (result) {
+      Navigator.push(
+        context, MaterialPageRoute(
+          builder: (context) => DetailChatPage('${userId}_${helperId}', helper)
+        )
+      );
     }
   }
 
@@ -140,7 +159,9 @@ class _MyBantuanHelperRequestPageState extends State<MyBantuanHelperRequestPage>
               onDeny: () {
                 showDrawer(context, 398, DenyDrawerContent(order.id));
               },
-              onChat: (){},
+              onChat: (){
+                goToChat(order.userId, order.helperId, order.helper!.user!);
+              },
               onProfile: () {
                 Navigator.push(
                   context, MaterialPageRoute(

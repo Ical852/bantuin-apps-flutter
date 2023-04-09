@@ -65,6 +65,11 @@ class ChatViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return [];
     }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
+      return [];
+    }
 
     if (response.meta.code != 200) {
       showGLobalAlert('danger', 'Get Chat Data Failed', context);
@@ -97,6 +102,11 @@ class ChatViewModel {
 
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return [];
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
       return [];
     }
 
@@ -134,6 +144,11 @@ class ChatViewModel {
 
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
       return false;
     }
 

@@ -28,6 +28,12 @@ class ChatService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -46,6 +52,12 @@ class ChatService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -69,6 +81,12 @@ class ChatService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+    
     return ResponseModel.fromJson(decoded);
   }
 }

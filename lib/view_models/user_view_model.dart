@@ -5,6 +5,7 @@ import 'package:bantuin/cubit/user_cubit.dart';
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/get_fcm.dart';
 import 'package:bantuin/models/auths/sign_in_response_model.dart';
+import 'package:bantuin/models/main_model/respose_model.dart';
 import 'package:bantuin/models/user_model.dart';
 import 'package:bantuin/services/user_service.dart';
 import 'package:flutter/widgets.dart';
@@ -95,6 +96,11 @@ class UserViewModel {
     var response = await userService.fetch(token: getToken());
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+    var check = isNotLoggedInCheck(response);
+    if (check) {
+      resetLocalDataAndBackToLogin();
       return false;
     }
 
@@ -232,6 +238,11 @@ class UserViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return false;
     }
+    var check = isNotLoggedInCheck(response);
+    if (check) {
+      resetLocalDataAndBackToLogin();
+      return false;
+    }
 
     if (response.meta.code != 200) {
       if (response.meta.message is String) {
@@ -276,6 +287,11 @@ class UserViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return false;
     }
+    var check = isNotLoggedInCheck(response);
+    if (check) {
+      resetLocalDataAndBackToLogin();
+      return false;
+    }
 
     if (response.meta.code != 200) {
       if (response.meta.message is String) {
@@ -305,6 +321,11 @@ class UserViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return false;
     }
+    var check = isNotLoggedInCheck(response);
+    if (check) {
+      resetLocalDataAndBackToLogin();
+      return false;
+    }
 
     if (response.meta.code != 200) {
       if (response.meta.message is String) {
@@ -328,12 +349,13 @@ class UserViewModel {
       token: this.getToken()
     );
     if (response == null) {
-      removeStringPref('isLoggedIn');
-      removeStringPref('token');
-      removeStringPref('user');
-      
-      showGLobalAlert('success', 'Logout Success', context);
+      showGLobalAlert('danger', 'Network Request Failed', context);
       return true;
+    }
+    var check = isNotLoggedInCheck(response);
+    if (check) {
+      resetLocalDataAndBackToLogin();
+      return false;
     }
 
     if (response.meta.code != 200) {
@@ -347,6 +369,7 @@ class UserViewModel {
       removeStringPref('isLoggedIn');
       removeStringPref('token');
       removeStringPref('user');
+      removeStringPref('userid');
 
       showGLobalAlert('success', 'Logout Success', context);
       return true;
@@ -354,5 +377,24 @@ class UserViewModel {
 
     showGLobalAlert('danger', 'Logout Failed', context);
     return false;
+  }
+
+  bool isNotLoggedInCheck(ResponseModel response) {
+    if (response.isNotLoggedIn != null) {
+      if (response.isNotLoggedIn!) {
+        showGLobalAlert('danger', 'Token Expired, Try to Login Again', context);
+        return true;
+      }
+    } 
+    return false;
+  }
+
+  void resetLocalDataAndBackToLogin() async {
+    removeStringPref('isLoggedIn');
+    removeStringPref('token');
+    removeStringPref('user');
+    removeStringPref('userid');
+    
+    Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
   }
 }

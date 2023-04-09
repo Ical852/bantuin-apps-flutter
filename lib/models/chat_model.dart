@@ -7,9 +7,9 @@ class ChatModel {
   late String createdAt, updatedAt;
   late UserModel? user;
   late HelperModel? helper;
-  late String? lastChat;
-  late int? totalUnreaded;
-  late String? lastHour;
+  late String? lastChat = null;
+  late int? totalUnreaded = null;
+  late String? lastHour = null;
 
   ChatModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

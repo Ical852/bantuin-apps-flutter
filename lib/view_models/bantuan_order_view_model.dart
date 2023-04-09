@@ -34,6 +34,11 @@ class BantuanOrderViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return [];
     }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
+      return [];
+    }
 
     if (response.meta.code != 200) {
       showGLobalAlert('danger', 'Get Bantuans Data Failed', context);
@@ -57,6 +62,11 @@ class BantuanOrderViewModel {
 
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
       return false;
     }
 
@@ -84,6 +94,11 @@ class BantuanOrderViewModel {
 
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
       return false;
     }
 
@@ -115,6 +130,11 @@ class BantuanOrderViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return null;
     }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
+      return null;
+    }
 
     if (response.meta.code != 200) {
       showGLobalAlert('danger', 'Get Bantuans Order Detail Data Failed', context);
@@ -138,6 +158,11 @@ class BantuanOrderViewModel {
 
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
       return false;
     }
 
@@ -169,6 +194,11 @@ class BantuanOrderViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return false;
     }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
+      return false;
+    }
 
     if (response.meta.code != 200) {
       showGLobalAlert('danger', 'Cancel Order Failed', context);
@@ -198,6 +228,11 @@ class BantuanOrderViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return false;
     }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
+      return false;
+    }
 
     if (response.meta.code != 200) {
       showGLobalAlert('danger', 'Request Help Failed', context);
@@ -225,6 +260,11 @@ class BantuanOrderViewModel {
 
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return [];
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
       return [];
     }
 

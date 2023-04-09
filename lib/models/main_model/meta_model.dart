@@ -3,6 +3,12 @@ class MetaModel {
   late String status;
   dynamic message;
 
+  MetaModel() {
+    code = 0;
+    status = '';
+    message = '';
+  }
+
   MetaModel.fromJson(dynamic json) {
     code = json['code'];
     status = json['status'];

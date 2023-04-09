@@ -24,6 +24,11 @@ class HelperViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return false;
     }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
+      return false;
+    }
 
     if (response.meta.code != 200) {
       showGLobalAlert('danger', 'Request To Be Helper Failed', context);
@@ -49,6 +54,11 @@ class HelperViewModel {
     );
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return [];
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
       return [];
     }
 

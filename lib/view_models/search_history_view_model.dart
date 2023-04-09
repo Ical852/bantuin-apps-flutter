@@ -24,6 +24,11 @@ class SearchHistoryViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return [];
     }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
+      return [];
+    }
 
     if (response.meta.code != 200) {
       showGLobalAlert('danger', 'Get Search Histories Failed', context);
@@ -44,6 +49,11 @@ class SearchHistoryViewModel {
     var response = await searchHistoryService.createHistory(token: token, searchText: searchText);
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return null;
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
       return null;
     }
 
@@ -67,6 +77,11 @@ class SearchHistoryViewModel {
       showGLobalAlert('danger', 'Network Request Error', context);
       return false;
     }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
+      return false;
+    }
 
     if (response.meta.code != 200) {
       showGLobalAlert('danger', 'Delete Search History Failed', context);
@@ -84,6 +99,11 @@ class SearchHistoryViewModel {
     var response = await searchHistoryService.clearHistories(token: token);
     if (response == null) {
       showGLobalAlert('danger', 'Network Request Error', context);
+      return false;
+    }
+    var check = userVm.isNotLoggedInCheck(response);
+    if (check) {
+      userVm.resetLocalDataAndBackToLogin();
       return false;
     }
 

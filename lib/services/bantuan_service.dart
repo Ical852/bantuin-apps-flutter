@@ -28,6 +28,12 @@ class BantuanService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -45,6 +51,12 @@ class BantuanService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -72,6 +84,12 @@ class BantuanService {
     var response = await http.Response.fromStream(streamedResponse);
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -88,6 +106,12 @@ class BantuanService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -104,6 +128,12 @@ class BantuanService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -120,6 +150,12 @@ class BantuanService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -136,6 +172,12 @@ class BantuanService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -152,6 +194,12 @@ class BantuanService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+    
     return ResponseModel.fromJson(decoded);
   }
 
@@ -168,6 +216,12 @@ class BantuanService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+    
     return ResponseModel.fromJson(decoded);
   }
 }

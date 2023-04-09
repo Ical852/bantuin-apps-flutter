@@ -51,8 +51,8 @@ class UserService {
 
     var decoded = jsonDecode(response.body);
     if (decoded.containsKey('message')) {
-      if (decoded['message'] == 'Unauthenticated') {
-        return null;
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
       }
     }
 
@@ -175,6 +175,12 @@ class UserService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -198,6 +204,12 @@ class UserService {
     }
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+
     return ResponseModel.fromJson(decoded);
   }
 
@@ -215,8 +227,8 @@ class UserService {
 
     var decoded = jsonDecode(response.body);
     if (decoded.containsKey('message')) {
-      if (decoded['message'] == 'Unauthenticated') {
-        return null;
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
       }
     }
 
@@ -239,6 +251,12 @@ class UserService {
     var response = await http.Response.fromStream(streamedResponse);
 
     var decoded = jsonDecode(response.body);
+    if (decoded.containsKey('message')) {
+      if (decoded['message'] == 'Unauthenticated.') {
+        return ResponseModel(true);
+      }
+    }
+    
     return ResponseModel.fromJson(decoded);
   }
 }

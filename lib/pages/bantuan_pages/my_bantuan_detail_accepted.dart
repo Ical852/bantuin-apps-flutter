@@ -3,11 +3,14 @@ import 'dart:async';
 import 'package:bantuin/functions/global_func.dart';
 import 'package:bantuin/models/bantuan_model.dart';
 import 'package:bantuin/models/bantuan_order_model.dart';
+import 'package:bantuin/models/user_model.dart';
 import 'package:bantuin/pages/bantuan_pages/my_bantuan_helper_request.dart';
 import 'package:bantuin/pages/bantuan_pages/my_bantuan_ongoing_map.dart';
+import 'package:bantuin/pages/chat_pages/detail_chat_page.dart';
 import 'package:bantuin/shared/constants.dart';
 import 'package:bantuin/shared/textstyle.dart';
 import 'package:bantuin/view_models/bantuan_order_view_model.dart';
+import 'package:bantuin/view_models/chat_view_model.dart';
 import 'package:bantuin/widgets/buttons/detail_button_custom.dart';
 import 'package:bantuin/widgets/buttons/main_button_custom.dart';
 import 'package:bantuin/widgets/buttons/raw_button_custom.dart';
@@ -40,6 +43,8 @@ class MyBantuanDetailAcceptedPage extends StatefulWidget {
 class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPage> {
   BantuanOrderModel? order = null;
   late var boVm = BantuanOrderViewModel(context);
+  late var chatVm = ChatViewModel(context);
+
   void getOrderDetailData() async {
     String status = this.widget.bantuan.status == 'done' ? 'done' : 'process';
     var result = await boVm.getDetailOrderByBantuanId(bantuanId: this.widget.bantuan.id, status: status);
@@ -155,6 +160,21 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
     var lat = double.parse(latLngSplit[0]);
     var long = double.parse(latLngSplit[1]);
     return LatLng(long, lat);
+  }
+
+  void goToChat(int userId, int helperId, UserModel helper) async {
+    var result = await chatVm.createChat(
+      userId: userId,
+      helperId: helperId
+    );
+
+    if (result) {
+      Navigator.push(
+        context, MaterialPageRoute(
+          builder: (context) => DetailChatPage('${userId}_${helperId}', helper)
+        )
+      );
+    }
   }
 
   @override
@@ -505,7 +525,11 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                   child: MainButtonCustom(
                     title: 'Selesai',
                     onPressed: (){
-                      onComplete();
+                      if (reasonController.text.toString() == '') {
+                        showGLobalAlert('danger', 'Beri Ulasan Dong', context);
+                      } else {
+                        onComplete();
+                      }
                     },
                     disabled: rating == 0,
                   ),
@@ -609,7 +633,9 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
                           subTitle: 'Helper Kamu',
                           network: true,
                           nwUrl: order!.helper!.user!.image,
-                          onPressed: (){},
+                          onPressed: (){
+                            goToChat(order!.userId, order!.helperId, order!.helper!.user!);
+                          },
                         ),
                         RenderPayType(),
                         order!.status == 'done' ? SizedBox() : BottomButton()
