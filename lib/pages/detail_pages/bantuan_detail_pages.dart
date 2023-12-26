@@ -69,7 +69,7 @@ class _BantuanDetailPageState extends State<BantuanDetailPage> {
     var latLngSplit = latLngString.split(',');
     var lat = double.parse(latLngSplit[0]);
     var long = double.parse(latLngSplit[1]);
-    return LatLng(lat, long);
+    return LatLng(long, lat);
   }
 
   void requestBantuan() async {

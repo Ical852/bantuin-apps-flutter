@@ -189,7 +189,7 @@ class _MyBantuanDetailAcceptedPageState extends State<MyBantuanDetailAcceptedPag
   }
 
   LatLng getLatLong() {
-    var latLngString = this.widget.bantuan!.location.split('|')[0];
+    var latLngString = this.widget.bantuan.location.split('|')[0];
     var latLngSplit = latLngString.split(',');
     var lat = double.parse(latLngSplit[0]);
     var long = double.parse(latLngSplit[1]);

@@ -61,6 +61,7 @@ class HelperRequestItem extends StatelessWidget {
                       Text(
                         order.helper!.user!.fullName,
                         style: mediumBlackSemibold,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         'Helper',

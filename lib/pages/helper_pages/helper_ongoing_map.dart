@@ -76,6 +76,11 @@ class _HelperOnGoingMapPageState extends State<HelperOnGoingMapPage> {
       print('updated');
       print(this.widget.location);
       getCurrentLocation();
+      if (currentLocation != null) {
+        this.setState(() {
+          coordinates = [currentLocation!, this.widget.location];
+        });
+      }
     });
   }
 

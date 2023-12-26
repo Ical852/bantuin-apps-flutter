@@ -252,7 +252,7 @@ class _ProfilePageState extends State<ProfilePage> {
               title: 'Request',
               desc: user.helper?.status == 'pending' ? 'Permintaan Kamu Sedang Di Proses, Tunggu Hingga Admin Mengonfirmasi Permintaan Kamu Untuk Menjadi Helper' : 'Request ke admin untuk mendaftar menjadi helper?',
               onPress: () {
-                if (user.helper == null || user.helper?.status == 'pending') {
+                if (user.helper?.status == 'pending') {
                   Navigator.pop(context);
                   showGLobalAlert('danger', 'Permintaan Sedang Di Proses', context);
                 } else {
